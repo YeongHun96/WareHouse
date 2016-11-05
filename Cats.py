@@ -1,19 +1,14 @@
 import random   # randint 를 사용하기 위해
 from pico2d import*
 
-
-class State:
-    RIGHT_ATTACK = 0
-    LEFT_Attack = 1
-    LEFT_MOVE = 2
-    RIGHT_MOVE = 3
+ATTACK, LEFT_MOVE = 0, 3
 
 
 class BasicCat:
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
     def __init__(self):
-        self.x, self.y = 970, 170 + random.randint(0, 30)  # 생성 위치
+        self.x, self.y = 1200, 170 + random.randint(0, 30)  # 생성 위치
         # 능력치 #
         self.Health = 300  # 체력
         self.Attack_Power = 8  # 공격력
@@ -22,27 +17,33 @@ class BasicCat:
         self.Movement_Speed = 10  # 이동속도
         self.Attack_Animation = 8   # frame
         self.Recharging_Time = 2.33   # seconds 공격 재장전 시간
-        self.state = State.RIGHT_MOVE  # 캐릭터의 기본 상태
+        self.state = LEFT_MOVE  # 캐릭터의 기본 상태
         self.frame = 0
         if BasicCat.image is None:  # 만약 변수의 값이 None 이면
             BasicCat.image = load_image("Resources/Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
     def update(self):
-        self.frame = (self.frame + 1) % 3  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
-        self.x -= self.Movement_Speed  # 왼쪽으로 10/s 의 속도로 이동
+        if self.state == LEFT_MOVE:
+            self.frame = (self.frame + 1) % 3  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
+            self.x -= self.Movement_Speed  # 왼쪽으로 10/s 의 속도로 이동
+        elif self.state == ATTACK:
+            self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
 
-        if 1:  # 적 팀 유닛을 만나면
-            pass
+        #for enemy in enemies:
+        #    if enemy.x - self.x <= self.Attack_Range:  # 적 팀 유닛을 만나면 - 적과 충돌
+        #     self.state = self.ATTACK
         # 공격을 시작한다.
 
     # 가로 46 세로 63
     def draw(self):
-        self.image.clip_draw(self.frame * 46, 2 * 63, 46, 63, self.x, self.y)  # left,bottom,width,height,x,y
+        self.image.clip_draw(self.frame * 46, self.state * 63, 46, 63, self.x, self.y)  # left,bottom,width,height,x,y
         # 0: 오른쪽 바라보며 공격  1: 왼쪽 바라보며 공격 2 : 오른쪽바라봄 3 : 왼쪽 바라봄
 
 
 class TankCat:
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
+
+    ATTACK, LEFT_MOVE = 0, 2
 
     def __init__(self):
         self.Health = 400
@@ -52,7 +53,7 @@ class TankCat:
         self.MovementSpeed = 8
         self.AttackAnimation = 8  # frame
         self.RechargingTime = 8.33
-        self.state = State.RIGHT_MOVE
+        self.state = self.LEFT_MOVE
         self.frame = 0
     pass
 
@@ -70,8 +71,9 @@ class AxeCat:
         self.Recharging_Time = 7.33
         self.frame = 0
         self.delay = 0
+        self.state = LEFT_MOVE
 
-        self.x, self.y = 50, 200 + random.randint(0, 30)
+        self.x, self.y = 1200, 200 + random.randint(0, 30)
         if AxeCat.image is None:  # 만약 변수의 값이 None 이면
             AxeCat.image = load_image("Resources/Axe_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
@@ -81,10 +83,10 @@ class AxeCat:
         if self.delay > 1:
             self.delay = 0
             self.frame = (self.frame + 1) % 3  # Move = 3 Attack = 4
-            self.x += self.Movement_Speed
+            self.x -= self.Movement_Speed
 
     def draw(self):
-        self.image.clip_draw(self.frame * 112, 0*125, 112, 125, self.x, self.y)
+        self.image.clip_draw(self.frame * 113, self.state * 125, 112, 125, self.x, self.y)
         # 0 : 오른쪽 바라보며 공격 125 : 왼쪽바라보며공격 250 : 오른쪽 이동 375 : 왼쪽 바라보기
 
 
@@ -101,6 +103,8 @@ class GrossCat:
         self.Recharging_Time = 2.53
         self.frame = 0
         self.delay = 0
+
+
     pass
 
 
@@ -123,6 +127,8 @@ class CowCat:
 class BirdCat:
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
+    LEFT_MOVE, ATTACK = 400, 231
+
     def __init__(self):
         self.Health = 300
         self.Attack_Power = 140
@@ -133,6 +139,23 @@ class BirdCat:
         self.Recharging_Time = 2.33
         self.frame = 0
         self.delay = 0
+        self.state = LEFT_MOVE
+
+        self.x, self.y = 1200, 500 + random.randint(0, 30)
+        if self.image is None:  # 만약 변수의 값이 None 이면
+            self.image = load_image("Resources/UFO_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
+
+    def update(self):
+        if self.state == LEFT_MOVE:
+            self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
+            self.x -= self.Movement_Speed  # 왼쪽으로 10/s 의 속도로 이동
+            self.y += random.randint(-10, 10)
+        elif self.state == ATTACK:
+            self.frame = (self.frame + 1) % 7  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
+
+    def draw(self):
+        self.image.clip_draw(self.frame * 132, self.state, 132, 80, self.x, self.y)
+        # 0 : 오른쪽 바라보며 공격 125 : 왼쪽바라보며공격 250 : 오른쪽 이동 375 : 왼쪽 바라보기
     pass
 
 
