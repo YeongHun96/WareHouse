@@ -8,7 +8,7 @@ class MyCastle:  # 우리 팀의 성
         self.Health = 10000  # 성의 체력
 
     def draw(self):
-        self.image.draw(50, 300)  # 이미지를 좌표 (x,y)위치에 삽입
+        self.image.draw(1200, 300)  # 이미지를 좌표 (x,y)위치에 삽입
 
 
 class EnemyCastle:  # 적 팀의 성
@@ -18,4 +18,4 @@ class EnemyCastle:  # 적 팀의 성
         self.Health = 10000  # 성의 체력
 
     def draw(self):
-        self.image.draw(976, 270)  # 이미지를 좌표 (x,y)위치에 삽입
+        self.image.draw(50, 270)  # 이미지를 좌표 (x,y)위치에 삽입

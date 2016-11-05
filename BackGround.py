@@ -10,4 +10,4 @@ class BackGround:
         self.image = load_image('Resources/BackGround.png')  # 이미지 불러오기
 
     def draw(self):
-        self.image.draw(513, 341)  # 불러온 이미지를 좌표 (x,y)의 위치에 삽입
+        self.image.draw(640, 360)  # 불러온 이미지를 좌표 (x,y)의 위치에 삽입
