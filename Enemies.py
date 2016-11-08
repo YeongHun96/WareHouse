@@ -97,7 +97,6 @@ class HeadlessKnight:
         # 0: 오른쪽 바라보며 공격  1: 왼쪽 바라보며 공격 2 : 오른쪽바라봄 3 : 왼쪽 바라봄
 
 
-
 class RedCyclone:
     image = None
 
