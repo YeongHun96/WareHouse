@@ -117,7 +117,6 @@ def handle_events():  # 입력신호를 관리하는 함수
         elif event.type == SDL_MOUSEBUTTONUP:  # 마우스 버튼이 눌린게 해제됐을 때
             pass
         elif event.type == SDL_MOUSEMOTION:  # 마우스를 움직였을 때
-            x, y = event.x, event.y
             pass
 
 

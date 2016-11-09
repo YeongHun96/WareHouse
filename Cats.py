@@ -16,7 +16,7 @@ class BasicCat:
         self.Time_between_attacks = 1.23  # seconds 공격빈도
         self.Movement_Speed = 10  # 이동속도
         self.Attack_Animation = 8   # frame
-        self.Recharging_Time = 2.33   # seconds 공격 재장전 시간
+        self.Recharging_Time = 2.33   # seconds 유닛 쿨타임
         self.state = LEFT_MOVE  # 캐릭터의 기본 상태
         self.frame = 0
         if BasicCat.image is None:  # 만약 변수의 값이 None 이면
@@ -103,7 +103,6 @@ class GrossCat:
         self.Recharging_Time = 2.53
         self.frame = 0
         self.delay = 0
-
 
     pass
 

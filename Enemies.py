@@ -50,7 +50,7 @@ class SkeletonSoldier:
 class HeadlessKnight:
     image = None
 
-    DIE, STAND, RUN, MOVE, ATTACK = 4, 5, 6, 7, 8
+    DIE, STAND, RUN, MOVE, ATTACK = 4, 2, 6, 7, 8
 
     def __init__(self):
         self.x, self.y = 80, 300 + random.randint(0, 30)
@@ -59,9 +59,7 @@ class HeadlessKnight:
         self.AttackRange = 110
         self.TimeBetweenAttacks = 2.23  # per seconds
         self.MovementSpeed = 8
-        self.AttackAnimation = 8  # frame
-        self.RechargingTime = 8.33
-        self.state = self.MOVE
+        self.state = self.ATTACK
         self.frame = 0
         self.delay = 0
 
@@ -71,8 +69,8 @@ class HeadlessKnight:
     def update(self):
         if self.state == self.MOVE:
             self.frame = (self.frame + 1) % 7  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
+            delay(0.04)
             self.x += self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
-            delay(0.05)
             if self.x > 300:
                 self.state = self.RUN
         elif self.state == self.ATTACK:
@@ -83,9 +81,10 @@ class HeadlessKnight:
             self.frame = (self.frame + 1) % 6
         elif self.state == self.DIE:
             self.frame = self.frame + 1
-            delay(0.08)
+            self.delay = 0.1
         elif self.state == self.STAND:
-            self.frame = (self.frame + 1) % 4
+            self.frame = (self.frame + 1) % 10
+            self.x += self.MovementSpeed
 
         # for enemy in enemies:
         #    if enemy.x - self.x <= self.Attack_Range:  # 적 팀 유닛을 만나면 - 적과 충돌
