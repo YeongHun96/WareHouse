@@ -24,7 +24,7 @@ class SelectedButton:
 def enter():
     global image, bt, x, y
 
-    image = load_image("Resources/Titleimage.png")
+    image = load_image("Resources/TitleImage.png")
     bt = SelectedButton()
 
 
