@@ -2,114 +2,217 @@ import random
 from pico2d import *
 
 
-class SkeletonSoldier:
-    image = None
+class SkeleDog:
+    pass
 
-    STOP, LEFT_MOVE, BE_ATTACKED, ATTACK, DIE = 5, 4, 3, 2, 0
 
-    def __init__(self):
-        self.x, self.y = 80, 170 + random.randint(0, 30)
-        self.Health = 400
-        self.AttackPower = 2
-        self.AttackRange = 110
+class MummyDog:
+    pass
+
+
+class SkeletonSoldier:  # 스켈레톤 병사 클래스
+
+    image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
+
+    STOP, MOVE, HURT, ATTACK, ATTACK_EFFECT, DIE = 5, 4, 3, 2, 1, 0  # 상태 정의
+
+    def __init__(self):  # 객체의 초기값 설정
+        self.x, self.y = 80, 170 + random.randint(0, 15)  # 생성위치
+        self.Health = 400  # 체력
+        self.AttackPower = 2  # 공격력
+        self.AttackRange = 110  # 공격사거리
         self.TimeBetweenAttacks = 2.23  # per seconds
-        self.MovementSpeed = 8
+        self.MovementSpeed = 4  # 이동속도
         self.AttackAnimation = 8  # frame
         self.RechargingTime = 8.33
-        self.state = self.LEFT_MOVE
+        self.state = self.MOVE  # 초기상태
         self.frame = 0
 
-        if SkeletonSoldier.image is None:
-            SkeletonSoldier.image = load_image("Resources/SkeletonSoldier.png")
+        if SkeletonSoldier.image is None:  # 만약 변수의 값이 None 이면
+            SkeletonSoldier.image = load_image("Resources/EnemyUnits/SkeletonSoldier.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
     def update(self):
-        if self.state == self.LEFT_MOVE:
-            self.frame = (self.frame + 1) % 3  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
-            self.x += self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
+        if self.state == self.MOVE:
+            self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
+            self.x += self.MovementSpeed  # 오른쪽으로 10/s 의 속도로 이동
         elif self.state == self.ATTACK:
-            self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
-        elif self.state == self.BE_ATTACKED:
+            self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
+        elif self.state == self.HURT:
             self.x -= 3
             self.frame = (self.frame + 1) % 1
         elif self.state == self.ATTACK:
             self.frame = (self.frame + 1) % 4
         elif self.state == self.DIE:
-            self.frame = (self.frame + 1) % 5
+            self.frame = (self.frame + 1)
 
-        #for enemy in enemies:
-        #    if enemy.x - self.x <= self.Attack_Range:  # 적 팀 유닛을 만나면 - 적과 충돌
-        #     self.state = self.ATTACK
-        # 공격을 시작한다.
-
-    # 가로 46 세로 63
     def draw(self):
-        self.image.clip_draw(self.frame * 95, 581, 95, 109, self.x, self.y)  # left,bottom,width,height,x,y
-        # 0: 오른쪽 바라보며 공격  1: 왼쪽 바라보며 공격 2 : 오른쪽바라봄 3 : 왼쪽 바라봄
+        self.image.clip_draw(self.frame * 110, self.state * 114, 110, 114, self.x, self.y)
+        # Width = 110, Height = 114
 
 
-class HeadlessKnight:
-    image = None
+class OfficerSkeleton:
 
-    DIE, STAND, RUN, MOVE, ATTACK = 4, 2, 6, 7, 8
+    image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
-    def __init__(self):
-        self.x, self.y = 80, 300 + random.randint(0, 30)
-        self.Health = 400
-        self.AttackPower = 2
-        self.AttackRange = 110
+    STOP, MOVE, HURT, ATTACK, ATTACK_EFFECT, DIE = 5, 4, 3, 2, 1, 0  # 상태 정의
+
+    def __init__(self):  # 객체의 초기값 설정
+        self.x, self.y = 80, 170 + random.randint(0, 15)  # 생성위치
+        self.Health = 400  # 체력
+        self.AttackPower = 2  # 공격력
+        self.AttackRange = 110  # 공격사거리
         self.TimeBetweenAttacks = 2.23  # per seconds
-        self.MovementSpeed = 8
-        self.state = self.ATTACK
+        self.MovementSpeed = 4  # 이동속도
+        self.AttackAnimation = 8  # frame
+        self.RechargingTime = 8.33
+        self.state = self.ATTACK  # 초기상태
+        self.frame = 0
+
+        if OfficerSkeleton.image is None:  # 만약 변수의 값이 None 이면
+            OfficerSkeleton.image = load_image("Resources/EnemyUnits/OfficerSkeleton.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
+
+    def update(self):
+        if self.state == self.MOVE:
+            self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
+            self.x += self.MovementSpeed  # 오른쪽으로 10/s 의 속도로 이동
+        elif self.state == self.ATTACK:
+            self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
+        elif self.state == self.HURT:
+            self.x -= 3
+            self.frame = (self.frame + 1) % 1
+        elif self.state == self.ATTACK:
+            self.frame = (self.frame + 1) % 4
+        elif self.state == self.DIE:
+            self.frame = (self.frame + 1)
+
+    def draw(self):
+        self.image.clip_draw(self.frame * 106, self.state * 130, 106, 130, self.x, self.y)
+        # Width = 106, Height = 130
+
+
+class CommanderSkeleton:
+    image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
+
+    STOP, MOVE, HURT, ATTACK, DIE = 4, 3, 2, 1, 0  # 상태 정의
+
+    def __init__(self):  # 객체의 초기값 설정
+        self.x, self.y = 80, 190 + random.randint(0, 15)  # 생성위치
+        self.Health = 400  # 체력
+        self.AttackPower = 2  # 공격력
+        self.AttackRange = 110  # 공격사거리
+        self.TimeBetweenAttacks = 2.23  # per seconds
+        self.MovementSpeed = 4  # 이동속도
+        self.AttackAnimation = 8  # frame
+        self.RechargingTime = 8.33
+        self.state = self.ATTACK  # 초기상태
+        self.frame = 0
+        self.delay = 0.13
+
+        if CommanderSkeleton.image is None:  # 만약 변수의 값이 None 이면
+            CommanderSkeleton.image = load_image("Resources/EnemyUnits/CommanderSkeleton.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
+
+    def update(self):
+        if self.state == self.STOP:
+            self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
+        elif self.state == self.MOVE:
+            self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
+            self.x += self.MovementSpeed  # 오른쪽으로 10/s 의 속도로 이동
+        elif self.state == self.HURT:
+            self.x -= 3
+            self.frame = (self.frame + 1) % 1
+        elif self.state == self.ATTACK:
+            self.frame = (self.frame + 1) % 8
+        elif self.state == self.DIE:
+            self.frame = (self.frame + 1) % 11
+
+    def draw(self):
+        self.image.clip_draw(self.frame * 151, self.state * 159, 151, 159, self.x, self.y)
+        # Width = 151, Height = 159
+
+
+class HeadlessKnight:  # 보스 몬스터 - 헤들리스나이트의 클래스
+
+    image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
+
+    RUN_ATTACK, RUN_SLOW, RUN_SKILL, STAND_SKILL, DIE, STAND, RUN_FAST, MOVE, STAND_ATTACK = 0, 1, 2, 3, 4, 5, 6, 7, 8
+    # 상태 정의
+
+    def __init__(self):  # 객체의 초기값 설정
+        self.x, self.y = 80, 300 + random.randint(0, 30)  # 생성위치
+        self.Health = 99999  # 체력
+        self.AttackPower = 100  # 공격력
+        self.AttackRange = 110  # 공격범위
+        self.TimeBetweenAttacks = 2.23  # per seconds
+        self.MovementSpeed = 8  # 이동속도
+        self.state = self.RUN_ATTACK
         self.frame = 0
         self.delay = 0
 
         if HeadlessKnight.image is None:
-                HeadlessKnight.image = load_image("Resources/HeadlessKnight.png")
+                HeadlessKnight.image = load_image("Resources/EnemyUnits/HeadlessKnight.png")
 
     def update(self):
-        if self.state == self.MOVE:
-            self.frame = (self.frame + 1) % 7  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
-            delay(0.04)
+        if self.state == self.RUN_ATTACK:
+            self.frame = (self.frame + 1)
+            self.x += self.MovementSpeed * 2
+            if self.frame == 6:
+                self.state = self.STAND_SKILL
+        elif self.state == self.RUN_SLOW:
+            self.frame = (self.frame + 1) % 6  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
             self.x += self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
-            if self.x > 300:
-                self.state = self.RUN
-        elif self.state == self.ATTACK:
+        elif self.state == self.RUN_SKILL:
             self.x += self.MovementSpeed
-            self.frame = (self.frame + 1) % 7  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
-        elif self.state == self.RUN:
+            self.frame = (self.frame + 1) % 6  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
+        elif self.state == self.STAND_SKILL:
             self.x += self.MovementSpeed * 2
             self.frame = (self.frame + 1) % 6
         elif self.state == self.DIE:
-            self.frame = self.frame + 1
+            self.frame = (self.frame + 1)
             self.delay = 0.1
         elif self.state == self.STAND:
             self.frame = (self.frame + 1) % 10
             self.x += self.MovementSpeed
-
+        elif self.state == self.RUN_FAST:
+            pass
+        elif self.state == self.MOVE:
+            pass
+        elif self.state == self.STAND_ATTACK:
+            pass
         # for enemy in enemies:
         #    if enemy.x - self.x <= self.Attack_Range:  # 적 팀 유닛을 만나면 - 적과 충돌
         #     self.state = self.ATTACK
         # 공격을 시작한다.
 
     def draw(self):
-        self.image.clip_draw(self.frame * 337, self.state * 367, 300, 300, self.x, self.y)
-        # 0: 오른쪽 바라보며 공격  1: 왼쪽 바라보며 공격 2 : 오른쪽바라봄 3 : 왼쪽 바라봄
+        self.image.clip_draw(self.frame * 336, self.state * 362, 336, 362, self.x, self.y)
+        # 336,362
 
 
-class RedCyclone:
+class HeadlessKnightSkill:
     image = None
 
     def __init__(self):
-        self.x, self.y = 80, 170 + random.randint(0, 30)  # 생성 위치
-        # 능력치 #
-        self.Health = 999999  # 체력
-        self.Attack_Power = 92000  # 공격력
-        self.Attack_Range = 90  # 공격사거리 (area attack)
-        self.Time_between_attacks = 0  # seconds 공격빈도
-        self.Movement_Speed = 6  # 이동속도
-        self.Attack_Animation = 1  # frame
-        self.state = self.MOVE  # 캐릭터의 기본 상태
+        self.x, self.y = 80, 230
+        self.MovementSpeed = 20
         self.frame = 0
 
-        if RedCyclone.image is None:  # 만약 변수의 값이 None 이면
-            RedCyclone.image = load_image("Resources/Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 공유
+        if HeadlessKnightSkill.image is None:
+            HeadlessKnightSkill.image = load_image("Resources/EnemyUnits/Headless_Skill.png")
+            # Width = 225, Height = 165 Frame = 6
+
+    def update(self):
+        self.frame = (self.frame + 1) % 6  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
+        self.x += self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
+
+    def draw(self):
+        self.image.clip_draw(self.frame*225, 0, 220, 160, self.x, self.y)
+        # 0: 오른쪽 바라보며 공격  1: 왼쪽 바라보며 공격 2 : 오른쪽바라봄 3 : 왼쪽 바라봄
+        # 마법진 302,129
+        # 연기 188,90
+        # 작은 연기 132, 65
+
+
+
+
+
+

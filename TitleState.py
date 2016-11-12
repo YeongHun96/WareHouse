@@ -4,35 +4,41 @@ from pico2d import*
 
 name = "TitleState"
 image = None
+BGM = None
 x = 0
 y = 0
 
 
-class SelectedButton:
+class SelectedButton:  # 버튼이 선택됐을때의 이미지 클래스
     def __init__(self):
-        self.image = load_image("Resources/Selected.png")
-        self.x, self.y = 640, -200
-        self.width, self.height = 215, 40
+        self.image = load_image("Resources/Selected.png")  # 이미지 로드
+        self.x, self.y = 640, -200  # 초기위치
+        self.width, self.height = 215, 40  # 이미지 크기
 
     def get_size(self):
-        return (self.x-self.width), (self.y-self.height), (self.x+self.width), (self.y+self.height)
+        return (self.x-self.width), (self.y-self.height), (self.x+self.width), (self.y+self.height)  # 이미지 크기 반환
 
     def draw(self):
-        self.image.draw(self.x, self.y)
+        self.image.draw(self.x, self.y)  # 이미지 출력
 
 
 def enter():
     global image, bt, x, y
-
+    global BGM  # 전역변수 선언
+    BGM = load_music('Resources/Musics/TitleTheme.ogg')  # 생성한 전역변수에 음악 삽입
+    BGM.set_volume(64)  # 음량
+    BGM.repeat_play()  # 반복 재생
     image = load_image("Resources/TitleImage.png")
     bt = SelectedButton()
 
 
-
 def exit():
     global image, bt
-    del(image)
-    del(bt)
+    global BGM
+
+    del image
+    del bt
+    del BGM
 
 
 def handle_events():
