@@ -49,12 +49,23 @@ class SkeletonSoldier:  # 스켈레톤 병사 클래스
         self.image.clip_draw(self.frame * 110, self.state * 114, 110, 114, self.x, self.y)
         # Width = 110, Height = 114
 
+    def get_size(self):
+        return self.x - 23, self.y - 31, self.x + 23, self.y + 18
+
+    def draw_bb(self):
+        draw_rectangle(*self.get_size())
+
+    def attack(self, e):
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
+
 
 class OfficerSkeleton:
 
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
-    STOP, MOVE, HURT, ATTACK, ATTACK_EFFECT, DIE = 5, 4, 3, 2, 1, 0  # 상태 정의
+    STOP, MOVE, HURT, ATTACK, DIE = 5, 4, 3, 2, 1  # 상태 정의
 
     def __init__(self):  # 객체의 초기값 설정
         self.x, self.y = 80, 170 + random.randint(0, 15)  # 생성위치
@@ -89,6 +100,17 @@ class OfficerSkeleton:
         self.image.clip_draw(self.frame * 106, self.state * 130, 106, 130, self.x, self.y)
         # Width = 106, Height = 130
 
+    def get_size(self):
+        return self.x - 23, self.y - 31, self.x + 23, self.y + 18
+
+    def draw_bb(self):
+        draw_rectangle(*self.get_size())
+
+    def attack(self, e):
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
+
 
 class CommanderSkeleton:
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
@@ -104,7 +126,7 @@ class CommanderSkeleton:
         self.MovementSpeed = 4  # 이동속도
         self.AttackAnimation = 8  # frame
         self.RechargingTime = 8.33
-        self.state = self.ATTACK  # 초기상태
+        self.state = self.MOVE  # 초기상태
         self.frame = 0
         self.delay = 0.13
 
@@ -128,6 +150,17 @@ class CommanderSkeleton:
     def draw(self):
         self.image.clip_draw(self.frame * 151, self.state * 159, 151, 159, self.x, self.y)
         # Width = 151, Height = 159
+
+    def get_size(self):
+        return self.x - 23, self.y - 31, self.x + 23, self.y + 18
+
+    def draw_bb(self):
+        draw_rectangle(*self.get_size())
+
+    def attack(self, e):
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
 
 
 class HeadlessKnight:  # 보스 몬스터 - 헤들리스나이트의 클래스
@@ -187,6 +220,17 @@ class HeadlessKnight:  # 보스 몬스터 - 헤들리스나이트의 클래스
         self.image.clip_draw(self.frame * 336, self.state * 362, 336, 362, self.x, self.y)
         # 336,362
 
+    def get_size(self):
+        return self.x - 23, self.y - 31, self.x + 23, self.y + 18
+
+    def draw_bb(self):
+        draw_rectangle(*self.get_size())
+
+    def attack(self, e):
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
+
 
 class HeadlessKnightSkill:
     image = None
@@ -197,7 +241,7 @@ class HeadlessKnightSkill:
         self.frame = 0
 
         if HeadlessKnightSkill.image is None:
-            HeadlessKnightSkill.image = load_image("Resources/EnemyUnits/Headless_Skill.png")
+            HeadlessKnightSkill.image = load_image("Resources/EnemyUnits/SkillEffects/Headless_Skill.png")
             # Width = 225, Height = 165 Frame = 6
 
     def update(self):
@@ -210,6 +254,17 @@ class HeadlessKnightSkill:
         # 마법진 302,129
         # 연기 188,90
         # 작은 연기 132, 65
+
+    def get_size(self):
+        return self.x - 23, self.y - 31, self.x + 23, self.y + 18
+
+    def draw_bb(self):
+        draw_rectangle(*self.get_size())
+
+    def attack(self, e):
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
 
 
 

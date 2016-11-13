@@ -7,6 +7,7 @@ import Castle
 import Cats
 import GameFrameWork
 import Enemies
+import Functions
 
 running = True
 Back_Ground = None
@@ -78,15 +79,40 @@ def update():
 
 
 def draw():
+
     clear_canvas()  # 캔버스 지우기
     Back_Ground.draw()  # 배경화면 그리기
     My_Castle.draw()  # 아군 성 그리기
+    My_Castle.draw_bb()
     Enemy_Castle.draw()  # 적군 성 그리기
+    Enemy_Castle.draw_bb()
     for Cat in Cat_Units:  # 리스트에 속하는 모두를
         Cat.draw()  # 그리기
         Cat.draw_bb()
+
     for Enemy in Enemy_Units:
         Enemy.draw()
+        Enemy.draw_bb()
+
+    # 에러 일어나는 부분 ~
+    for Cat in Cat_Units:
+        if collide(Cat, Enemy_Castle):
+            Cat.attack(Enemy_Castle)
+        for Enemy in Enemy_Units:
+            if collide(Cat, Enemy):
+                Cat.attack(Enemy)
+
+    for Enemy in Enemy_Units:
+        for Cat in Cat_Units:
+            if collide(Enemy, Cat):
+                Enemy.attack(Cat)
+    # ~ 에러 일어나는 부분
+    for Cat in Cat_Units:
+        if Cat.check_Hurt():
+            Cat.Hurt()
+    for Cat in Cat_Units:
+        if Cat.check_die():
+            Cat_Units.remove(Cat)
     update_canvas()  # 캔버스 업데이트
 
 
@@ -117,6 +143,16 @@ def handle_events():  # 입력신호를 관리하는 함수
                 Cat_Units.append(Cats.LizardCat())  # 도마뱀 고양이 객체 생성
             elif event.key == SDLK_9:  # 9번 입력 시
                 Cat_Units.append(Cats.TitanCat())  # 거인 고양이 객체 생성
+            elif event.key == SDLK_0:
+                Enemy_Units.append(Enemies.SkeletonSoldier())
+            elif event.key == SDLK_q:
+                Enemy_Units.append(Enemies.OfficerSkeleton())
+            elif event.key == SDLK_w:
+                Enemy_Units.append(Enemies.CommanderSkeleton())
+            elif event.key == SDLK_e:
+                Enemy_Units.append(Enemies.HeadlessKnight())
+            elif event.key == SDLK_r:
+                Enemy_Units.append(Enemies.HeadlessKnightSkill())
 
 
 def pause():
@@ -125,6 +161,20 @@ def pause():
 
 def resume():
     pass
+
+
+def collide(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_size()
+    left_b, bottom_b, right_b, top_b = b.get_size()
+
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+
+    return True
+
+
 
 
 

@@ -36,11 +36,23 @@ class BasicCat:
     def draw(self):
         self.image.clip_draw(self.frame * 46, self.state * 63, 46, 63, self.x, self.y)
 
-    def get_bb(self):
+    def get_size(self):
         return self.x - 23, self.y - 31, self.x + 23, self.y + 18
 
     def draw_bb(self):
-        draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_size())
+
+    def attack(self, e):
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
+
+    def delete(self):
+        del self
+
+    def check_die(self):
+        if self.Health < 0:
+            return True
 
 
 # Number 2
@@ -73,18 +85,36 @@ class TankCat:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
         elif self.state == self.HURT:
             self.frame = (self.frame + 1) % 1
+            self.x += 3
+            self.state = self.WALK
 
     # 가로: 88, 세로: 121
     def draw(self):
         self.image.clip_draw(self.frame * 88, self.state * 121, 88, 121, self.x, self.y)
 
-    def get_bb(self):
+    def get_size(self):
         return self.x - 20, self.y - 50, self.x + 20, self.y + 30
     # 크기 20, 50, 20, 30
     # 사정거리 110
 
     def draw_bb(self):
-        draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_size())
+
+    def attack(self, e):
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
+
+    def check_die(self):
+        if self.Health < 0:
+            return True
+
+    def check_Hurt(self):
+        if self.Health < 200:
+            return True
+
+    def Hurt(self):
+        self.state = self.HURT
 
 
 class WallCat:
@@ -125,13 +155,24 @@ class AxeCat:
     def draw(self):
         self.image.clip_draw(self.frame * 109, self.state * 150, 109, 150, self.x, self.y)
 
-    def get_bb(self):
+    def get_size(self):
         return self.x - 54, self.y - 60, self.x + 45, self.y + 20
         # 크기 54, 60, 45, 20
 
     def draw_bb(self):
-        draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_size())
 
+    def attack(self, e):
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
+
+    def delete(self):
+        del self
+
+    def check_die(self):
+        if self.Health < 0:
+            return True
 
 class BraveCat:
     pass
@@ -172,12 +213,24 @@ class GrossCat:
     def draw(self):
         self.image.clip_draw(self.frame * 240, self.state * 300, 240, 300, self.x, self.y)
 
-    def get_bb(self):
+    def get_size(self):
         return self.x - 40, self.y - 110, self.x + 40, self.y + 80
         # 크기 40, 110, 40, 80
 
     def draw_bb(self):
-        draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_size())
+
+    def attack(self, e):
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
+
+    def delete(self):
+        del self
+
+    def check_die(self):
+        if self.Health < 0:
+            return True
 
 
 class SexyLegsCat:
@@ -220,12 +273,28 @@ class CowCat:
     def draw(self):
         self.image.clip_draw(self.frame * 150, self.state * 200, 150, 200, self.x, self.y)
 
-    def get_bb(self):
+    def get_size(self):
         return self.x - 50, self.y - 70, self.x + 50, self.y + 30
         # 크기 50, 70, 50, 30
 
     def draw_bb(self):
-        draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_size())
+
+    def attack(self, e):
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
+
+    def check_die(self):
+        if self.Health < 0:
+            return True
+
+    def delete(self):
+        del self
+
+    def check_die(self):
+        if self.Health < 0:
+            return True
 
 
 class GiraffeCat:
@@ -239,14 +308,14 @@ class BirdCat:
     FLY, ATTACK, HURT = 2, 1, 0
 
     def __init__(self):
-        self.x, self.y = 1200, 350 + random.randint(0, 15)
+        self.x, self.y = 1200, 400
         self.Health = 300
-        self.Attack_Power = 140
-        self.Attack_Range = 170
-        self.Time_Between_Attacks = 1.63
-        self.Movement_Speed = 10
-        self.Attack_Animation = 10
-        self.Recharging_Time = 2.33
+        self.AttackPower = 140
+        self.AttackRange = 170
+        self.TimeBetweenAttacks = 1.63
+        self.MovementSpeed = 10
+        self.AttackAnimation = 10
+        self.RechargingTime = 2.33
         self.frame = 0
         self.delay = 0
         self.state = self.FLY
@@ -257,7 +326,8 @@ class BirdCat:
     def update(self):
         if self.state == self.FLY:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
-            self.x -= self.Movement_Speed  # 왼쪽으로 10/s 의 속도로 이동
+            self.x -= self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
+            self.y += random.randint(-10, 10)
         elif self.state == self.ATTACK:
             self.frame = (self.frame + 1) % 6  # N개의 이미지를 반복
         elif self.state == self.HURT:
@@ -267,12 +337,24 @@ class BirdCat:
     def draw(self):
         self.image.clip_draw(self.frame * 180, self.state * 120, 180, 120, self.x, self.y)
 
-    def get_bb(self):
+    def get_size(self):
         return self.x - 70, self.y - 50, self.x + 70, self.y + 30
         # 크기 70, 50, 70, 30
 
     def draw_bb(self):
-        draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_size())
+
+    def attack(self, e):
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
+
+    def delete(self):
+        del self
+
+    def check_die(self):
+        if self.Health < 0:
+            return True
 
 
 class UFOCat:
@@ -314,12 +396,24 @@ class FishCat:
     def draw(self):
         self.image.clip_draw(self.frame * 133, self.state * 149, 133, 149, self.x, self.y)
 
-    def get_bb(self):
+    def get_size(self):
         return self.x - 68, self.y - 65, self.x + 64, self.y + 40
         # 크기 68, 65, 64, 40
 
     def draw_bb(self):
-        draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_size())
+
+    def attack(self, e):
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
+
+    def delete(self):
+        del self
+
+    def check_die(self):
+        if self.Health < 0:
+            return True
 
 
 # Number 8
@@ -357,12 +451,24 @@ class LizardCat:
     def draw(self):
         self.image.clip_draw(self.frame * 136, self.state * 109, 136, 109, self.x, self.y)
 
-    def get_bb(self):
+    def get_size(self):
         return self.x - 30, self.y - 54, self.x + 68, self.y + 30
         # 크기 30, 54, 68, 30
 
     def draw_bb(self):
-        draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_size())
+
+    def attack(self, e):
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
+
+    def delete(self):
+        del self
+
+    def check_die(self):
+        if self.Health < 0:
+            return True
 
 
 class DragonCat:
@@ -405,12 +511,24 @@ class TitanCat:
     def draw(self):
         self.image.clip_draw(self.frame * 200, self.state * 215, 200, 215, self.x, self.y)
 
-    def get_bb(self):
+    def get_size(self):
         return self.x - 60, self.y - 107, self.x + 40, self.y + 107
         # 크기 60, 107, 40, 107
 
     def draw_bb(self):
-        draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_size())
+
+    def attack(self, e):
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
+
+    def delete(self):
+        del self
+
+    def check_die(self):
+        if self.Health < 0:
+            return True
 
 
 class MythicalTitanCat:
