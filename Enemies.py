@@ -1,3 +1,7 @@
+# Python Module : 파이썬의 정의와 문장을 담고 있는 파일
+#                그 자체로도 실행 가능하며, 다른 모듈에서 import해서 사용할 수도 있음.
+#                import되면 그 자체가 하나의 객체가 됨.
+#                Module의 사용 : import 모듈이름
 import random
 from pico2d import *
 
@@ -76,7 +80,7 @@ class OfficerSkeleton:
         self.MovementSpeed = 4  # 이동속도
         self.AttackAnimation = 8  # frame
         self.RechargingTime = 8.33
-        self.state = self.ATTACK  # 초기상태
+        self.state = self.MOVE  # 초기상태
         self.frame = 0
 
         if OfficerSkeleton.image is None:  # 만약 변수의 값이 None 이면
@@ -101,7 +105,7 @@ class OfficerSkeleton:
         # Width = 106, Height = 130
 
     def get_size(self):
-        return self.x - 23, self.y - 31, self.x + 23, self.y + 18
+        return self.x - 30, self.y - 50, self.x + 30, self.y + 40
 
     def draw_bb(self):
         draw_rectangle(*self.get_size())

@@ -28,7 +28,7 @@ def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
     Back_Ground = BackGround.BackGround()  # 생성한 전역변수로 BackGround 객체를 가리킴
     global BGM  # 전역변수 선언
     BGM = load_music('Resources/Musics/DefaultBattle.ogg')  # 생성한 전역변수에 음악 삽입
-    BGM.set_volume(64)  # 음량
+    BGM.set_volume(0)  # 음량
     BGM.repeat_play()  # 반복 재생
     global My_Castle, Enemy_Castle  # 전역변수 선언
     My_Castle = Castle.MyCastle()  # 생성한 전역변수로 MyCastle 객체를 가리킴
@@ -75,44 +75,50 @@ def update():
         Cat.update()  # 프레임 업데이트
     for Enemy in Enemy_Units:
         Enemy.update()
+    My_Castle.update()
+    Enemy_Castle.update()
     delay(0.05)  # 프레임 업데이트 속도
 
 
 def draw():
-
+    global Enemy_Castle
     clear_canvas()  # 캔버스 지우기
     Back_Ground.draw()  # 배경화면 그리기
     My_Castle.draw()  # 아군 성 그리기
-    My_Castle.draw_bb()
+    My_Castle.draw_bb()  # 아군 성의 충돌범위 그리기
     Enemy_Castle.draw()  # 적군 성 그리기
-    Enemy_Castle.draw_bb()
-    for Cat in Cat_Units:  # 리스트에 속하는 모두를
+    Enemy_Castle.draw_bb()  # 적군 성의 충돌범위 그리기
+    for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛 모두를
         Cat.draw()  # 그리기
-        Cat.draw_bb()
+        Cat.draw_bb()  # 충돌범위 그리기
 
-    for Enemy in Enemy_Units:
-        Enemy.draw()
-        Enemy.draw_bb()
+    for Enemy in Enemy_Units:  # 리스트에 속하는 적군 유닛 모두를
+        Enemy.draw()  # 그리기
+        Enemy.draw_bb()  # 충돌범위 그리기
 
     # 에러 일어나는 부분 ~
     for Cat in Cat_Units:
-        if collide(Cat, Enemy_Castle):
+        if Functions.collide(Cat, Enemy_Castle):
             Cat.attack(Enemy_Castle)
+        elif Functions.collide(Cat, Enemy_Castle) == False:
+            Cow_Cat.normal()
         for Enemy in Enemy_Units:
-            if collide(Cat, Enemy):
+            if Functions.collide(Cat, Enemy):
                 Cat.attack(Enemy)
 
     for Enemy in Enemy_Units:
+        if Functions.collide(Enemy, My_Castle):
+            Enemy.attack(My_Castle)
         for Cat in Cat_Units:
-            if collide(Enemy, Cat):
+            if Functions.collide(Enemy, Cat):
                 Enemy.attack(Cat)
     # ~ 에러 일어나는 부분
-    for Cat in Cat_Units:
-        if Cat.check_Hurt():
-            Cat.Hurt()
-    for Cat in Cat_Units:
-        if Cat.check_die():
-            Cat_Units.remove(Cat)
+    #for Cat in Cat_Units:
+     #   if Cat.check_Hurt():
+      #      Cat.Hurt()
+    #for Cat in Cat_Units:
+     #   if Cat.check_die():
+      #      Cat_Units.remove(Cat)
     update_canvas()  # 캔버스 업데이트
 
 
@@ -161,18 +167,6 @@ def pause():
 
 def resume():
     pass
-
-
-def collide(a, b):
-    left_a, bottom_a, right_a, top_a = a.get_size()
-    left_b, bottom_b, right_b, top_b = b.get_size()
-
-    if left_a > right_b: return False
-    if right_a < left_b: return False
-    if top_a < bottom_b: return False
-    if bottom_a > top_b: return False
-
-    return True
 
 
 

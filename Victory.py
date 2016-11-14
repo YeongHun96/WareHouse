@@ -13,7 +13,7 @@ def enter():
     BGM = load_music('Resources/Musics/Victory.ogg')  # 생성한 전역변수에 음악 삽입
     BGM.set_volume(64)  # 음량
     BGM.repeat_play()  # 반복 재생
-    image = load_image("Resources/TitleImage.png")
+    image = load_image("Resources/.png")
 
 
 def exit():

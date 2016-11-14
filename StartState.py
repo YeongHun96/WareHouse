@@ -2,6 +2,10 @@ import GameFrameWork
 import TitleState
 from pico2d import*
 
+# Module의 이름을 가지게 됨.
+# 하지만 Module을 import하지 않고 직접 실행하는 경우 "__main__"이라는 문자열값을 갖게 되어,
+# 현재 Module이 단독적으로 실행되는 상황을 구분함.
+
 name = "StartState"
 image = None
 logo_time = 0.0  # 변수 선언
@@ -47,3 +51,16 @@ def pause():  # 다른 상태로 잠깐 이동
 
 def resume():  # 현재 상태로 복귀
     pass
+
+
+def identify():
+    print("이 함수는 단독으로 모듈을 실행할 경우에만 실행됩니다.")
+
+    if __name__ == '__main__':
+        identify()
+
+# run(state): # state를 첫 상태로 게임을 시작함.
+# change_state(state):  # 게임 상태를 state로 바꿈. 이전 상태를 완전히 나옴.
+# push_state(state):  # 게임 상태를 state로 변화. 이전 상태는 남아있음.
+# pop_state(): 이전 게임 상태로 복귀
+# quit(): 게임을 중단
