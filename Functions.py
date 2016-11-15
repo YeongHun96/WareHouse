@@ -15,3 +15,10 @@ def collide(a, b):
     if bottom_a > top_b: return False
 
     return True
+
+
+def die_check(a):
+    if a.Health < 0:
+        return True
+    else:
+        return False

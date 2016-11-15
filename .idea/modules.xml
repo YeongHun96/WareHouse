@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/2DGP.iml" filepath="$PROJECT_DIR$/.idea/2DGP.iml" />
+      <module fileurl="file://C:/2DGP/2016-2DGP/Labs/.idea/Labs.iml" filepath="C:/2DGP/2016-2DGP/Labs/.idea/Labs.iml" />
+    </modules>
+  </component>
+</project>

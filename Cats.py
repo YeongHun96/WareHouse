@@ -6,6 +6,7 @@ import random   # randint 를 사용하기 위해
 from pico2d import*
 import Functions
 import Castle
+import Scene_Stage1
 
 current_time = get_time()
 
@@ -15,7 +16,7 @@ class BasicCat:
 
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
-    ATTACK, WALK = 0, 3
+    ATTACK, WALK, HURT = 1, 3, -1
 
     def __init__(self):
         self.x, self.y = 1200, 170 + random.randint(0, 15)  # 생성 위치
@@ -37,9 +38,12 @@ class BasicCat:
         if self.state == self.WALK:
             self.frame = (self.frame + 1) % 3  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
             self.x -= self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
-            delay(0.05)
         elif self.state == self.ATTACK:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
+            if self.frame > 2:
+                self.state = self.WALK
+        elif self.state == self.HURT:
+            Scene_Stage1.Cat_Units.remove(self)
 
     # 가로: 46, 세로: 63
     def draw(self):
@@ -56,12 +60,8 @@ class BasicCat:
         e.Health -= self.AttackPower
         print("공격중인 객체의 체력: ", e.Health)
 
-    def delete(self):
-        del self
-
-    def check_die(self):
-        if self.Health < 0:
-            return True
+    def walk(self):
+        self.state = self.WALK
 
 
 # Number 2
@@ -81,7 +81,6 @@ class TankCat:
         self.RechargingTime = 8.33
         self.state = self.WALK
         self.frame = 0
-        self.hurt_time = 0.0
 
         if TankCat.image is None:
             TankCat.image = load_image("Resources/CatUnits/Tank_Cat.png")
@@ -92,14 +91,13 @@ class TankCat:
             self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
         elif self.state == self.ATTACK:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
-        elif self.state == self.HURT:
-            self.frame = (self.frame + 1) % 1
-            self.x += 3
-            delay(0.1)
-            self.hurt_time += 0.1
-            if self.hurt_time > 1.0:
-                self.hurt_time = 0.0
+            if self.frame > 2:
                 self.state = self.WALK
+        elif self.state == self.HURT:
+            self.frame = (self.frame + 1) % 2
+            self.x += 3
+            if self.frame > 0:
+                Scene_Stage1.Cat_Units.remove(self)
 
     # 가로: 88, 세로: 121
     def draw(self):
@@ -118,16 +116,8 @@ class TankCat:
         e.Health -= self.AttackPower
         print("공격중인 객체의 체력: ", e.Health)
 
-    def check_die(self):
-        if self.Health < 0:
-            return True
-
-    def check_Hurt(self):
-        if self.Health < 200:
-            return True
-
-    def Hurt(self):
-        self.state = self.HURT
+    def walk(self):
+        self.state = self.WALK
 
 
 class WallCat:
@@ -139,7 +129,7 @@ class AxeCat:
 
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
-    WALK, ATTACK = 1, 0
+    WALK, ATTACK, HURT = 1, 0, -1
 
     def __init__(self):
         self.x, self.y = 1200, 195 + random.randint(0, 15)  # 생성 위치
@@ -163,6 +153,10 @@ class AxeCat:
             self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
         elif self.state == self.ATTACK:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
+            if self.frame > 2:
+                self.state = self.WALK
+        elif self.state == self.HURT:
+            Scene_Stage1.Cat_Units.remove(self)
 
     # 가로: 109, 세로: 150
     def draw(self):
@@ -180,12 +174,8 @@ class AxeCat:
         e.Health -= self.AttackPower
         print("공격중인 객체의 체력: ", e.Health)
 
-    def delete(self):
-        del self
-
-    def check_die(self):
-        if self.Health < 0:
-            return True
+    def walk(self):
+        self.state = self.WALK
 
 
 class BraveCat:
@@ -218,11 +208,14 @@ class GrossCat:
         if self.state == self.WALK:
             self.frame = (self.frame + 1) % 5  # N개의 이미지를 반복
             self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
-            delay(0.05)
         elif self.state == self.ATTACK:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
+            if self.frame > 8:
+                self.state = self.WALK
         elif self.state == self.HURT:
-            self.frame = (self.frame + 1) % 1
+            self.frame = (self.frame + 1) % 2
+            if self.frame > 0:
+                Scene_Stage1.Cat_Units.remove(self)
 
     # 가로: 240, 세로: 300
     def draw(self):
@@ -240,12 +233,8 @@ class GrossCat:
         e.Health -= self.AttackPower
         print("공격중인 객체의 체력: ", e.Health)
 
-    def delete(self):
-        del self
-
-    def check_die(self):
-        if self.Health < 0:
-            return True
+    def walk(self):
+        self.state = self.WALK
 
 
 class SexyLegsCat:
@@ -259,47 +248,38 @@ class CowCat:
 
     WALK, ATTACK, HURT = 2, 1, 0
 
-    PIXEL_PER_METER = (10.0 / 0.3)
-    RUN_SPEED_KMPH = 20.0
-    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
-    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
-    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
-
     def __init__(self):
-        self.x, self.y = 1200, 205 + random.randint(0, 15)  # 생성 위치55
-        self.Health = 500
-        self.AttackPower = 13
-        self.AttackRange = 140
-        self.TimeBetweenAttacks = 0.33
-        self.MovementSpeed = 30
+        self.x, self.y = 1200, 205 + random.randint(0, 15)  # 생성 위치
+        self.Health = 500  # 체력
+        self.AttackPower = 30  # 공격력
+        self.AttackRange = 140  # 공격사거리
+        self.TimeBetweenAttacks = 0.33  # 공격빈도
+        self.MovementSpeed = 30  # 이동속도
         self.AttackAnimation = 6
-        self.RechargingTime = 2.33
+        self.RechargingTime = 2.33  # 재생산 시간
         self.frame = 0
-        self.delay = 0
-        self.state = self.WALK
+        self.state = self.WALK  # 기본 상태
+
         if CowCat.image is None:  # 만약 변수의 값이 None 이면
             CowCat.image = load_image("Resources/CatUnits/Cow_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
     def update(self):
-        #distance = self.RUN_SPEED_PPS * frame_time
-        #self.total_frames += 1.0
-        #self.total_frames += 1.0
-        #self.frame = (self.frame + 1) % 8
-        #self.x += (self.dir * distance)
-
-
-        if self.state == self.WALK:
+        if self.state == self.WALK:  # 이동 상태라면
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
             self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
-        elif self.state == self.ATTACK:
-            self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
-            if self.frame == 3:
+        elif self.state == self.ATTACK:  # 공격 상태라면
+            self.frame = (self.frame + 1) % 5  # N개의 이미지를 반복
+            if self.frame < 4:
                 self.state = self.WALK
         elif self.state == self.HURT:
-            self.frame = (self.frame + 1) % 1
-    # 가로: 150, 세로: 200
+            self.frame = (self.frame + 1) % 2
+            self.x += 3
+            if self.frame > 0:
+                Scene_Stage1.Cat_Units.remove(self)
+
     def draw(self):
         self.image.clip_draw(self.frame * 150, self.state * 200, 150, 200, self.x, self.y)
+        # 가로: 150, 세로: 200
 
     def get_size(self):
         return self.x - 50, self.y - 70, self.x + 50, self.y + 30
@@ -309,16 +289,12 @@ class CowCat:
         draw_rectangle(*self.get_size())
 
     def attack(self, e):
-         self.state = self.ATTACK
-         e.Health -= self.AttackPower
-         print("공격중인 객체의 체력: ", e.Health)
+        self.state = self.ATTACK
+        e.Health -= self.AttackPower
+        print("공격중인 객체의 체력: ", e.Health)
 
-    def normal(self):
+    def walk(self):
         self.state = self.WALK
-
-    def check_die(self):
-        if self.Health < 0:
-            return True
 
 
 class GiraffeCat:
@@ -351,11 +327,15 @@ class BirdCat:
         if self.state == self.FLY:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
             self.x -= self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
-            self.y += random.randint(-10, 10)
+            self.y += random.randint(-2, 2)
         elif self.state == self.ATTACK:
             self.frame = (self.frame + 1) % 6  # N개의 이미지를 반복
+            if self.frame > 4:
+                self.state = self.FLY
         elif self.state == self.HURT:
-            self.frame = (self.frame + 1) % 1
+            self.frame = (self.frame + 1) % 2
+            if self.frame > 0:
+                Scene_Stage1.Cat_Units.remove(self)
 
     # 가로: 180, 세로: 120
     def draw(self):
@@ -373,12 +353,8 @@ class BirdCat:
         e.Health -= self.AttackPower
         print("공격중인 객체의 체력: ", e.Health)
 
-    def delete(self):
-        del self
-
-    def check_die(self):
-        if self.Health < 0:
-            return True
+    def walk(self):
+        self.state = self.FLY
 
 
 class UFOCat:
@@ -413,8 +389,12 @@ class FishCat:
             self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
         elif self.state == self.ATTACK:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
+            if self.frame > 2:
+                self.state = self.WALK
         elif self.state == self.HURT:
-            self.frame = (self.frame + 1) % 1
+            self.frame = (self.frame + 1) % 2
+            if self.frame > 0:
+                Scene_Stage1.Cat_Units.remove(self)
 
     # 가로: 133, 세로: 149
     def draw(self):
@@ -432,12 +412,8 @@ class FishCat:
         e.Health -= self.AttackPower
         print("공격중인 객체의 체력: ", e.Health)
 
-    def delete(self):
-        del self
-
-    def check_die(self):
-        if self.Health < 0:
-            return True
+    def walk(self):
+        self.state = self.WALK
 
 
 # Number 8
@@ -468,8 +444,12 @@ class LizardCat:
             self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
         elif self.state == self.ATTACK:
             self.frame = (self.frame + 1) % 6  # N개의 이미지를 반복
+            if self.frame > 4:
+                self.state = self.WALK
         elif self.state == self.HURT:
-            self.frame = (self.frame + 1) % 1
+            self.frame = (self.frame + 1) % 2
+            if self.frame > 0:
+                Scene_Stage1.Cat_Units.remove(self)
 
     # 가로: 136, 세로: 109
     def draw(self):
@@ -487,12 +467,8 @@ class LizardCat:
         e.Health -= self.AttackPower
         print("공격중인 객체의 체력: ", e.Health)
 
-    def delete(self):
-        del self
-
-    def check_die(self):
-        if self.Health < 0:
-            return True
+    def walk(self):
+        self.state = self.WALK
 
 
 class DragonCat:
@@ -526,8 +502,12 @@ class TitanCat:
             self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
         elif self.state == self.ATTACK:
             self.frame = (self.frame + 1) % 7  # N개의 이미지를 반복
+            if self.frame > 5:
+                self.state = self.WALK
         elif self.state == self.HURT:
-            self.frame = (self.frame + 1) % 1
+            self.frame = (self.frame + 1) % 2
+            if self.frame > 0:
+                Scene_Stage1.Cat_Units.remove(self)
         elif self.state == self.STOP:
             self.frame = (self.frame + 1) % 1
 
@@ -547,12 +527,8 @@ class TitanCat:
         e.Health -= self.AttackPower
         print("공격중인 객체의 체력: ", e.Health)
 
-    def delete(self):
-        del self
-
-    def check_die(self):
-        if self.Health < 0:
-            return True
+    def walk(self):
+        self.state = self.WALK
 
 
 class MythicalTitanCat:

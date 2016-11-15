@@ -13,7 +13,7 @@ running = True
 Back_Ground = None
 My_Castle, Enemy_Castle = None, None
 Basic_Cat, Tank_Cat, Axe_Cat, Gross_Cat, Cow_Cat, Bird_Cat, Fish_Cat, Lizard_Cat, Titan_Cat = None, None, None, None, None, None, None, None, None
-Officer_Skeleton, Commander_Skeleton = None, None
+Skele_Dog, Mummy_Dog, Officer_Skeleton, Commander_Skeleton = None, None, None, None
 Headless_Knight = None
 Headless_Knight_Skill = None
 
@@ -43,7 +43,9 @@ def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
     Fish_Cat = Cats.FishCat()
     Lizard_Cat = Cats.LizardCat()
     Titan_Cat = Cats.TitanCat()
-    global Officer_Skeleton, Commander_Skeleton
+    global Skele_Dog, Mummy_Dog, Officer_Skeleton, Commander_Skeleton
+    Skele_Dog = Enemies.SkeleDog()
+    Mummy_Dog = Enemies.MummyDog()
     Officer_Skeleton = Enemies.OfficerSkeleton()
     Commander_Skeleton = Enemies.CommanderSkeleton()
     global Headless_Knight
@@ -56,7 +58,7 @@ def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
     global Back_Ground  # 전역변수임을 명시
     global Basic_Cat, Tank_Cat, Axe_Cat, Gross_Cat, Cow_Cat, Bird_Cat, Fish_Cat, Lizard_Cat, Titan_Cat  # 전역변수임을 명시
     global My_Castle, Enemy_Castle  # 전역변수임을 명시
-    global Officer_Skeleton, Commander_Skeleton
+    global Skele_Dog, Mummy_Dog, Officer_Skeleton, Commander_Skeleton
     global Headless_Knight
     global Headless_Knight_Skill
     global BGM
@@ -64,20 +66,48 @@ def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
     del Back_Ground  # 생성했던 객체 소멸
     del Basic_Cat, Tank_Cat, Axe_Cat, Gross_Cat, Cow_Cat, Bird_Cat, Fish_Cat, Lizard_Cat, Titan_Cat  # 생성했던 객체 소멸
     del My_Castle, Enemy_Castle  # 생성했던 객체 소멸
-    del Officer_Skeleton,Commander_Skeleton
+    del Skele_Dog, Mummy_Dog, Officer_Skeleton, Commander_Skeleton
     del Headless_Knight
     del Headless_Knight_Skill
     del BGM
 
 
-def update():
-    for Cat in Cat_Units:  # 리스트에 속하는 모두의
-        Cat.update()  # 프레임 업데이트
-    for Enemy in Enemy_Units:
-        Enemy.update()
+def update():  # 업데이트
+    global My_Castle
+    global Enemy_Castle
+    for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛
+        Cat.update()  # 업데이트
+    for Enemy in Enemy_Units:  # 리스트에 속하는 적군 유닛
+        Enemy.update()  # 업데이트
     My_Castle.update()
     Enemy_Castle.update()
     delay(0.05)  # 프레임 업데이트 속도
+
+    for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛들
+        if Functions.collide(Cat, Enemy_Castle) is True:  # 아군 유닛과 적군 성 간 충돌 있으면
+            Cat.attack(Enemy_Castle)  # 적군 성 공격
+        for Enemy in Enemy_Units:  # 리스트에 속하는 적군 유닛들에 대해
+            if Functions.collide(Cat, Enemy) is True:  # 적군 유닛과 아군 유닛간 충돌 있으면
+                Cat.attack(Enemy)  # 적군 -> 아군 공격
+            else:
+                Cat.walk()
+
+    for Enemy in Enemy_Units:
+        if Functions.collide(Enemy, My_Castle) is True:
+            Enemy.attack(My_Castle)
+        for Cat in Cat_Units:
+            if Functions.collide(Enemy, Cat) is True:
+                Enemy.attack(Cat)
+            else:
+                Enemy.walk()
+
+    for Cat in Cat_Units:
+        if Functions.die_check(Cat) is True:
+            Cat.state = Cat.HURT
+
+    for Enemy in Enemy_Units:
+        if Functions.die_check(Enemy) is True:
+            Enemy.state = Enemy.DIE
 
 
 def draw():
@@ -96,29 +126,6 @@ def draw():
         Enemy.draw()  # 그리기
         Enemy.draw_bb()  # 충돌범위 그리기
 
-    # 에러 일어나는 부분 ~
-    for Cat in Cat_Units:
-        if Functions.collide(Cat, Enemy_Castle):
-            Cat.attack(Enemy_Castle)
-        elif Functions.collide(Cat, Enemy_Castle) == False:
-            Cow_Cat.normal()
-        for Enemy in Enemy_Units:
-            if Functions.collide(Cat, Enemy):
-                Cat.attack(Enemy)
-
-    for Enemy in Enemy_Units:
-        if Functions.collide(Enemy, My_Castle):
-            Enemy.attack(My_Castle)
-        for Cat in Cat_Units:
-            if Functions.collide(Enemy, Cat):
-                Enemy.attack(Cat)
-    # ~ 에러 일어나는 부분
-    #for Cat in Cat_Units:
-     #   if Cat.check_Hurt():
-      #      Cat.Hurt()
-    #for Cat in Cat_Units:
-     #   if Cat.check_die():
-      #      Cat_Units.remove(Cat)
     update_canvas()  # 캔버스 업데이트
 
 
@@ -158,7 +165,7 @@ def handle_events():  # 입력신호를 관리하는 함수
             elif event.key == SDLK_e:
                 Enemy_Units.append(Enemies.HeadlessKnight())
             elif event.key == SDLK_r:
-                Enemy_Units.append(Enemies.HeadlessKnightSkill())
+                Enemy_Units.append(Enemies.MummyDog())
 
 
 def pause():
