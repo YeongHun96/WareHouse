@@ -7,6 +7,7 @@ from pico2d import*
 import Functions
 import Castle
 import Scene_Stage1
+import CatSkills
 
 current_time = get_time()
 
@@ -210,7 +211,7 @@ class GrossCat:
             self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
         elif self.state == self.ATTACK:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
-            if self.frame > 8:
+            if self.frame > 2:
                 self.state = self.WALK
         elif self.state == self.HURT:
             self.frame = (self.frame + 1) % 2
@@ -358,7 +359,58 @@ class BirdCat:
 
 
 class UFOCat:
-    pass
+    image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
+
+    FLY, ATTACK, HURT = 1, 0, 1
+
+    def __init__(self):
+        self.x, self.y = 1200, 350
+        self.Health = 300
+        self.AttackPower = 140
+        self.AttackRange = 170
+        self.TimeBetweenAttacks = 1.63
+        self.MovementSpeed = 10
+        self.AttackAnimation = 10
+        self.RechargingTime = 2.33
+        self.frame = 0
+        self.delay = 0
+        self.state = self.FLY
+
+        if UFOCat.image is None:  # 만약 변수의 값이 None 이면
+            UFOCat.image = load_image("Resources/CatUnits/UFO_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
+
+    def update(self):
+        if self.state == self.FLY:
+            self.frame = (self.frame + 1) % 1  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
+            self.x -= self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
+            self.y += random.randint(-2, 2)
+        elif self.state == self.ATTACK:
+            self.frame = (self.frame + 1) % 7  # N개의 이미지를 반복
+            if self.frame > 3:
+                Scene_Stage1.Cat_Skills.append(CatSkills.UFOCatSkill(self.x - 200, self.y - 115))
+            if self.frame > 5:
+                self.state = self.FLY
+        elif self.state == self.HURT:
+            self.frame = (self.frame + 1) % 2
+            if self.frame > 0:
+                Scene_Stage1.Cat_Units.remove(self)
+
+    # 가로: 108, 세로: 124
+    def draw(self):
+        self.image.clip_draw(self.frame * 108, self.state * 124, 108, 124, self.x, self.y)
+
+    def get_size(self):
+        return self.x - 250, self.y - 200, self.x + 70, self.y + 30
+        # 크기 70, 50, 70, 30
+
+    def draw_bb(self):
+        draw_rectangle(*self.get_size())
+
+    def attack(self, e):
+        self.state = self.ATTACK
+
+    def walk(self):
+        self.state = self.FLY
 
 
 # Number 7
@@ -445,6 +497,7 @@ class LizardCat:
         elif self.state == self.ATTACK:
             self.frame = (self.frame + 1) % 6  # N개의 이미지를 반복
             if self.frame > 4:
+                Scene_Stage1.Cat_Skills.append(CatSkills.LizardCatSkill(self.x - 30, self.y - 10))
                 self.state = self.WALK
         elif self.state == self.HURT:
             self.frame = (self.frame + 1) % 2
@@ -464,8 +517,6 @@ class LizardCat:
 
     def attack(self, e):
         self.state = self.ATTACK
-        e.Health -= self.AttackPower
-        print("공격중인 객체의 체력: ", e.Health)
 
     def walk(self):
         self.state = self.WALK

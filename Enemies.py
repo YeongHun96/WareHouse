@@ -5,6 +5,7 @@
 import random
 from pico2d import *
 import Scene_Stage1
+import EnemySkills
 
 
 class SkeleDog:
@@ -106,7 +107,7 @@ class MummyDog:
         # Width = 83, Height = 77
 
     def get_size(self):
-        return self.x - 23, self.y - 31, self.x + 23, self.y + 18
+        return self.x - 35, self.y - 25, self.x + 35, self.y + 35
 
     def draw_bb(self):
         draw_rectangle(*self.get_size())
@@ -124,7 +125,7 @@ class SkeletonSoldier:  # 스켈레톤 병사 클래스
 
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
-    STOP, MOVE, HURT, ATTACK, ATTACK_EFFECT, DIE = 5, 4, 3, 2, 1, 0  # 상태 정의
+    STOP, MOVE, HURT, ATTACK, DIE = 4, 3, 2, 1, 0  # 상태 정의
 
     def __init__(self):  # 객체의 초기값 설정
         self.x, self.y = 80, 170 + random.randint(0, 15)  # 생성위치
@@ -132,14 +133,15 @@ class SkeletonSoldier:  # 스켈레톤 병사 클래스
         self.AttackPower = 2  # 공격력
         self.AttackRange = 110  # 공격사거리
         self.TimeBetweenAttacks = 2.23  # per seconds
-        self.MovementSpeed = 4  # 이동속도
+        self.MovementSpeed = 3  # 이동속도
         self.AttackAnimation = 8  # frame
         self.RechargingTime = 8.33
         self.state = self.MOVE  # 초기상태
         self.frame = 0
 
         if SkeletonSoldier.image is None:  # 만약 변수의 값이 None 이면
-            SkeletonSoldier.image = load_image("Resources/EnemyUnits/SkeletonSoldier.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
+            SkeletonSoldier.image = load_image("Resources/EnemyUnits/SkeletonSoldier.png")
+            # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
     def update(self):
         if self.state == self.MOVE:
@@ -160,8 +162,8 @@ class SkeletonSoldier:  # 스켈레톤 병사 클래스
                 Scene_Stage1.Enemy_Units.remove(self)
 
     def draw(self):
-        self.image.clip_draw(self.frame * 110, self.state * 114, 110, 114, self.x, self.y)
-        # Width = 110, Height = 114
+        self.image.clip_draw(self.frame * 150, self.state * 137, 140, 137, self.x, self.y)
+        # Width = 150, Height = 137
 
     def get_size(self):
         return self.x - 23, self.y - 31, self.x + 23, self.y + 18
@@ -182,10 +184,10 @@ class OfficerSkeleton:
 
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
-    STOP, MOVE, HURT, ATTACK, DIE = 5, 4, 3, 2, 1  # 상태 정의
+    STOP, MOVE, HURT, ATTACK, DIE = 4, 3, 2, 1, 0  # 상태 정의
 
     def __init__(self):  # 객체의 초기값 설정
-        self.x, self.y = 80, 170 + random.randint(0, 15)  # 생성위치
+        self.x, self.y = 80, 170 + random.randint(0, 5)  # 생성위치
         self.Health = 400  # 체력
         self.AttackPower = 2  # 공격력
         self.AttackRange = 110  # 공격사거리
@@ -197,7 +199,7 @@ class OfficerSkeleton:
         self.frame = 0
 
         if OfficerSkeleton.image is None:  # 만약 변수의 값이 None 이면
-            OfficerSkeleton.image = load_image("Resources/EnemyUnits/OfficerSkeleton.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
+            OfficerSkeleton.image = load_image("Resources/EnemyUnits/OfficerSkeleton3.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
     def update(self):
         if self.state == self.MOVE:
@@ -218,8 +220,8 @@ class OfficerSkeleton:
                 Scene_Stage1.Enemy_Units.remove(self)
 
     def draw(self):
-        self.image.clip_draw(self.frame * 106, self.state * 130, 106, 130, self.x, self.y)
-        # Width = 106, Height = 130
+        self.image.clip_draw(self.frame * 150, self.state * 156, 150, 156, self.x, self.y)
+        # Width = 150, Height = 156
 
     def get_size(self):
         return self.x - 30, self.y - 50, self.x + 30, self.y + 40
@@ -302,12 +304,12 @@ class HeadlessKnight:  # 보스 몬스터 - 헤들리스나이트의 클래스
     # 상태 정의
 
     def __init__(self):  # 객체의 초기값 설정
-        self.x, self.y = 80, 280  # 생성위치
+        self.x, self.y = 80, 350  # 생성위치
         self.Health = 9999999  # 체력
         self.AttackPower = 5000  # 공격력
         self.AttackRange = 110  # 공격범위
         self.TimeBetweenAttacks = 2.23  # per seconds
-        self.MovementSpeed = 8  # 이동속도
+        self.MovementSpeed = 5  # 이동속도
         self.state = self.MOVE
         self.frame = 0
         self.delay = 0
@@ -332,6 +334,7 @@ class HeadlessKnight:  # 보스 몬스터 - 헤들리스나이트의 클래스
         elif self.state == self.STAND_SKILL:
             self.frame = (self.frame + 1) % 10
             if self.frame > 8:
+                Scene_Stage1.Enemy_Skills.append(EnemySkills.HeadlessKnightSkill(self.x, self.y - 65))
                 self.state = self.MOVE
         elif self.state == self.DIE:
             self.frame = (self.frame + 1) % 8
@@ -361,47 +364,13 @@ class HeadlessKnight:  # 보스 몬스터 - 헤들리스나이트의 클래스
         draw_rectangle(*self.get_size())
 
     def attack(self, e):
-        self.state = self.STAND_ATTACK
+        self.state = self.STAND_SKILL
         e.Health -= self.AttackPower
         print("공격중인 객체의 체력: ", e.Health)
 
     def walk(self):
         self.state = self.RUN_FAST
 
-
-class HeadlessKnightSkill:
-    image = None
-
-    def __init__(self):
-        self.x, self.y = 80, 230
-        self.MovementSpeed = 20
-        self.frame = 0
-
-        if HeadlessKnightSkill.image is None:
-            HeadlessKnightSkill.image = load_image("Resources/EnemyUnits/SkillEffects/Headless_Skill.png")
-            # Width = 225, Height = 165 Frame = 6
-
-    def update(self):
-        self.frame = (self.frame + 1) % 6  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
-        self.x += self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
-
-    def draw(self):
-        self.image.clip_draw(self.frame*225, 0, 220, 160, self.x, self.y)
-        # 0: 오른쪽 바라보며 공격  1: 왼쪽 바라보며 공격 2 : 오른쪽바라봄 3 : 왼쪽 바라봄
-        # 마법진 302,129
-        # 연기 188,90
-        # 작은 연기 132, 65
-
-    def get_size(self):
-        return self.x - 23, self.y - 31, self.x + 23, self.y + 18
-
-    def draw_bb(self):
-        draw_rectangle(*self.get_size())
-
-    def attack(self, e):
-        self.state = self.ATTACK
-        e.Health -= self.AttackPower
-        print("공격중인 객체의 체력: ", e.Health)
 
 
 
