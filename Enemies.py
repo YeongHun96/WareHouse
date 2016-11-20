@@ -15,12 +15,12 @@ class SkeleDog:
     STOP, MOVE, ATTACK, HURT, DIE = 4, 3, 2, 1, 0  # 상태 정의
 
     def __init__(self):  # 객체의 초기값 설정
-        self.x, self.y = 80, 170 + random.randint(0, 15)  # 생성위치
+        self.x, self.y = 80, 190 + random.randint(0, 15)  # 생성위치
         self.Health = 400  # 체력
-        self.AttackPower = 2  # 공격력
+        self.AttackPower = 50  # 공격력
         self.AttackRange = 110  # 공격사거리
         self.TimeBetweenAttacks = 2.23  # per seconds
-        self.MovementSpeed = 4  # 이동속도
+        self.MovementSpeed = 10  # 이동속도
         self.AttackAnimation = 8  # frame
         self.RechargingTime = 8.33
         self.state = self.MOVE  # 초기상태
@@ -51,7 +51,7 @@ class SkeleDog:
         # Width = 83, Height = 77
 
     def get_size(self):
-        return self.x - 23, self.y - 31, self.x + 23, self.y + 18
+        return self.x - 35, self.y - 35, self.x + 35, self.y + 30
 
     def draw_bb(self):
         draw_rectangle(*self.get_size())
@@ -71,9 +71,9 @@ class MummyDog:
     STOP, MOVE, ATTACK, HURT, DIE = 4, 3, 2, 1, 0  # 상태 정의
 
     def __init__(self):  # 객체의 초기값 설정
-        self.x, self.y = 80, 170 + random.randint(0, 15)  # 생성위치
-        self.Health = 400  # 체력
-        self.AttackPower = 2  # 공격력
+        self.x, self.y = 80, 190 + random.randint(0, 15)  # 생성위치
+        self.Health = 500  # 체력
+        self.AttackPower = 80  # 공격력
         self.AttackRange = 110  # 공격사거리
         self.TimeBetweenAttacks = 2.23  # per seconds
         self.MovementSpeed = 10  # 이동속도
@@ -107,7 +107,7 @@ class MummyDog:
         # Width = 83, Height = 77
 
     def get_size(self):
-        return self.x - 35, self.y - 25, self.x + 35, self.y + 35
+        return self.x - 35, self.y - 35, self.x + 35, self.y + 35
 
     def draw_bb(self):
         draw_rectangle(*self.get_size())
@@ -128,9 +128,9 @@ class SkeletonSoldier:  # 스켈레톤 병사 클래스
     STOP, MOVE, HURT, ATTACK, DIE = 4, 3, 2, 1, 0  # 상태 정의
 
     def __init__(self):  # 객체의 초기값 설정
-        self.x, self.y = 80, 170 + random.randint(0, 15)  # 생성위치
-        self.Health = 400  # 체력
-        self.AttackPower = 2  # 공격력
+        self.x, self.y = 80, 230 + random.randint(0, 15)  # 생성위치
+        self.Health = 1000  # 체력
+        self.AttackPower = 100  # 공격력
         self.AttackRange = 110  # 공격사거리
         self.TimeBetweenAttacks = 2.23  # per seconds
         self.MovementSpeed = 3  # 이동속도
@@ -147,7 +147,7 @@ class SkeletonSoldier:  # 스켈레톤 병사 클래스
         if self.state == self.MOVE:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
             self.x += self.MovementSpeed  # 오른쪽으로 10/s 의 속도로 이동
-        elif self.state == self.ATTACK:
+        elif self.state == self.STOP:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
         elif self.state == self.HURT:
             self.x -= 3
@@ -166,7 +166,7 @@ class SkeletonSoldier:  # 스켈레톤 병사 클래스
         # Width = 150, Height = 137
 
     def get_size(self):
-        return self.x - 23, self.y - 31, self.x + 23, self.y + 18
+        return self.x - 65, self.y - 70, self.x + 10, self.y + 25
 
     def draw_bb(self):
         draw_rectangle(*self.get_size())
@@ -187,9 +187,9 @@ class OfficerSkeleton:
     STOP, MOVE, HURT, ATTACK, DIE = 4, 3, 2, 1, 0  # 상태 정의
 
     def __init__(self):  # 객체의 초기값 설정
-        self.x, self.y = 80, 170 + random.randint(0, 5)  # 생성위치
-        self.Health = 400  # 체력
-        self.AttackPower = 2  # 공격력
+        self.x, self.y = 80, 230 + random.randint(0, 15)  # 생성위치
+        self.Health = 1500  # 체력
+        self.AttackPower = 200  # 공격력
         self.AttackRange = 110  # 공격사거리
         self.TimeBetweenAttacks = 2.23  # per seconds
         self.MovementSpeed = 4  # 이동속도
@@ -205,7 +205,7 @@ class OfficerSkeleton:
         if self.state == self.MOVE:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
             self.x += self.MovementSpeed  # 오른쪽으로 10/s 의 속도로 이동
-        elif self.state == self.ATTACK:
+        elif self.state == self.STOP:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
         elif self.state == self.HURT:
             self.x -= 3
@@ -224,7 +224,7 @@ class OfficerSkeleton:
         # Width = 150, Height = 156
 
     def get_size(self):
-        return self.x - 30, self.y - 50, self.x + 30, self.y + 40
+        return self.x - 65, self.y - 80, self.x + 10, self.y + 15
 
     def draw_bb(self):
         draw_rectangle(*self.get_size())
@@ -244,12 +244,12 @@ class CommanderSkeleton:
     STOP, MOVE, HURT, ATTACK, DIE = 4, 3, 2, 1, 0  # 상태 정의
 
     def __init__(self):  # 객체의 초기값 설정
-        self.x, self.y = 80, 190 + random.randint(0, 15)  # 생성위치
+        self.x, self.y = 80, 230 + random.randint(0, 15)  # 생성위치
         self.Health = 500  # 체력
-        self.AttackPower = 50  # 공격력
+        self.AttackPower = 300  # 공격력
         self.AttackRange = 110  # 공격사거리
         self.TimeBetweenAttacks = 2.23  # per seconds
-        self.MovementSpeed = 4  # 이동속도
+        self.MovementSpeed = 3  # 이동속도
         self.AttackAnimation = 8  # frame
         self.RechargingTime = 8.33
         self.state = self.MOVE  # 초기상태
@@ -282,7 +282,7 @@ class CommanderSkeleton:
         # Width = 151, Height = 159
 
     def get_size(self):
-        return self.x - 70, self.y - 53, self.x + 70, self.y + 75
+        return self.x - 70, self.y - 73, self.x + 70, self.y + 50
 
     def draw_bb(self):
         draw_rectangle(*self.get_size())

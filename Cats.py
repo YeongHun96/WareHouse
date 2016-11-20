@@ -381,7 +381,7 @@ class UFOCat:
 
     def update(self):
         if self.state == self.FLY:
-            self.frame = (self.frame + 1) % 1  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
+            self.frame = (self.frame + 1) % 1  # N개의 이미지를 반복
             self.x -= self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
             self.y += random.randint(-2, 2)
         elif self.state == self.ATTACK:

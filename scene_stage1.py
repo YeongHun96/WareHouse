@@ -19,6 +19,7 @@ Skele_Dog, Mummy_Dog, Officer_Skeleton, Commander_Skeleton = None, None, None, N
 Headless_Knight = None
 Headless_Knight_Skill = None
 Lizard_Cat_Skill, UFO_Cat_SKill = None, None
+Come_Headless = True
 
 Cat_Units = []  # 아군 유닛들을 관리할 리스트 생성
 Enemy_Units = []  # 적군 유닛들을 관리할 리스트 생성
@@ -33,7 +34,7 @@ def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
     Back_Ground = BackGround.BackGround()  # 생성한 전역변수로 BackGround 객체를 가리킴
     global BGM  # 전역변수 선언
     BGM = load_music('Resources/Musics/DefaultBattle.ogg')  # 생성한 전역변수에 음악 삽입
-    BGM.set_volume(100)  # 음량
+    BGM.set_volume(0)  # 음량
     BGM.repeat_play()  # 반복 재생
     global My_Castle, Enemy_Castle  # 전역변수 선언
     My_Castle = Castle.MyCastle()  # 생성한 전역변수로 MyCastle 객체를 가리킴
@@ -72,6 +73,7 @@ def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
     global Headless_Knight_Skill
     global BGM
     global Lizard_Cat_Skill, UFO_Cat_SKill
+    global Come_Headless
 
     del Back_Ground  # 생성했던 객체 소멸
     del Basic_Cat, Tank_Cat, Axe_Cat, Gross_Cat, Cow_Cat, Bird_Cat, UFO_Cat, Fish_Cat, Lizard_Cat, Titan_Cat  # 생성했던 객체 소멸
@@ -81,11 +83,13 @@ def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
     del Headless_Knight_Skill
     del BGM
     del Lizard_Cat_Skill, UFO_Cat_SKill
+    del Come_Headless
 
 
 def update():  # 업데이트
     global My_Castle
     global Enemy_Castle
+    global Come_Headless
     for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛
         Cat.update()  # 업데이트
     for Enemy in Enemy_Units:  # 리스트에 속하는 적군 유닛
@@ -171,6 +175,7 @@ def handle_events():  # 입력신호를 관리하는 함수
     global Enemy_Units
     global BGM
     global Back_Ground
+    global Come_Headless
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -203,6 +208,8 @@ def handle_events():  # 입력신호를 관리하는 함수
             elif event.key == SDLK_w:
                 Enemy_Units.append(Enemies.CommanderSkeleton())
             elif event.key == SDLK_e:
+                Come_Headless = False
+                Back_Ground.image = load_image('Resources/BackGround_Final.png')
                 for Enemy in Enemy_Units:
                     Enemy.state = Enemy.DIE
                 Enemy_Units.append(Enemies.HeadlessKnight())
@@ -210,9 +217,10 @@ def handle_events():  # 입력신호를 관리하는 함수
                 BGM = load_music('Resources/Musics/CarminaBurana.ogg')  # 생성한 전역변수에 음악 삽입
                 BGM.set_volume(100)  # 음량
                 BGM.repeat_play()  # 반복 재생
-                Back_Ground.image = load_image('Resources/BackGround_Final.png')
             elif event.key == SDLK_r:
                 Enemy_Units.append(Enemies.MummyDog())
+            elif event.key == SDLK_t:
+                Enemy_Units.append(Enemies.SkeleDog())
 
 
 def pause():

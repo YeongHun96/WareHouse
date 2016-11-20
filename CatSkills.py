@@ -1,7 +1,5 @@
 import random   # randint 를 사용하기 위해
 from pico2d import*
-import Functions
-import Castle
 import Scene_Stage1
 
 
