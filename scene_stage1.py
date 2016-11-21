@@ -89,7 +89,6 @@ def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
 def update():  # 업데이트
     global My_Castle
     global Enemy_Castle
-    global Come_Headless
     for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛
         Cat.update()  # 업데이트
     for Enemy in Enemy_Units:  # 리스트에 속하는 적군 유닛
@@ -100,8 +99,8 @@ def update():  # 업데이트
 
     for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛들
         for Enemy in Enemy_Units:  # 리스트에 속하는 적군 유닛들에 대해
-            if Functions.collide(Enemy, Cat) is True:
-                Enemy.attack(Cat)
+            if Functions.collide(Cat, Enemy) is True:
+                Cat.attack(Enemy)
             elif Functions.collide(Cat, Enemy and Enemy_Castle):
                 Cat.attack(Enemy_Castle)
             else:
@@ -111,8 +110,10 @@ def update():  # 업데이트
 
     for Enemy in Enemy_Units:
         for Cat in Cat_Units:
-            if Functions.collide(Cat, Enemy) is True:  # 적군 유닛과 아군 유닛간 충돌 있으면
-                Cat.attack(Enemy)  # 적군 -> 아군 공격
+            if Functions.collide(Enemy, Cat) is True:  # 적군 유닛과 아군 유닛간 충돌 있으면
+                Enemy.attack(Cat)  # 적군 -> 아군 공격
+            elif Functions.collide(Enemy, Cat and My_Castle):
+                Enemy.attack(My_Castle)
             else:
                 Cat.walk()
         if Functions.collide(Enemy, My_Castle) is True:
@@ -145,12 +146,14 @@ def draw():
     global My_Castle
     global Enemy_Castle
     global Back_Ground
+
     clear_canvas()  # 캔버스 지우기
     Back_Ground.draw()  # 배경화면 그리기
     My_Castle.draw()  # 아군 성 그리기
     My_Castle.draw_bb()  # 아군 성의 충돌범위 그리기
     Enemy_Castle.draw()  # 적군 성 그리기
     Enemy_Castle.draw_bb()  # 적군 성의 충돌범위 그리기
+
     for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛 모두를
         Cat.draw()  # 그리기
         Cat.draw_bb()  # 충돌범위 그리기
@@ -172,10 +175,11 @@ def draw():
 
 def handle_events():  # 입력신호를 관리하는 함수
     global Cat_Units  # 전역으로 선언된 리스트를 사용할 것을 명시
-    global Enemy_Units
+    global Enemy_Units  # 전역으로 선언된 리스트를 사용할 것을 명시
     global BGM
     global Back_Ground
     global Come_Headless
+
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
