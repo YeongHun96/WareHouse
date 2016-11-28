@@ -244,6 +244,17 @@ class SexyLegsCat:
 
 # Number 5
 class CowCat:
+    # 프레임 시간에 따른 객체 이동 구현
+    PIXEL_PER_METER = (100.0/10.0)  # 100픽셀이 10m라고 설정
+    RUN_SPEED_KMPH = 10.0  # 시간당 20km
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0) / 60.0  # 분당 m
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+    # 프레임 시간에 따른 액션 프레임의 조절
+    TIME_PER_ACTION = 3
+    ACTION_PER_TIME = 1 / TIME_PER_ACTION
+    FRAMES_PER_WALK = 4
+    FRAMES_PER_ATTACK = 4
 
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
@@ -255,25 +266,32 @@ class CowCat:
         self.AttackPower = 30  # 공격력
         self.AttackRange = 140  # 공격사거리
         self.TimeBetweenAttacks = 0.33  # 공격빈도
-        self.MovementSpeed = 30  # 이동속도
         self.AttackAnimation = 6
         self.RechargingTime = 2.33  # 재생산 시간
         self.frame = 0
+        self.walk_frames = 0
+        self.attack_frames = 0
+        self.hurt_frames = 0
         self.state = self.WALK  # 기본 상태
 
         if CowCat.image is None:  # 만약 변수의 값이 None 이면
             CowCat.image = load_image("Resources/CatUnits/Cow_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
-    def update(self):
+    def update(self, frame_time):
+        # print("frame_time : %f", frame_time)
+        distance = self.RUN_SPEED_PPS * frame_time
+        if self.x < 0:
+            Scene_Stage1.Cat_Units.remove(self)
+            print("Object Removed!")
         if self.state == self.WALK:  # 이동 상태라면
-            self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
-            self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
+            self.walk_frames += self.FRAMES_PER_WALK * frame_time
+            self.frame = int(self.walk_frames) % 4  # N개의 이미지를 반복
+            self.x -= distance/10
         elif self.state == self.ATTACK:  # 공격 상태라면
-            self.frame = (self.frame + 1) % 5  # N개의 이미지를 반복
-            if self.frame < 4:
-                self.state = self.WALK
+            self.attack_frames += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
+            self.frame = int(self.attack_frames) % 4  # N개의 이미지를 반복
         elif self.state == self.HURT:
-            self.frame = (self.frame + 1) % 2
+            self.frame = int(self.hurt_frames) % 2
             self.x += 3
             if self.frame > 0:
                 Scene_Stage1.Cat_Units.remove(self)

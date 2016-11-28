@@ -33,7 +33,7 @@ class EnemyCastle:  # 적 팀의 성
     def __init__(self):  # 초기화
         self.x, self.y = 60, 270  # 객체의 초기 위치
         self.image = load_image("Resources/EnemyCastle.png")  # 성의 이미지 불러오기
-        self.Health = 1000000  # 성의 체력
+        self.Health = 1000  # 성의 체력
 
     def draw(self):
         self.image.draw(self.x, self.y)  # 이미지를 후면버퍼의 x, y 위치에 그림
