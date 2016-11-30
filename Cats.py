@@ -14,7 +14,17 @@ current_time = get_time()
 
 # Number 1
 class BasicCat:
-
+    # 프레임 시간에 따른 객체 이동 구현
+    PIXEL_PER_METER = (100.0 / 10.0)  # 100픽셀이 10m라고 설정
+    RUN_SPEED_KMPH = 10.0  # 시간당 20km
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0) / 60.0  # 분당 m
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+    # 프레임 시간에 따른 액션 프레임의 조절
+    TIME_PER_ACTION = 3
+    ACTION_PER_TIME = 1 / TIME_PER_ACTION
+    FRAMES_PER_WALK = 4
+    FRAMES_PER_ATTACK = 4
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
     ATTACK, WALK, HURT = 1, 3, -1
@@ -67,7 +77,17 @@ class BasicCat:
 
 # Number 2
 class TankCat:
-
+    # 프레임 시간에 따른 객체 이동 구현
+    PIXEL_PER_METER = (100.0 / 10.0)  # 100픽셀이 10m라고 설정
+    RUN_SPEED_KMPH = 10.0  # 시간당 20km
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0) / 60.0  # 분당 m
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+    # 프레임 시간에 따른 액션 프레임의 조절
+    TIME_PER_ACTION = 3
+    ACTION_PER_TIME = 1 / TIME_PER_ACTION
+    FRAMES_PER_WALK = 4
+    FRAMES_PER_ATTACK = 4
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
     WALK, ATTACK, HURT = 2, 1, 0
 
@@ -127,7 +147,17 @@ class WallCat:
 
 # Number 3
 class AxeCat:
-
+    # 프레임 시간에 따른 객체 이동 구현
+    PIXEL_PER_METER = (100.0 / 10.0)  # 100픽셀이 10m라고 설정
+    RUN_SPEED_KMPH = 10.0  # 시간당 20km
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0) / 60.0  # 분당 m
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+    # 프레임 시간에 따른 액션 프레임의 조절
+    TIME_PER_ACTION = 3
+    ACTION_PER_TIME = 1 / TIME_PER_ACTION
+    FRAMES_PER_WALK = 4
+    FRAMES_PER_ATTACK = 4
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
     WALK, ATTACK, HURT = 1, 0, -1
@@ -185,6 +215,17 @@ class BraveCat:
 
 # Number 4
 class GrossCat:
+    # 프레임 시간에 따른 객체 이동 구현
+    PIXEL_PER_METER = (100.0 / 10.0)  # 100픽셀이 10m라고 설정
+    RUN_SPEED_KMPH = 10.0  # 시간당 20km
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0) / 60.0  # 분당 m
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+    # 프레임 시간에 따른 액션 프레임의 조절
+    TIME_PER_ACTION = 3
+    ACTION_PER_TIME = 1 / TIME_PER_ACTION
+    FRAMES_PER_WALK = 4
+    FRAMES_PER_ATTACK = 4
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
     WALK, ATTACK, HURT = 2, 1, 0
@@ -286,7 +327,7 @@ class CowCat:
         if self.state == self.WALK:  # 이동 상태라면
             self.walk_frames += self.FRAMES_PER_WALK * frame_time
             self.frame = int(self.walk_frames) % 4  # N개의 이미지를 반복
-            self.x -= distance/10
+            self.x -= distance/30
         elif self.state == self.ATTACK:  # 공격 상태라면
             self.attack_frames += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
             self.frame = int(self.attack_frames) % 4  # N개의 이미지를 반복
