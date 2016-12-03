@@ -245,7 +245,7 @@ class CommanderSkeleton:
 
     def __init__(self):  # 객체의 초기값 설정
         self.x, self.y = 80, 230 + random.randint(0, 15)  # 생성위치
-        self.Health = 500  # 체력
+        self.Health = 5000  # 체력
         self.AttackPower = 1  # 공격력
         self.AttackRange = 110  # 공격사거리
         self.TimeBetweenAttacks = 2.23  # per seconds

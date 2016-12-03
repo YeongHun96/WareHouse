@@ -25,8 +25,8 @@ BGM = None
 # **********************리스트들**********************#
 Cat_Units = []  # 아군 유닛들을 관리할 리스트 생성
 Enemy_Units = []  # 적군 유닛들을 관리할 리스트 생성
-Cat_Skills = []
-Enemy_Skills = []  # 스킬들
+Cat_Skills = []  # 아군 유닛의 스킬들을 관리할 리스트 생성
+Enemy_Skills = []  # 적군 유닛의 스킬들을 관리할 리스트 생성
 
 
 def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
@@ -67,7 +67,7 @@ def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
 def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
     # 전역변수를 사용함을 선언
     global Back_Ground
-    global Basic_Cat, Tank_Cat, Axe_Cat, Gross_Cat, Cow_Cat, Bird_Cat, UFO_Cat, Fish_Cat, Lizard_Cat, Titan_Cat  # 전역변수임을 명시
+    global Basic_Cat, Tank_Cat, Axe_Cat, Gross_Cat, Cow_Cat, Bird_Cat, UFO_Cat, Fish_Cat, Lizard_Cat, Titan_Cat
     global My_Castle, Enemy_Castle  # 전역변수임을 명시
     global Skele_Dog, Mummy_Dog, Officer_Skeleton, Commander_Skeleton
     global Headless_Knight
@@ -76,9 +76,10 @@ def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
     global Lizard_Cat_Skill, UFO_Cat_SKill
     global Come_Headless
 
-    del Back_Ground  # 생성했던 객체 소멸
-    del Basic_Cat, Tank_Cat, Axe_Cat, Gross_Cat, Cow_Cat, Bird_Cat, UFO_Cat, Fish_Cat, Lizard_Cat, Titan_Cat  # 생성했던 객체 소멸
-    del My_Castle, Enemy_Castle  # 생성했던 객체 소멸
+    # 전역변수들을 소멸
+    del Back_Ground
+    del Basic_Cat, Tank_Cat, Axe_Cat, Gross_Cat, Cow_Cat, Bird_Cat, UFO_Cat, Fish_Cat, Lizard_Cat, Titan_Cat
+    del My_Castle, Enemy_Castle
     del Skele_Dog, Mummy_Dog, Officer_Skeleton, Commander_Skeleton
     del Headless_Knight
     del Headless_Knight_Skill
@@ -101,13 +102,11 @@ def update():  # 업데이트
 
     for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛들
         for Enemy in Enemy_Units:  # 리스트에 속하는 적군 유닛들에 대해
-            if Functions.our_collide(Cat, Enemy) is True:
+            if Functions.collide_cat(Cat, Enemy):
                 Cat.attack(Enemy)
-            elif Functions.our_collide(Cat, Enemy and Enemy_Castle):
+            elif Functions.collide_cat(Cat, Enemy and Enemy_Castle):
                 Cat.attack(Enemy_Castle)
-            else:
-                Enemy.walk()
-        if Functions.our_collide(Cat, Enemy_Castle) is True:  # 아군 유닛과 적군 성 간 충돌 있으면
+        if Functions.collide_cat(Cat, Enemy_Castle) is True:  # 아군 유닛과 적군 성 간 충돌 있으면
             Cat.attack(Enemy_Castle)  # 적군 성 공격
 
     for Enemy in Enemy_Units:
@@ -116,8 +115,6 @@ def update():  # 업데이트
                 Enemy.attack(Cat)  # 적군 -> 아군 공격
             elif Functions.collide_enemy(Enemy, Cat and My_Castle):
                 Enemy.attack(My_Castle)
-            else:
-                Cat.walk()
         if Functions.collide_enemy(Enemy, My_Castle) is True:
             Enemy.attack(My_Castle)
 

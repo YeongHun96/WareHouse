@@ -21,7 +21,7 @@ class MyCastle:  # 우리 팀의 성
             self.x, self.y = -1000, -1000  # 성의 위치를 옮김 ( 임시 )
 
     def get_size(self):  # 충돌체크를 위한 이미지 크기 반환
-        return self.x - 60, self.x + 60,self.y - 123,  self.y + 127
+        return self.x - 60, self.y - 123, self.x + 60,  self.y + 127
         # 왼쪽: 65, 아래쪽: 123, 오른쪽: 60, 위쪽: 127
 
     def draw_bb(self):  # 충돌범위를 나타내는 박스 그리기
@@ -43,7 +43,7 @@ class EnemyCastle:  # 적 팀의 성
             self.x, self.y = -1000, -1000 # 성의 위치를 옮김 ( 임시 )
 
     def get_size(self):  # 충돌체크를 위한 이미지 크기 반환
-        return self.x - 60,self.x + 60, self.y - 100, self.y + 100
+        return self.x - 60, self.y - 100,self.x + 60,  self.y + 100
         # 왼쪽: 90, 아래쪽: 100, 오른쪽: 60, 위쪽: 100
 
     def draw_bb(self):  # 충돌범위를 나타내는 박스 그리기
