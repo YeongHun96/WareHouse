@@ -51,7 +51,7 @@ class SkeleDog:
         # Width = 83, Height = 77
 
     def get_size(self):
-        return self.x - 35, self.y - 35, self.x + 35, self.y + 30
+        return self.x - 35,self.y - 35,self.x + 35,self.y + 30
 
     def draw_bb(self):
         draw_rectangle(*self.get_size())
@@ -107,7 +107,7 @@ class MummyDog:
         # Width = 83, Height = 77
 
     def get_size(self):
-        return self.x - 35, self.y - 35, self.x + 35, self.y + 35
+        return self.x - 35, self.y - 35,self.x + 35,  self.y + 35
 
     def draw_bb(self):
         draw_rectangle(*self.get_size())
@@ -166,7 +166,7 @@ class SkeletonSoldier:  # 스켈레톤 병사 클래스
         # Width = 150, Height = 137
 
     def get_size(self):
-        return self.x - 65, self.y - 70, self.x + 10, self.y + 25
+        return self.x - 65, self.y - 70,self.x + 35, self.y + 25
 
     def draw_bb(self):
         draw_rectangle(*self.get_size())
@@ -224,7 +224,7 @@ class OfficerSkeleton:
         # Width = 150, Height = 156
 
     def get_size(self):
-        return self.x - 65, self.y - 80, self.x + 10, self.y + 15
+        return self.x - 65, self.y - 80,self.x + 35, self.y + 15
 
     def draw_bb(self):
         draw_rectangle(*self.get_size())
@@ -282,7 +282,7 @@ class CommanderSkeleton:
         # Width = 151, Height = 159
 
     def get_size(self):
-        return self.x - 70, self.y - 73, self.x + 70, self.y + 50
+        return self.x - 70, self.y - 73,self.x + 35, self.y + 50
 
     def draw_bb(self):
         draw_rectangle(*self.get_size())
@@ -358,7 +358,7 @@ class HeadlessKnight:  # 보스 몬스터 - 헤들리스나이트의 클래스
         # 336,362
 
     def get_size(self):
-        return self.x - 150, self.y - 150, self.x + 70, self.y + 70
+        return self.x - 150, self.y - 150,self.x + 35, self.y + 70
 
     def draw_bb(self):
         draw_rectangle(*self.get_size())

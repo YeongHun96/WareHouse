@@ -8,8 +8,9 @@ import Functions
 import Castle
 import Scene_Stage1
 import CatSkills
+import Functions
 
-current_time = get_time()
+#frame_time = Functions.get_frame_time()
 
 
 # Number 1
@@ -125,7 +126,7 @@ class TankCat:
         self.image.clip_draw(self.frame * 88, self.state * 121, 88, 121, self.x, self.y)
 
     def get_size(self):
-        return self.x - 20, self.y - 50, self.x + 20, self.y + 30
+        return self.x - 23,  self.y - 50, self.x + 20, self.y + 30
     # 크기 20, 50, 20, 30
     # 사정거리 110
 
@@ -194,7 +195,7 @@ class AxeCat:
         self.image.clip_draw(self.frame * 109, self.state * 150, 109, 150, self.x, self.y)
 
     def get_size(self):
-        return self.x - 54, self.y - 60, self.x + 45, self.y + 20
+        return self.x - 23,self.y - 60, self.x + 45, self.y + 20
         # 크기 54, 60, 45, 20
 
     def draw_bb(self):
@@ -264,7 +265,7 @@ class GrossCat:
         self.image.clip_draw(self.frame * 240, self.state * 300, 240, 300, self.x, self.y)
 
     def get_size(self):
-        return self.x - 40, self.y - 110, self.x + 40, self.y + 80
+        return self.x - 23, self.y - 110, self.x + 40, self.y + 80
         # 크기 40, 110, 40, 80
 
     def draw_bb(self):
@@ -342,7 +343,7 @@ class CowCat:
         # 가로: 150, 세로: 200
 
     def get_size(self):
-        return self.x - 50, self.y - 70, self.x + 50, self.y + 30
+        return self.x - 23, self.y - 70, self.x + 50,  self.y + 30
         # 크기 50, 70, 50, 30
 
     def draw_bb(self):
@@ -402,7 +403,7 @@ class BirdCat:
         self.image.clip_draw(self.frame * 180, self.state * 120, 180, 120, self.x, self.y)
 
     def get_size(self):
-        return self.x - 70, self.y - 50, self.x + 70, self.y + 30
+        return self.x - 23, self.y - 50, self.x + 70,  self.y + 30
         # 크기 70, 50, 70, 30
 
     def draw_bb(self):
@@ -459,7 +460,7 @@ class UFOCat:
         self.image.clip_draw(self.frame * 108, self.state * 124, 108, 124, self.x, self.y)
 
     def get_size(self):
-        return self.x - 250, self.y - 200, self.x + 70, self.y + 30
+        return self.x - 23, self.y - 200, self.x + 70, self.y + 30
         # 크기 70, 50, 70, 30
 
     def draw_bb(self):
@@ -512,7 +513,7 @@ class FishCat:
         self.image.clip_draw(self.frame * 133, self.state * 149, 133, 149, self.x, self.y)
 
     def get_size(self):
-        return self.x - 68, self.y - 65, self.x + 64, self.y + 40
+        return self.x - 23, self.y - 65, self.x + 64, self.y + 40
         # 크기 68, 65, 64, 40
 
     def draw_bb(self):
@@ -568,7 +569,7 @@ class LizardCat:
         self.image.clip_draw(self.frame * 136, self.state * 109, 136, 109, self.x, self.y)
 
     def get_size(self):
-        return self.x - 30, self.y - 54, self.x + 68, self.y + 30
+        return self.x - 23, self.y - 54, self.x + 68,self.y + 30
         # 크기 30, 54, 68, 30
 
     def draw_bb(self):
@@ -626,7 +627,7 @@ class TitanCat:
         self.image.clip_draw(self.frame * 200, self.state * 215, 200, 215, self.x, self.y)
 
     def get_size(self):
-        return self.x - 60, self.y - 107, self.x + 40, self.y + 107
+        return self.x - 23, self.y - 107, self.x + 40,self.y + 107
         # 크기 60, 107, 40, 107
 
     def draw_bb(self):
