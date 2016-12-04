@@ -9,6 +9,7 @@ import Enemies
 import Functions
 import EnemySkills
 import CatSkills
+import Unit_Buttons
 
 # *******************전역변수들 초기화**********************#
 running = True
@@ -19,14 +20,16 @@ Skele_Dog, Mummy_Dog, Officer_Skeleton, Commander_Skeleton = None, None, None, N
 Headless_Knight = None
 Headless_Knight_Skill = None
 Lizard_Cat_Skill, UFO_Cat_SKill = None, None
-Come_Headless = True
+Boss_Appearance = True
 BGM = None
+Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9 = None, None, None, None, None, None, None, None, None
 
 # **********************리스트들**********************#
 Cat_Units = []  # 아군 유닛들을 관리할 리스트 생성
 Enemy_Units = []  # 적군 유닛들을 관리할 리스트 생성
 Cat_Skills = []  # 아군 유닛의 스킬들을 관리할 리스트 생성
 Enemy_Skills = []  # 적군 유닛의 스킬들을 관리할 리스트 생성
+Buttons = []
 
 
 def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
@@ -62,6 +65,16 @@ def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
     global Lizard_Cat_Skill, UFO_Cat_SKill
     Lizard_Cat_Skill = CatSkills.LizardCatSkill(None, None)
     UFO_Cat_SKill = CatSkills.UFOCatSkill(None, None)
+    global Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9
+    Number_1 = Unit_Buttons.ButtonNumber1()
+    Number_2 = Unit_Buttons.ButtonNumber2()
+    Number_3 = Unit_Buttons.ButtonNumber3()
+    Number_4 = Unit_Buttons.ButtonNumber4()
+    Number_5 = Unit_Buttons.ButtonNumber5()
+    Number_6 = Unit_Buttons.ButtonNumber6()
+    Number_7 = Unit_Buttons.ButtonNumber7()
+    Number_8 = Unit_Buttons.ButtonNumber8()
+    Number_9 = Unit_Buttons.ButtonNumber9()
 
 
 def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
@@ -74,7 +87,8 @@ def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
     global Headless_Knight_Skill
     global BGM
     global Lizard_Cat_Skill, UFO_Cat_SKill
-    global Come_Headless
+    global Boss_Appearance
+    global Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9
 
     # 전역변수들을 소멸
     del Back_Ground
@@ -85,13 +99,16 @@ def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
     del Headless_Knight_Skill
     del BGM
     del Lizard_Cat_Skill, UFO_Cat_SKill
-    del Come_Headless
+    del Boss_Appearance
+    del Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9
 
 
 def update():  # 업데이트
     global My_Castle
     global Enemy_Castle
+
     frame_time = get_time()
+
     for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛
         Cat.update(frame_time)  # 업데이트
     for Enemy in Enemy_Units:  # 리스트에 속하는 적군 유닛
@@ -100,44 +117,37 @@ def update():  # 업데이트
     Enemy_Castle.update()
     delay(0.05)  # 프레임 업데이트 속도
 
+    # **************************Collision Check**************************************#
     for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛들
         for Enemy in Enemy_Units:  # 리스트에 속하는 적군 유닛들에 대해
-            if Functions.collide_cat(Cat, Enemy):
-                Cat.attack(Enemy)
-            elif Functions.collide_cat(Cat, Enemy and Enemy_Castle):
-                Cat.attack(Enemy_Castle)
-        if Functions.collide_cat(Cat, Enemy_Castle) is True:  # 아군 유닛과 적군 성 간 충돌 있으면
-            Cat.attack(Enemy_Castle)  # 적군 성 공격
+            if Functions.collide_cat(Cat, Enemy and Enemy_Castle):  # 적군 유닛과 적군 성 모두 충돌체크 된 상황
+                Cat.attack(Enemy_Castle)  # 적군 성을 먼저 공격한다
+            elif Functions.collide_cat(Cat, Enemy):  # 아군 유닛과 적군 유닛간 충돌
+                Cat.attack(Enemy)  # 아군 유닛 -> 적군 유닛 공격
+        if Functions.collide_cat(Cat, Enemy_Castle):  # 아군 유닛과 적군 성 간 충돌
+            Cat.attack(Enemy_Castle)  # 아군 유닛 -> 적군 성 공격
 
-    for Enemy in Enemy_Units:
-        for Cat in Cat_Units:
-            if Functions.collide_enemy(Enemy, Cat) is True:  # 적군 유닛과 아군 유닛간 충돌 있으면
-                Enemy.attack(Cat)  # 적군 -> 아군 공격
-            elif Functions.collide_enemy(Enemy, Cat and My_Castle):
-                Enemy.attack(My_Castle)
-        if Functions.collide_enemy(Enemy, My_Castle) is True:
-            Enemy.attack(My_Castle)
-
-    for Cat in Cat_Units:
-        if Functions.die_check(Cat) is True:
-            Cat.state = Cat.HURT
-
-    for Enemy in Enemy_Units:
-        if Functions.die_check(Enemy) is True:
-            Enemy.state = Enemy.DIE
+    for Enemy in Enemy_Units:  # 모든 적군들이
+        for Cat in Cat_Units:  # 모든 아군들에 대해
+            if Functions.collide_enemy(Enemy, Cat and My_Castle) and Boss_Appearance:  # 아군 유닛과 아군 성이 동시에 사정거리에 있는 상황
+                Enemy.attack(My_Castle)  # 아군 성을 먼저 공격한다
+            elif Functions.collide_enemy(Enemy, Cat) and Boss_Appearance:  # 적군 유닛과 아군 유닛간 충돌 있으면
+                Enemy.attack(Cat)  # 적군 유닛 -> 아군 유닛 공격
+        if Functions.collide_enemy(Enemy, My_Castle) and Boss_Appearance:  # 적군 유닛과 아군 성간 충돌
+            Enemy.attack(My_Castle)  # 적군 유닛 -> 아군 성 공격
 
     for CatSkill in Cat_Skills:
         CatSkill.update()
 
     for CatSkill in Cat_Skills:
-        if Functions.collide(CatSkill, Enemy_Castle) is True:
+        if Functions.collide_cat(CatSkill, Enemy_Castle) is True:
             CatSkill.attack(Enemy_Castle)
 
     for EnemySkill in Enemy_Skills:
         EnemySkill.update()
 
     for EnemySkill in Enemy_Skills:
-        if Functions.collide(EnemySkill, My_Castle) is True:
+        if Functions.collide_enemy(EnemySkill, My_Castle) is True:
             EnemySkill.attack(My_Castle)
 
 
@@ -145,9 +155,18 @@ def draw():
     global My_Castle
     global Enemy_Castle
     global Back_Ground
-
+    global Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9
     clear_canvas()  # 캔버스 지우기
     Back_Ground.draw()  # 배경화면 그리기
+    Number_1.draw()
+    Number_2.draw()
+    Number_3.draw()
+    Number_4.draw()
+    Number_5.draw()
+    Number_6.draw()
+    Number_7.draw()
+    Number_8.draw()
+    Number_9.draw()
     My_Castle.draw()  # 아군 성 그리기
     My_Castle.draw_bb()  # 아군 성의 충돌범위 그리기
     Enemy_Castle.draw()  # 적군 성 그리기
@@ -177,7 +196,7 @@ def handle_events():  # 입력신호를 관리하는 함수
     global Enemy_Units  # 전역으로 선언된 리스트를 사용할 것을 명시
     global BGM
     global Back_Ground
-    global Come_Headless
+    global Boss_Appearance
 
     events = get_events()
     for event in events:
@@ -211,7 +230,7 @@ def handle_events():  # 입력신호를 관리하는 함수
             elif event.key == SDLK_w:
                 Enemy_Units.append(Enemies.CommanderSkeleton())
             elif event.key == SDLK_e:
-                Come_Headless = False
+                Boss_Appearance = False
                 Back_Ground.image = load_image('Resources/BackGround_Final.png')
                 for Enemy in Enemy_Units:
                     Enemy.state = Enemy.DIE
@@ -220,6 +239,7 @@ def handle_events():  # 입력신호를 관리하는 함수
                 BGM = load_music('Resources/Musics/CarminaBurana.ogg')  # 생성한 전역변수에 음악 삽입
                 BGM.set_volume(0)  # 음량
                 BGM.repeat_play()  # 반복 재생
+                Boss_Appearance = True
             elif event.key == SDLK_r:
                 Enemy_Units.append(Enemies.MummyDog())
             elif event.key == SDLK_t:

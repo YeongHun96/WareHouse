@@ -16,8 +16,9 @@
 
 
 def collide_cat(cat, enemy):
-    left_cat, bottom_cat, right_cat, top_cat = cat.get_size()
-    left_enemy, bottom_enemy, right_enemy, top_enemy = enemy.get_size()
+
+    left_cat, bottom_cat, right_cat, top_cat = cat.get_attack_range()
+    left_enemy, bottom_enemy, right_enemy, top_enemy = enemy.get_defense_size()
 
     if left_cat > right_enemy: return False
     if bottom_cat > top_enemy: return False
@@ -26,20 +27,15 @@ def collide_cat(cat, enemy):
 
 
 def collide_enemy(enemy, cat):
-    left_cat, bottom_cat, right_cat, top_cat = cat.get_size()
-    left_enemy, bottom_enemy, right_enemy, top_enemy = enemy.get_size()
+    #left_cat, bottom_cat, right_cat, top_cat = cat.get_size()  # 방어판정 바운딩 박스 사이즈
+    #left_enemy, bottom_enemy, right_enemy, top_enemy = enemy.get_size()  # 공격판정 바운딩 박스 사이즈
 
+    left_cat, bottom_cat, right_cat, top_cat = cat.get_defense_size()
+    left_enemy, bottom_enemy, right_enemy, top_enemy = enemy.get_attack_range()
     if right_enemy < left_cat: return False
     if bottom_enemy > top_cat: return False
 
     return True
-
-
-def die_check(a):
-    if a.Health < 0:
-        return True
-    else:
-        return False
 
 
 #def get_frame_time():

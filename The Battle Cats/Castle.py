@@ -4,6 +4,9 @@
 #                Module의 사용 : import 모듈이름
 
 from pico2d import *
+import GameFrameWork
+import VictoryState
+import DefeatState
 
 
 class MyCastle:  # 우리 팀의 성
@@ -19,13 +22,15 @@ class MyCastle:  # 우리 팀의 성
     def update(self):
         if self.Health < 0:  # 성의 체력이 0 이하가 되면
             self.x, self.y = -1000, -1000  # 성의 위치를 옮김 ( 임시 )
+            print("게임 종료")
+            GameFrameWork.push_state(DefeatState)
 
-    def get_size(self):  # 충돌체크를 위한 이미지 크기 반환
+    def get_defense_size(self):  # 충돌체크를 위한 이미지 크기 반환
         return self.x - 60, self.y - 123, self.x + 60,  self.y + 127
         # 왼쪽: 65, 아래쪽: 123, 오른쪽: 60, 위쪽: 127
 
     def draw_bb(self):  # 충돌범위를 나타내는 박스 그리기
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_defense_size())
 
 
 class EnemyCastle:  # 적 팀의 성
@@ -33,19 +38,20 @@ class EnemyCastle:  # 적 팀의 성
     def __init__(self):  # 초기화
         self.x, self.y = 60, 270  # 객체의 초기 위치
         self.image = load_image("Resources/EnemyCastle.png")  # 성의 이미지 불러오기
-        self.Health = 1000  # 성의 체력
+        self.Health = 100000  # 성의 체력
 
     def draw(self):
         self.image.draw(self.x, self.y)  # 이미지를 후면버퍼의 x, y 위치에 그림
 
     def update(self):
         if self.Health < 0:  # 성의 체력이 0 이하가 되면
-            self.x, self.y = -1000, -1000 # 성의 위치를 옮김 ( 임시 )
+            self.x, self.y = -1000, -1000  # 성의 위치를 옮김 ( 임시 )
+            GameFrameWork.push_state(VictoryState)
 
-    def get_size(self):  # 충돌체크를 위한 이미지 크기 반환
-        return self.x - 60, self.y - 100,self.x + 60,  self.y + 100
+    def get_defense_size(self):  # 충돌체크를 위한 이미지 크기 반환
+        return self.x - 60, self.y - 100, self.x + 60,  self.y + 100
         # 왼쪽: 90, 아래쪽: 100, 오른쪽: 60, 위쪽: 100
 
     def draw_bb(self):  # 충돌범위를 나타내는 박스 그리기
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_defense_size())
 

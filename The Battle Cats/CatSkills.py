@@ -26,11 +26,11 @@ class LizardCatSkill:
         self.image.clip_draw(self.frame * 130, 0, 130, 53, self.x, self.y)
         # 0: 오른쪽 바라보며 공격  1: 왼쪽 바라보며 공격 2 : 오른쪽바라봄 3 : 왼쪽 바라봄
 
-    def get_size(self):
+    def get_attack_range(self):
         return self.x - 50, self.y - 20, self.x + 50, self.y + 20
 
     def draw_bb(self):
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_attack_range())
 
     def attack(self, e):
         e.Health -= self.AttackPower
@@ -61,11 +61,11 @@ class UFOCatSkill:
         self.image.clip_draw(self.frame * 69, 0, 69, 224, self.x, self.y)
         # 0: 오른쪽 바라보며 공격  1: 왼쪽 바라보며 공격 2 : 오른쪽바라봄 3 : 왼쪽 바라봄
 
-    def get_size(self):
+    def get_attack_range(self):
         return self.x - 40, self.y - 100, self.x + 40, self.y + 100
 
     def draw_bb(self):
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_attack_range())
 
     def attack(self, e):
         e.Health -= self.AttackPower

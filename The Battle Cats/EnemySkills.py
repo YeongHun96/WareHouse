@@ -24,11 +24,11 @@ class HeadlessKnightSkill:
         self.image.clip_draw(self.frame * 225, 0, 220, 160, self.x, self.y)
         # 0: 오른쪽 바라보며 공격  1: 왼쪽 바라보며 공격 2 : 오른쪽바라봄 3 : 왼쪽 바라봄
 
-    def get_size(self):
+    def get_attack_range(self):
         return self.x - 100, self.y - 80, self.x + 100, self.y + 90
 
     def draw_bb(self):
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_attack_range())
 
     def attack(self, e):
         e.Health -= self.AttackPower

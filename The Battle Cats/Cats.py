@@ -43,7 +43,7 @@ class BasicCat:
         if BasicCat.image is None:  # 만약 변수의 값이 None 이면
             BasicCat.image = load_image("Resources/CatUnits/Basic_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
-    def update(self):
+    def update(self,frame_time):
         if self.state == self.MOVE:
             self.frame = (self.frame + 1) % 3  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
             self.x -= self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
@@ -58,11 +58,15 @@ class BasicCat:
     def draw(self):
         self.image.clip_draw(self.frame * 46, self.state * 63, 46, 63, self.x, self.y)
 
-    def get_size(self):
+    def get_attack_range(self):
+        return self.x - 23, self.y - 31, self.x + 23, self.y + 18
+
+    def get_defense_size(self):
         return self.x - 23, self.y - 31, self.x + 23, self.y + 18
 
     def draw_bb(self):
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_attack_range())
+        draw_rectangle(*self.get_defense_size())
 
     def attack(self, e):
         self.state = self.ATTACK
@@ -104,7 +108,7 @@ class TankCat:
         if TankCat.image is None:
             TankCat.image = load_image("Resources/CatUnits/Tank_Cat.png")
 
-    def update(self):
+    def update(self, frame_time):
         if self.state == self.MOVE:
             self.frame = (self.frame + 1) % 3  # N개의 이미지를 반복
             self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
@@ -122,13 +126,17 @@ class TankCat:
     def draw(self):
         self.image.clip_draw(self.frame * 88, self.state * 121, 88, 121, self.x, self.y)
 
-    def get_size(self):
+    def get_attack_range(self):
+        return self.x - 23, self.y - 50, self.x + 20, self.y + 30
+
+    def get_defense_size(self):
         return self.x - 23,  self.y - 50, self.x + 20, self.y + 30
     # 크기 20, 50, 20, 30
     # 사정거리 110
 
     def draw_bb(self):
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_attack_range())
+        draw_rectangle(*self.get_defense_size())
 
     def attack(self, e):
         self.state = self.ATTACK
@@ -176,7 +184,7 @@ class AxeCat:
         if AxeCat.image is None:  # 만약 변수의 값이 None 이면
             AxeCat.image = load_image("Resources/CatUnits/Axe_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
-    def update(self):
+    def update(self, frame_time):
         if self.state == self.MOVE:
             self.frame = (self.frame + 1) % 3  # N개의 이미지를 반복
             self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
@@ -191,12 +199,16 @@ class AxeCat:
     def draw(self):
         self.image.clip_draw(self.frame * 109, self.state * 150, 109, 150, self.x, self.y)
 
-    def get_size(self):
-        return self.x - 23,self.y - 60, self.x + 45, self.y + 20
+    def get_attack_range(self):
+        return self.x - 54, self.y - 60, self.x + 45, self.y + 20
+
+    def get_defense_size(self):
+        return self.x - 25, self.y - 60, self.x + 45, self.y + 20
         # 크기 54, 60, 45, 20
 
     def draw_bb(self):
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_attack_range())
+        draw_rectangle(*self.get_defense_size())
 
     def attack(self, e):
         self.state = self.ATTACK
@@ -244,7 +256,7 @@ class GrossCat:
         if GrossCat.image is None:  # 만약 변수의 값이 None 이면
             GrossCat.image = load_image("Resources/CatUnits/Gross_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
-    def update(self):
+    def update(self, frame_time):
         if self.state == self.MOVE:
             self.frame = (self.frame + 1) % 5  # N개의 이미지를 반복
             self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
@@ -261,12 +273,16 @@ class GrossCat:
     def draw(self):
         self.image.clip_draw(self.frame * 240, self.state * 300, 240, 300, self.x, self.y)
 
-    def get_size(self):
-        return self.x - 23, self.y - 110, self.x + 40, self.y + 80
+    def get_attack_range(self):
+        return self.x - 100, self.y - 110, self.x + 40, self.y + 80
+
+    def get_defense_size(self):
+        return self.x - 40, self.y - 110, self.x + 40, self.y + 80
         # 크기 40, 110, 40, 80
 
     def draw_bb(self):
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_attack_range())
+        draw_rectangle(*self.get_defense_size())
 
     def attack(self, e):
         self.state = self.ATTACK
@@ -341,12 +357,17 @@ class CowCat:
         self.image.clip_draw(self.frame * 150, self.state * 200, 150, 200, self.x, self.y)
         # 가로: 150, 세로: 200
 
-    def get_size(self):
+    def get_attack_range(self):
         return self.x - 50, self.y - 70, self.x + 50,  self.y + 30
         # 크기 50, 70, 50, 30
 
+    def get_defense_size(self):
+        return self.x - 50, self.y - 70, self.x + 50, self.y + 30
+        # 크기 50, 70, 50, 30
+
     def draw_bb(self):
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_attack_range())
+        draw_rectangle(*self.get_defense_size())
 
     def attack(self, e):
         self.state = self.ATTACK
@@ -383,7 +404,7 @@ class BirdCat:
         if BirdCat.image is None:  # 만약 변수의 값이 None 이면
             BirdCat.image = load_image("Resources/CatUnits/Bird_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
-    def update(self):
+    def update(self, frame_time):
         if self.state == self.FLY:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
             self.x -= self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
@@ -401,12 +422,17 @@ class BirdCat:
     def draw(self):
         self.image.clip_draw(self.frame * 180, self.state * 120, 180, 120, self.x, self.y)
 
-    def get_size(self):
+    def get_attack_range(self):
+        return self.x - 300, self.y - 50, self.x + 70, self.y + 30
+        # 크기 70, 50, 70, 30
+
+    def get_defense_size(self):
         return self.x - 23, self.y - 50, self.x + 70,  self.y + 30
         # 크기 70, 50, 70, 30
 
     def draw_bb(self):
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_attack_range())
+        draw_rectangle(*self.get_defense_size())
 
     def attack(self, e):
         self.state = self.ATTACK
@@ -438,7 +464,7 @@ class UFOCat:
         if UFOCat.image is None:  # 만약 변수의 값이 None 이면
             UFOCat.image = load_image("Resources/CatUnits/UFO_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
-    def update(self):
+    def update(self, frame_time):
         if self.state == self.FLY:
             self.frame = (self.frame + 1) % 1  # N개의 이미지를 반복
             self.x -= self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
@@ -458,12 +484,16 @@ class UFOCat:
     def draw(self):
         self.image.clip_draw(self.frame * 108, self.state * 124, 108, 124, self.x, self.y)
 
-    def get_size(self):
-        return self.x - 23, self.y - 200, self.x + 70, self.y + 30
+    def get_attack_range(self):
+        return self.x - 300, self.y - 220, self.x - 180, self.y - 10
+
+    def get_defense_size(self):
+        return 0, 0, 0, 0  #self.x - 50, self.y - 60, self.x + 50, self.y + 20
         # 크기 70, 50, 70, 30
 
     def draw_bb(self):
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_attack_range())
+        draw_rectangle(*self.get_defense_size())
 
     def attack(self, e):
         self.state = self.ATTACK
@@ -494,7 +524,7 @@ class FishCat:
         if FishCat.image is None:
             FishCat.image = load_image("Resources/CatUnits/Fish_Cat.png")
 
-    def update(self):
+    def update(self, frame_time):
         if self.state == self.MOVE:
             self.frame = (self.frame + 1) % 8  # N개의 이미지를 반복
             self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
@@ -511,12 +541,16 @@ class FishCat:
     def draw(self):
         self.image.clip_draw(self.frame * 133, self.state * 149, 133, 149, self.x, self.y)
 
-    def get_size(self):
-        return self.x - 23, self.y - 65, self.x + 64, self.y + 40
+    def get_attack_range(self):
+        return self.x - 68, self.y - 65, self.x + 64, self.y + 40
+
+    def get_defense_size(self):
+        return self.x - 68, self.y - 65, self.x + 64, self.y + 40
         # 크기 68, 65, 64, 40
 
     def draw_bb(self):
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_attack_range())
+        draw_rectangle(*self.get_defense_size())
 
     def attack(self, e):
         self.state = self.ATTACK
@@ -549,7 +583,7 @@ class LizardCat:
         if LizardCat.image is None:
             LizardCat.image = load_image("Resources/CatUnits/Lizard_Cat.png")
 
-    def update(self):
+    def update(self, frame_time):
         if self.state == self.MOVE:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
             self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
@@ -567,12 +601,16 @@ class LizardCat:
     def draw(self):
         self.image.clip_draw(self.frame * 136, self.state * 109, 136, 109, self.x, self.y)
 
-    def get_size(self):
-        return self.x - 23, self.y - 54, self.x + 68,self.y + 30
+    def get_attack_range(self):
+        return self.x - 70, self.y - 54, self.x + 68, self.y + 30
+
+    def get_defense_size(self):
+        return self.x - 30, self.y - 54, self.x + 68, self.y + 30
         # 크기 30, 54, 68, 30
 
     def draw_bb(self):
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_attack_range())
+        draw_rectangle(*self.get_defense_size())
 
     def attack(self, e):
         self.state = self.ATTACK
@@ -606,7 +644,7 @@ class TitanCat:
         if TitanCat.image is None:
             TitanCat.image = load_image("Resources/CatUnits/Titan_Cat.png")
 
-    def update(self):
+    def update(self,frame_time):
         if self.state == self.MOVE:
             self.frame = (self.frame + 1) % 6  # N개의 이미지를 반복
             self.x -= self.MovementSpeed  # 왼쪽으로 /s 의 속도로 이동
@@ -625,12 +663,16 @@ class TitanCat:
     def draw(self):
         self.image.clip_draw(self.frame * 200, self.state * 215, 200, 215, self.x, self.y)
 
-    def get_size(self):
-        return self.x - 23, self.y - 107, self.x + 40,self.y + 107
+    def get_attack_range(self):
+        return self.x - 65, self.y - 107, self.x + 40, self.y + 107
+
+    def get_defense_size(self):
+        return self.x - 55, self.y - 107, self.x + 40, self.y + 107
         # 크기 60, 107, 40, 107
 
     def draw_bb(self):
-        draw_rectangle(*self.get_size())
+        draw_rectangle(*self.get_attack_range())
+        draw_rectangle(*self.get_defense_size())
 
     def attack(self, e):
         self.state = self.ATTACK
