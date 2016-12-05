@@ -11,9 +11,9 @@ def enter():
     global image
     global BGM  # 전역변수 선언
     BGM = load_music('Resources/Musics/Victory.ogg')  # 생성한 전역변수에 음악 삽입
-    BGM.set_volume(64)  # 음량
-    BGM.repeat_play()  # 반복 재생
-    image = load_image("Resources/VictoryState.png")
+    BGM.set_volume(50)  # 음량
+    BGM.play(1)
+    image = load_image("Resources/VictoryState2.png")
 
 
 def exit():

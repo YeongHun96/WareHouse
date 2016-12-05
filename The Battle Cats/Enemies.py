@@ -324,7 +324,7 @@ class HeadlessKnight:  # 보스 몬스터 - 헤들리스나이트의 클래스
     # 상태 정의
 
     def __init__(self):  # 객체의 초기값 설정
-        self.x, self.y = 80, 350  # 생성위치
+        self.x, self.y = 80, 300  # 생성위치
         self.Health = 9999999  # 체력
         self.AttackPower = 5000  # 공격력
         self.AttackRange = 110  # 공격범위
@@ -389,10 +389,10 @@ class HeadlessKnight:  # 보스 몬스터 - 헤들리스나이트의 클래스
 
     def attack(self, e):
         self.attack_count += 1
-        if self.attack_count % 4 == 0:
-            self.state = self.STAND_SKILL
-        else:
-            self.state = self.STAND_ATTACK
+        #if self.attack_count % 4 == 0:
+        self.state = self.STAND_SKILL
+        #else:
+            #self.state = self.STAND_ATTACK
         e.Health -= self.AttackPower
         print("공격중인 객체의 체력: ", e.Health)
 

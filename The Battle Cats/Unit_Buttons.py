@@ -8,7 +8,10 @@ class ButtonNumber1:
         self.image = load_image('Resources/Buttons/1번_2.png')
 
     def update(self):
-        pass
+        self.image = load_image('Resources/Buttons/1번_2_100%.png')
+        self.image = load_image('Resources/Buttons/1번_2_66%.png')
+        self.image = load_image('Resources/Buttons/1번_2_33%.png')
+        self.image = load_image('Resources/Buttons/1번_2.png')
 
     def draw(self):
         self.image.draw(self.x, self.y)

@@ -26,7 +26,7 @@ def enter():
     global image, bt, x, y
     global BGM  # 전역변수 선언
     BGM = load_music('Resources/Musics/TitleTheme.ogg')  # 생성한 전역변수에 음악 삽입
-    BGM.set_volume(0)  # 음량
+    BGM.set_volume(50)  # 음량
     BGM.repeat_play()  # 반복 재생
     image = load_image("Resources/TitleImage.png")
     bt = SelectedButton()

@@ -5,6 +5,7 @@
 
 import GameFrameWork
 import Scene_Stage1
+import TitleState
 from pico2d import*
 
 name = "DefeatState"
@@ -15,10 +16,10 @@ BGM = None
 def enter():
     global image
     global BGM  # 전역변수 선언
-    BGM = load_music('Resources/Musics/TitleTheme.ogg')  # 생성한 전역변수에 음악 삽입
-    BGM.set_volume(0)  # 음량
-    BGM.repeat_play()  # 반복 재생
-    image = load_image("Resources/DefeatState.png")
+    BGM = load_music('Resources/Musics/Defeat.ogg')  # 생성한 전역변수에 음악 삽입
+    BGM.set_volume(50)  # 음량
+    BGM.play(1)
+    image = load_image("Resources/DefeatState2.png")
 
 
 def exit():
@@ -38,7 +39,7 @@ def handle_events():
             GameFrameWork.quit()
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_SPACE:
-                GameFrameWork.change_state(Scene_Stage1)
+                GameFrameWork.change_state(TitleState)
             elif event.key == SDLK_ESCAPE:
                 GameFrameWork.quit()
 

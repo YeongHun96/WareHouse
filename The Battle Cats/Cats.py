@@ -43,6 +43,10 @@ class BasicCat:
         if BasicCat.image is None:  # 만약 변수의 값이 None 이면
             BasicCat.image = load_image("Resources/CatUnits/Basic_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
+        if BasicCat.hurt_sound is None:
+            BasicCat.hurt_sound = load_wav('fill here.wav')
+            BasicCat.hurt_sound.set_volume(30)
+
     def update(self,frame_time):
         if self.state == self.MOVE:
             self.frame = (self.frame + 1) % 3  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
@@ -75,6 +79,9 @@ class BasicCat:
 
     def move(self):
         self.state = self.MOVE
+
+    def hurt(self):
+        BasicCat.hurt_sound.play()
 
 
 # Number 2

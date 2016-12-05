@@ -37,7 +37,7 @@ def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
     Back_Ground = BackGround.BackGround()  # 생성한 전역변수로 BackGround 객체를 가리킴
     global BGM  # 전역변수 선언
     BGM = load_music('Resources/Musics/DefaultBattle.ogg')  # 생성한 전역변수에 음악 삽입
-    BGM.set_volume(0)  # 음량
+    BGM.set_volume(50)  # 음량
     BGM.repeat_play()  # 반복 재생
     global My_Castle, Enemy_Castle  # 전역변수 선언
     My_Castle = Castle.MyCastle()  # 생성한 전역변수로 MyCastle 객체를 가리킴
@@ -140,14 +140,14 @@ def update():  # 업데이트
         CatSkill.update()
 
     for CatSkill in Cat_Skills:
-        if Functions.collide_cat(CatSkill, Enemy_Castle) is True:
+        if Functions.collide_cat(CatSkill, Enemy_Castle):
             CatSkill.attack(Enemy_Castle)
 
     for EnemySkill in Enemy_Skills:
         EnemySkill.update()
 
     for EnemySkill in Enemy_Skills:
-        if Functions.collide_enemy(EnemySkill, My_Castle) is True:
+        if Functions.collide_enemy(EnemySkill, My_Castle):
             EnemySkill.attack(My_Castle)
 
 
@@ -207,6 +207,10 @@ def handle_events():  # 입력신호를 관리하는 함수
                 GameFrameWork.quit()  # 게임을 중단
             elif event.key == SDLK_1:  # 1번 입력 시
                 Cat_Units.append(Cats.BasicCat())  # 리스트에 기본 고양이 객체 추가
+                # SDLK_1번 입력 시 Unit_Buttons.Number1 객체에 신호를 주면
+                # 그때부터 유닛의 생성 쿨타임을 Frame_time으로 계산해서
+                # (유닛 생성 쿨타임 - frame_time) / 유닛 생성 쿨타임 의 공식으로
+                # 100%, 66%, 33% 마다 쿨타임 이미지를 적용
             elif event.key == SDLK_2:  # 2번 입력 시
                 Cat_Units.append(Cats.TankCat())  # 리스트에 벽 고양이 객체 추가
             elif event.key == SDLK_3:  # 3번 입력 시
@@ -230,16 +234,11 @@ def handle_events():  # 입력신호를 관리하는 함수
             elif event.key == SDLK_w:
                 Enemy_Units.append(Enemies.CommanderSkeleton())
             elif event.key == SDLK_e:
-                Boss_Appearance = False
                 Back_Ground.image = load_image('Resources/BackGround_Final.png')
-                for Enemy in Enemy_Units:
-                    Enemy.state = Enemy.DIE
                 Enemy_Units.append(Enemies.HeadlessKnight())
-                del BGM
                 BGM = load_music('Resources/Musics/CarminaBurana.ogg')  # 생성한 전역변수에 음악 삽입
-                BGM.set_volume(0)  # 음량
+                BGM.set_volume(50)  # 음량
                 BGM.repeat_play()  # 반복 재생
-                Boss_Appearance = True
             elif event.key == SDLK_r:
                 Enemy_Units.append(Enemies.MummyDog())
             elif event.key == SDLK_t:
