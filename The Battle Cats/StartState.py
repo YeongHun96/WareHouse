@@ -23,7 +23,7 @@ def exit():  # 게임 상태에서 나갈 때 종료화
     close_canvas()
 
 
-def update():
+def update(frame_time):
     global logo_time  # 전역변수 선언
 
     if logo_time > 1.0:  # StartState 화면이 1초 지속되면
@@ -40,7 +40,7 @@ def draw():
     update_canvas()  # 캔버스를 업데이트 함
 
 
-def handle_events():
+def handle_events(frame_time):
     events = get_events()
     pass
 

@@ -16,7 +16,7 @@ class HeadlessKnightSkill:
             HeadlessKnightSkill.image = load_image("Resources/EnemyUnits/SkillEffects/Headless_Skill.png")
             # Width = 225, Height = 165 Frame = 6
 
-    def update(self):
+    def update(self, frame_time):
         self.frame = (self.frame + 1) % 6  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
         self.x += self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
 

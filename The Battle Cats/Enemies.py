@@ -9,6 +9,17 @@ import EnemySkills
 
 
 class SkeleDog:
+    # 프레임 시간에 따른 객체 이동 구현
+    PIXEL_PER_METER = (10.0 / 0.3)  # 100픽셀이 10m라고 설정
+    RUN_SPEED_KMPH = 15.0  # 시간당 40km
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0) / 60.0  # 분당 m
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+    # 프레임 시간에 따른 액션 프레임의 조절
+    TIME_PER_ACTION = 0.3
+    ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+    FRAMES_PER_MOVE = 5
+    FRAMES_PER_ATTACK = 1
 
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
@@ -25,18 +36,23 @@ class SkeleDog:
         self.RechargingTime = 8.33
         self.state = self.MOVE  # 초기상태
         self.frame = 0
+        self.Frames_Move = 0
+        self.Frames_Attack = 0
 
         if SkeleDog.image is None:  # 만약 변수의 값이 None 이면
             SkeleDog.image = load_image("Resources/EnemyUnits/Skeledog.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
-    def update(self):
+    def update(self, frame_time):
+        distance = self.RUN_SPEED_PPS * frame_time
         if self.state == self.STOP:
             self.frame = (self.frame + 1) % 3  # N개의 이미지를 반복
         elif self.state == self.MOVE:
-            self.frame = (self.frame + 1) % 5  # N개의 이미지를 반복
-            self.x += self.MovementSpeed  # 오른쪽으로 10/s 의 속도로 이동
+            self.Frames_Move += self.FRAMES_PER_MOVE * self.ACTION_PER_TIME * frame_time
+            self.frame = int(self.Frames_Move + 1) % 5  # N개의 이미지를 반복
+            self.x += distance  # 오른쪽으로 10/s 의 속도로 이동
         elif self.state == self.ATTACK:
-            self.frame = (self.frame + 1) % 2
+            self.Frames_Attack += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
+            self.frame = int(self.Frames_Attack + 1) % 2
             if self.frame > 0:
                 self.state = self.MOVE
         elif self.state == self.HURT:
@@ -70,6 +86,17 @@ class SkeleDog:
 
 
 class MummyDog:
+    # 프레임 시간에 따른 객체 이동 구현
+    PIXEL_PER_METER = (10.0 / 0.3)  # 100픽셀이 10m라고 설정
+    RUN_SPEED_KMPH = 20.0  # 시간당 40km
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0) / 60.0  # 분당 m
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+    # 프레임 시간에 따른 액션 프레임의 조절
+    TIME_PER_ACTION = 0.5
+    ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+    FRAMES_PER_MOVE = 5
+    FRAMES_PER_ATTACK = 1
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
     STOP, MOVE, ATTACK, HURT, DIE = 4, 3, 2, 1, 0  # 상태 정의
@@ -85,24 +112,29 @@ class MummyDog:
         self.RechargingTime = 8.33
         self.state = self.MOVE  # 초기상태
         self.frame = 0
+        self.Frames_Move = 0
+        self.Frames_Attack = 0
 
         if MummyDog.image is None:  # 만약 변수의 값이 None 이면
             MummyDog.image = load_image("Resources/EnemyUnits/Mummydog.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
-    def update(self):
+    def update(self, frame_time):
+        distance = self.RUN_SPEED_PPS * frame_time
         if self.state == self.STOP:
-            self.frame = (self.frame + 1) % 3  # N개의 이미지를 반복
+            self.frame = int(self.frame + 1) % 3  # N개의 이미지를 반복
         elif self.state == self.MOVE:
-            self.frame = (self.frame + 1) % 5  # N개의 이미지를 반복
-            self.x += self.MovementSpeed  # 오른쪽으로 10/s 의 속도로 이동
+            self.Frames_Move += self.FRAMES_PER_MOVE * self.ACTION_PER_TIME * frame_time
+            self.frame = int(self.Frames_Move + 1) % 5  # N개의 이미지를 반복
+            self.x += distance  # 오른쪽으로 10/s 의 속도로 이동
         elif self.state == self.ATTACK:
-            self.frame = (self.frame + 1) % 2
+            self.Frames_Attack += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
+            self.frame = int(self.Frames_Attack + 1) % 2
             if self.frame > 0:
                 self.state = self.MOVE
         elif self.state == self.HURT:
-            self.frame = (self.frame + 1) % 1
+            self.frame = int(self.frame + 1) % 1
         elif self.state == self.DIE:
-            self.frame = (self.frame + 1) % 6
+            self.frame = int(self.frame + 1) % 6
             if self.frame > 4:
                 Scene_Stage1.Enemy_Units.remove(self)
 
@@ -130,7 +162,17 @@ class MummyDog:
 
 
 class SkeletonSoldier:  # 스켈레톤 병사 클래스
-
+    # 프레임 시간에 따른 객체 이동 구현
+    PIXEL_PER_METER = (10.0 / 0.3)  # 100픽셀이 10m라고 설정
+    RUN_SPEED_KMPH = 3.0  # 시간당 40km
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0) / 60.0  # 분당 m
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+    # 프레임 시간에 따른 액션 프레임의 조절
+    TIME_PER_ACTION = 0.5
+    ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+    FRAMES_PER_MOVE = 4
+    FRAMES_PER_ATTACK = 4
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
     STOP, MOVE, HURT, ATTACK, DIE = 4, 3, 2, 1, 0  # 상태 정의
@@ -146,22 +188,27 @@ class SkeletonSoldier:  # 스켈레톤 병사 클래스
         self.RechargingTime = 8.33
         self.state = self.MOVE  # 초기상태
         self.frame = 0
+        self.Frames_Move = 0
+        self.Frames_Attack = 0
 
         if SkeletonSoldier.image is None:  # 만약 변수의 값이 None 이면
             SkeletonSoldier.image = load_image("Resources/EnemyUnits/SkeletonSoldier.png")
             # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
-    def update(self):
+    def update(self, frame_time):
+        distance = self.RUN_SPEED_PPS * frame_time
         if self.state == self.MOVE:
-            self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
-            self.x += self.MovementSpeed  # 오른쪽으로 10/s 의 속도로 이동
+            self.Frames_Move += self.FRAMES_PER_MOVE * self.ACTION_PER_TIME * frame_time
+            self.frame = int(self.Frames_Move + 1) % 4  # N개의 이미지를 반복
+            self.x += distance  # 오른쪽으로 10/s 의 속도로 이동
         elif self.state == self.STOP:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
         elif self.state == self.HURT:
             self.x -= 3
             self.frame = (self.frame + 1) % 1
         elif self.state == self.ATTACK:
-            self.frame = (self.frame + 1) % 4
+            self.Frames_Attack += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
+            self.frame = int(self.Frames_Attack + 1) % 4
             if self.frame > 2:
                 self.state = self.MOVE
         elif self.state == self.DIE:
@@ -193,7 +240,17 @@ class SkeletonSoldier:  # 스켈레톤 병사 클래스
 
 
 class OfficerSkeleton:
-
+    # 프레임 시간에 따른 객체 이동 구현
+    PIXEL_PER_METER = (10.0 / 0.3)  # 100픽셀이 10m라고 설정
+    RUN_SPEED_KMPH = 3.0  # 시간당 40km
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0) / 60.0  # 분당 m
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+    # 프레임 시간에 따른 액션 프레임의 조절
+    TIME_PER_ACTION = 1.0
+    ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+    FRAMES_PER_MOVE = 4
+    FRAMES_PER_ATTACK = 4
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
     STOP, MOVE, HURT, ATTACK, DIE = 4, 3, 2, 1, 0  # 상태 정의
@@ -209,21 +266,26 @@ class OfficerSkeleton:
         self.RechargingTime = 8.33
         self.state = self.MOVE  # 초기상태
         self.frame = 0
+        self.Frames_Move = 0
+        self.Frames_Attack = 0
 
         if OfficerSkeleton.image is None:  # 만약 변수의 값이 None 이면
             OfficerSkeleton.image = load_image("Resources/EnemyUnits/OfficerSkeleton3.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
-    def update(self):
+    def update(self, frame_time):
+        distance = self.RUN_SPEED_PPS * frame_time
         if self.state == self.MOVE:
-            self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
-            self.x += self.MovementSpeed  # 오른쪽으로 10/s 의 속도로 이동
+            self.Frames_Move += self.FRAMES_PER_MOVE * self.ACTION_PER_TIME * frame_time
+            self.frame = int(self.Frames_Move + 1) % 4  # N개의 이미지를 반복
+            self.x += distance  # 오른쪽으로 10/s 의 속도로 이동
         elif self.state == self.STOP:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
         elif self.state == self.HURT:
             self.x -= 3
             self.frame = (self.frame + 1) % 1
         elif self.state == self.ATTACK:
-            self.frame = (self.frame + 1) % 4
+            self.Frames_Attack += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
+            self.frame = int(self.Frames_Attack + 1) % 4
             if self.frame > 2:
                 self.state = self.MOVE
         elif self.state == self.DIE:
@@ -255,6 +317,17 @@ class OfficerSkeleton:
 
 
 class CommanderSkeleton:
+    # 프레임 시간에 따른 객체 이동 구현
+    PIXEL_PER_METER = (10.0 / 0.3)  # 100픽셀이 10m라고 설정
+    RUN_SPEED_KMPH = 20.0  # 시간당 40km
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0) / 60.0  # 분당 m
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+    # 프레임 시간에 따른 액션 프레임의 조절
+    TIME_PER_ACTION = 0.5
+    ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+    FRAMES_PER_MOVE = 4
+    FRAMES_PER_ATTACK = 8
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
     STOP, MOVE, HURT, ATTACK, DIE = 4, 3, 2, 1, 0  # 상태 정의
@@ -262,7 +335,7 @@ class CommanderSkeleton:
     def __init__(self):  # 객체의 초기값 설정
         self.x, self.y = 80, 230 + random.randint(0, 15)  # 생성위치
         self.Health = 5000  # 체력
-        self.AttackPower = 1  # 공격력
+        self.AttackPower = 50  # 공격력
         self.AttackRange = 110  # 공격사거리
         self.TimeBetweenAttacks = 2.23  # per seconds
         self.MovementSpeed = 10  # 이동속도
@@ -270,22 +343,27 @@ class CommanderSkeleton:
         self.RechargingTime = 8.33
         self.state = self.MOVE  # 초기상태
         self.frame = 0
+        self.Frames_Move = 0
+        self.Frames_Attack = 0
         self.delay = 0.13
 
         if CommanderSkeleton.image is None:  # 만약 변수의 값이 None 이면
             CommanderSkeleton.image = load_image("Resources/EnemyUnits/CommanderSkeleton.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
-    def update(self):
+    def update(self, frame_time):
+        distance = self.RUN_SPEED_PPS * frame_time
         if self.state == self.STOP:
             self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
         elif self.state == self.MOVE:
-            self.frame = (self.frame + 1) % 4  # N개의 이미지를 반복
-            self.x += self.MovementSpeed  # 오른쪽으로 10/s 의 속도로 이동
+            self.Frames_Move += self.FRAMES_PER_MOVE * self.ACTION_PER_TIME * frame_time
+            self.frame = int(self.Frames_Move + 1) % 4  # N개의 이미지를 반복
+            self.x += distance  # 오른쪽으로 10/s 의 속도로 이동
         elif self.state == self.HURT:
             self.x -= 3
             self.frame = (self.frame + 1) % 1
         elif self.state == self.ATTACK:
-            self.frame = (self.frame + 1) % 8
+            self.Frames_Attack += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
+            self.frame = int(self.Frames_Attack + 1) % 8
             if self.frame > 6:
                 self.state = self.MOVE
         elif self.state == self.DIE:
@@ -317,7 +395,17 @@ class CommanderSkeleton:
 
 
 class HeadlessKnight:  # 보스 몬스터 - 헤들리스나이트의 클래스
-
+    # 프레임 시간에 따른 객체 이동 구현
+    PIXEL_PER_METER = (10.0 / 0.3)  # 100픽셀이 10m라고 설정
+    RUN_SPEED_KMPH = 10.0  # 시간당 40km
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0) / 60.0  # 분당 m
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+    # 프레임 시간에 따른 액션 프레임의 조절
+    TIME_PER_ACTION = 0.5
+    ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+    FRAMES_PER_MOVE = 6
+    FRAMES_PER_ATTACK = 10
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
     RUN_ATTACK, RUN_SLOW, RUN_SKILL, STAND_SKILL, DIE, STAND, RUN_FAST, MOVE, STAND_ATTACK = 0, 1, 2, 3, 4, 5, 6, 7, 8
@@ -334,25 +422,29 @@ class HeadlessKnight:  # 보스 몬스터 - 헤들리스나이트의 클래스
         self.frame = 0
         self.delay = 0
         self.attack_count = 0
+        self.Frames_Move = 0
+        self.Frames_Attack = 0
         if HeadlessKnight.image is None:
                 HeadlessKnight.image = load_image("Resources/EnemyUnits/HeadlessKnight.png")
 
-    def update(self):
+    def update(self, frame_time):
+        distance = self.RUN_SPEED_PPS * frame_time
         if self.state == self.RUN_ATTACK:
             self.frame = (self.frame + 1) % 6
-            self.x += self.MovementSpeed
+            self.x += distance
             if self.frame > 4:
                 self.state = self.RUN_FAST
         elif self.state == self.RUN_SLOW:
             self.frame = (self.frame + 1) % 6  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
-            self.x += self.MovementSpeed  # 왼쪽으로 10/s 의 속도로 이동
+            self.x += distance  # 왼쪽으로 10/s 의 속도로 이동
         elif self.state == self.RUN_SKILL:
-            self.x += self.MovementSpeed
+            self.x += distance
             self.frame = (self.frame + 1) % 6  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
             if self.frame > 4:
                 self.state = self.MOVE
         elif self.state == self.STAND_SKILL:
-            self.frame = (self.frame + 1) % 10
+            self.Frames_Attack += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
+            self.frame = int(self.Frames_Attack + 1) % 10
             if self.frame > 8:
                 Scene_Stage1.Enemy_Skills.append(EnemySkills.HeadlessKnightSkill(self.x, self.y - 65))
                 self.state = self.MOVE
@@ -363,11 +455,13 @@ class HeadlessKnight:  # 보스 몬스터 - 헤들리스나이트의 클래스
         elif self.state == self.STAND:
             self.frame = (self.frame + 1) % 4
         elif self.state == self.RUN_FAST:
-            self.frame = (self.frame + 1) % 6
-            self.x += self.MovementSpeed * 2
+            self.Frames_Move += self.FRAMES_PER_MOVE * self.ACTION_PER_TIME * frame_time
+            self.frame = int(self.Frames_Move + 1) % 6
+            self.x += distance
         elif self.state == self.MOVE:
-            self.frame = (self.frame + 1) % 7
-            self.x += self.MovementSpeed
+            self.Frames_Move += self.FRAMES_PER_MOVE * self.ACTION_PER_TIME * frame_time
+            self.frame = int(self.Frames_Move + 1) % 7
+            self.x += distance
         elif self.state == self.STAND_ATTACK:
             self.frame = (self.frame + 1) % 7
             if self.frame > 5:

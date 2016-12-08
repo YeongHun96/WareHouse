@@ -3,6 +3,7 @@
 #                import되면 그 자체가 하나의 객체가 됨.
 #                Module의 사용 : import 모듈이름
 
+from pico2d import *
 #def collide(a, b):
     #left_a, bottom_a, right_a, top_a = a.get_size()
     #left_b, bottom_b, right_b, top_b = b.get_size()
@@ -38,12 +39,12 @@ def collide_enemy(enemy, cat):
     return True
 
 
-#def get_frame_time():
-    #global current_time
+def get_frame_time():
+    global current_time
 
-    #frame_time = get_time() - current_time
-    #current_time += frame_time
+    frame_time = get_time() - current_time
+    current_time += frame_time
 
-    #return frame_time
+    return frame_time
 
 

@@ -30,7 +30,7 @@ def exit():
     del BGM
 
 
-def handle_events():
+def handle_events(frame_time):
 
     events = get_events()
 
@@ -50,7 +50,7 @@ def draw():
     update_canvas()
 
 
-def update():
+def update(frame_time):
     pass
 
 

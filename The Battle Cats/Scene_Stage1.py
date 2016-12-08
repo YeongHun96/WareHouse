@@ -20,7 +20,6 @@ Skele_Dog, Mummy_Dog, Officer_Skeleton, Commander_Skeleton = None, None, None, N
 Headless_Knight = None
 Headless_Knight_Skill = None
 Lizard_Cat_Skill, UFO_Cat_SKill = None, None
-Boss_Appearance = True
 BGM = None
 Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9 = None, None, None, None, None, None, None, None, None
 
@@ -87,7 +86,6 @@ def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
     global Headless_Knight_Skill
     global BGM
     global Lizard_Cat_Skill, UFO_Cat_SKill
-    global Boss_Appearance
     global Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9
 
     # 전역변수들을 소멸
@@ -99,23 +97,19 @@ def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
     del Headless_Knight_Skill
     del BGM
     del Lizard_Cat_Skill, UFO_Cat_SKill
-    del Boss_Appearance
     del Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9
 
 
-def update():  # 업데이트
+def update(frame_time):  # 업데이트
     global My_Castle
     global Enemy_Castle
-
-    frame_time = get_time()
 
     for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛
         Cat.update(frame_time)  # 업데이트
     for Enemy in Enemy_Units:  # 리스트에 속하는 적군 유닛
-        Enemy.update()  # 업데이트
+        Enemy.update(frame_time)  # 업데이트
     My_Castle.update()
     Enemy_Castle.update()
-    delay(0.05)  # 프레임 업데이트 속도
 
     # **************************Collision Check**************************************#
     for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛들
@@ -129,22 +123,22 @@ def update():  # 업데이트
 
     for Enemy in Enemy_Units:  # 모든 적군들이
         for Cat in Cat_Units:  # 모든 아군들에 대해
-            if Functions.collide_enemy(Enemy, Cat and My_Castle) and Boss_Appearance:  # 아군 유닛과 아군 성이 동시에 사정거리에 있는 상황
+            if Functions.collide_enemy(Enemy, Cat and My_Castle):  # 아군 유닛과 아군 성이 동시에 사정거리에 있는 상황
                 Enemy.attack(My_Castle)  # 아군 성을 먼저 공격한다
-            elif Functions.collide_enemy(Enemy, Cat) and Boss_Appearance:  # 적군 유닛과 아군 유닛간 충돌 있으면
+            elif Functions.collide_enemy(Enemy, Cat):  # 적군 유닛과 아군 유닛간 충돌 있으면
                 Enemy.attack(Cat)  # 적군 유닛 -> 아군 유닛 공격
-        if Functions.collide_enemy(Enemy, My_Castle) and Boss_Appearance:  # 적군 유닛과 아군 성간 충돌
+        if Functions.collide_enemy(Enemy, My_Castle):  # 적군 유닛과 아군 성간 충돌
             Enemy.attack(My_Castle)  # 적군 유닛 -> 아군 성 공격
 
     for CatSkill in Cat_Skills:
-        CatSkill.update()
+        CatSkill.update(frame_time)
 
     for CatSkill in Cat_Skills:
         if Functions.collide_cat(CatSkill, Enemy_Castle):
             CatSkill.attack(Enemy_Castle)
 
     for EnemySkill in Enemy_Skills:
-        EnemySkill.update()
+        EnemySkill.update(frame_time)
 
     for EnemySkill in Enemy_Skills:
         if Functions.collide_enemy(EnemySkill, My_Castle):
@@ -191,12 +185,11 @@ def draw():
     update_canvas()  # 캔버스 업데이트
 
 
-def handle_events():  # 입력신호를 관리하는 함수
+def handle_events(frame_time):  # 입력신호를 관리하는 함수
     global Cat_Units  # 전역으로 선언된 리스트를 사용할 것을 명시
     global Enemy_Units  # 전역으로 선언된 리스트를 사용할 것을 명시
     global BGM
     global Back_Ground
-    global Boss_Appearance
 
     events = get_events()
     for event in events:
@@ -251,8 +244,3 @@ def pause():
 
 def resume():
     pass
-
-
-
-
-

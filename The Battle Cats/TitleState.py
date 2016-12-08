@@ -41,7 +41,7 @@ def exit():
     del BGM
 
 
-def handle_events():
+def handle_events(frame_time):
     global bt
     global x, y
 
@@ -73,7 +73,7 @@ def draw():
     update_canvas()
 
 
-def update():
+def update(frame_time):
     pass
 
 
