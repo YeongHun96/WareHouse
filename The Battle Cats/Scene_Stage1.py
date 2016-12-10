@@ -74,6 +74,15 @@ def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
     Number_7 = Unit_Buttons.ButtonNumber7()
     Number_8 = Unit_Buttons.ButtonNumber8()
     Number_9 = Unit_Buttons.ButtonNumber9()
+    Buttons.append(Number_1)
+    Buttons.append(Number_2)
+    Buttons.append(Number_3)
+    Buttons.append(Number_4)
+    Buttons.append(Number_5)
+    Buttons.append(Number_6)
+    Buttons.append(Number_7)
+    Buttons.append(Number_8)
+    Buttons.append(Number_9)
 
 
 def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
@@ -144,6 +153,9 @@ def update(frame_time):  # 업데이트
         if Functions.collide_enemy(EnemySkill, My_Castle):
             EnemySkill.attack(My_Castle)
 
+    for Button in Buttons:
+        Button.update(frame_time)
+
 
 def draw():
     global My_Castle
@@ -152,15 +164,17 @@ def draw():
     global Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9
     clear_canvas()  # 캔버스 지우기
     Back_Ground.draw()  # 배경화면 그리기
-    Number_1.draw()
-    Number_2.draw()
-    Number_3.draw()
-    Number_4.draw()
-    Number_5.draw()
-    Number_6.draw()
-    Number_7.draw()
-    Number_8.draw()
-    Number_9.draw()
+    for Button in Buttons:
+        Button.draw()
+    #Number_1.draw()
+    #Number_2.draw()
+    #Number_3.draw()
+    #Number_4.draw()
+    #Number_5.draw()
+    #Number_6.draw()
+    #Number_7.draw()
+    #Number_8.draw()
+    #Number_9.draw()
     My_Castle.draw()  # 아군 성 그리기
     My_Castle.draw_bb()  # 아군 성의 충돌범위 그리기
     Enemy_Castle.draw()  # 적군 성 그리기
@@ -200,6 +214,7 @@ def handle_events(frame_time):  # 입력신호를 관리하는 함수
                 GameFrameWork.quit()  # 게임을 중단
             elif event.key == SDLK_1:  # 1번 입력 시
                 Cat_Units.append(Cats.BasicCat())  # 리스트에 기본 고양이 객체 추가
+                Unit_Buttons.ButtonNumber1.state = Unit_Buttons.ButtonNumber1.CHARGE_0
                 # SDLK_1번 입력 시 Unit_Buttons.Number1 객체에 신호를 주면
                 # 그때부터 유닛의 생성 쿨타임을 Frame_time으로 계산해서
                 # (유닛 생성 쿨타임 - frame_time) / 유닛 생성 쿨타임 의 공식으로
