@@ -144,10 +144,10 @@ class TankCat:
         self.image.clip_draw(self.frame * 88, self.state * 121, 88, 121, self.x, self.y)
 
     def get_attack_range(self):
-        return self.x - 23, self.y - 50, self.x + 20, self.y + 30
+        return self.x - 5, self.y - 55, self.x + 35, self.y + 25
 
     def get_defense_size(self):
-        return self.x - 23,  self.y - 50, self.x + 20, self.y + 30
+        return self.x - 5,  self.y - 55, self.x + 35, self.y + 25
     # 크기 20, 50, 20, 30
     # 사정거리 110
 
@@ -362,7 +362,6 @@ class CowCat:
             CowCat.image = load_image("Resources/CatUnits/Cow_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
 
     def update(self, frame_time):
-        # print("frame_time : %f", frame_time)
         distance = self.RUN_SPEED_PPS * frame_time
         if self.x < 0:
             Scene_Stage1.Cat_Units.remove(self)

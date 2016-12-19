@@ -10,6 +10,7 @@ import Functions
 import EnemySkills
 import CatSkills
 import Unit_Buttons
+import Skills
 
 # *******************전역변수들 초기화**********************#
 running = True
@@ -22,13 +23,14 @@ Headless_Knight_Skill = None
 Lizard_Cat_Skill, UFO_Cat_SKill = None, None
 BGM = None
 Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9 = None, None, None, None, None, None, None, None, None
-
+Laser_Beam = None
 # **********************리스트들**********************#
 Cat_Units = []  # 아군 유닛들을 관리할 리스트 생성
 Enemy_Units = []  # 적군 유닛들을 관리할 리스트 생성
 Cat_Skills = []  # 아군 유닛의 스킬들을 관리할 리스트 생성
 Enemy_Skills = []  # 적군 유닛의 스킬들을 관리할 리스트 생성
 Buttons = []
+User_Skills = []
 
 
 def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
@@ -83,6 +85,8 @@ def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
     Buttons.append(Number_7)
     Buttons.append(Number_8)
     Buttons.append(Number_9)
+    global Laser_Beam
+    Laser_Beam = Skills.LaserBeam(My_Castle.x, My_Castle.y)
 
 
 def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
@@ -96,6 +100,7 @@ def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
     global BGM
     global Lizard_Cat_Skill, UFO_Cat_SKill
     global Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9
+    global Laser_Beam
 
     # 전역변수들을 소멸
     del Back_Ground
@@ -107,11 +112,13 @@ def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
     del BGM
     del Lizard_Cat_Skill, UFO_Cat_SKill
     del Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9
+    del Laser_Beam
 
 
 def update(frame_time):  # 업데이트
     global My_Castle
     global Enemy_Castle
+    global Laser_Beam
 
     for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛
         Cat.update(frame_time)  # 업데이트
@@ -156,12 +163,15 @@ def update(frame_time):  # 업데이트
     for Button in Buttons:
         Button.update(frame_time)
 
+    Laser_Beam.update()
+
 
 def draw():
     global My_Castle
     global Enemy_Castle
     global Back_Ground
     global Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9
+    global Laser_Beam
     clear_canvas()  # 캔버스 지우기
     Back_Ground.draw()  # 배경화면 그리기
     for Button in Buttons:
@@ -196,6 +206,8 @@ def draw():
         EnemySkill.draw()
         EnemySkill.draw_bb()
 
+    Laser_Beam.draw()
+
     update_canvas()  # 캔버스 업데이트
 
 
@@ -212,31 +224,40 @@ def handle_events(frame_time):  # 입력신호를 관리하는 함수
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_ESCAPE:  # ESC 키 입력 시
                 GameFrameWork.quit()  # 게임을 중단
-            elif event.key == SDLK_1:  # 1번 입력 시
+            elif event.key == SDLK_1 and Number_1.state == Number_1.CHARGE_FULL:  # 1번 입력 시
                 Cat_Units.append(Cats.BasicCat())  # 리스트에 기본 고양이 객체 추가
-                Unit_Buttons.ButtonNumber1.state = Unit_Buttons.ButtonNumber1.CHARGE_0
+                Number_1.start()
                 # SDLK_1번 입력 시 Unit_Buttons.Number1 객체에 신호를 주면
                 # 그때부터 유닛의 생성 쿨타임을 Frame_time으로 계산해서
                 # (유닛 생성 쿨타임 - frame_time) / 유닛 생성 쿨타임 의 공식으로
                 # 100%, 66%, 33% 마다 쿨타임 이미지를 적용
-            elif event.key == SDLK_2:  # 2번 입력 시
+            elif event.key == SDLK_2 and Number_2.state == Number_2.CHARGE_FULL:  # 2번 입력 시
                 Cat_Units.append(Cats.TankCat())  # 리스트에 벽 고양이 객체 추가
-            elif event.key == SDLK_3:  # 3번 입력 시
+                Number_2.start()
+            elif event.key == SDLK_3 and Number_3.state == Number_3.CHARGE_FULL:  # 3번 입력 시1
                 Cat_Units.append(Cats.AxeCat())   # 리스트에 전사 고양이 객체 추가
-            elif event.key == SDLK_4:  # 4번 입력 시
+                Number_3.start()
+            elif event.key == SDLK_4 and Number_4.state == Number_4.CHARGE_FULL:  # 4번 입력 시
                 Cat_Units.append(Cats.GrossCat())  # 각선미 고양이 객체 생성
-            elif event.key == SDLK_5:  # 5번 입력 시
+                Number_4.start()
+            elif event.key == SDLK_5 and Number_5.state == Number_5.CHARGE_FULL:  # 5번 입력 시
                 Cat_Units.append(Cats.CowCat())  # 황소 고양이 객체 생성
-            elif event.key == SDLK_6:  # 6번 입력 시
+                Number_5.start()
+            elif event.key == SDLK_6 and Number_6.state == Number_6.CHARGE_FULL:  # 6번 입력 시
                 Cat_Units.append(Cats.UFOCat())  # 물고기 고양이 객체 생성
-            elif event.key == SDLK_7:  # 7번 입력 시
+                Number_6.start()
+            elif event.key == SDLK_7 and Number_7.state == Number_7.CHARGE_FULL:  # 7번 입력 시
                 Cat_Units.append(Cats.FishCat())  # 천사 고양이 객체 생성
-            elif event.key == SDLK_8:  # 8번 입력 시
+                Number_7.start()
+            elif event.key == SDLK_8 and Number_8.state == Number_8.CHARGE_FULL:  # 8번 입력 시
                 Cat_Units.append(Cats.LizardCat())  # 도마뱀 고양이 객체 생성
-            elif event.key == SDLK_9:  # 9번 입력 시
+                Number_8.start()
+            elif event.key == SDLK_9 and Number_9.state == Number_9.CHARGE_FULL:  # 9번 입력 시
                 Cat_Units.append(Cats.TitanCat())  # 거인 고양이 객체 생성
+                Number_9.start()
             elif event.key == SDLK_0:
-                Enemy_Units.append(Enemies.SkeletonSoldier())
+                # Enemy_Units.append(Enemies.SkeletonSoldier())
+                Laser_Beam.attack(My_Castle)
             elif event.key == SDLK_q:
                 Enemy_Units.append(Enemies.OfficerSkeleton())
             elif event.key == SDLK_w:

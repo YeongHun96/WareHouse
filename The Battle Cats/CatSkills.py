@@ -51,16 +51,6 @@ class LizardCatSkill:
 
 
 class UFOCatSkill:
-    # 프레임 시간에 따른 객체 이동 구현
-    PIXEL_PER_METER = (10.0 / 0.3)  # 100픽셀이 10m라고 설정
-    RUN_SPEED_KMPH = 50.0  # 시간당 40km
-    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0) / 60.0  # 분당 m
-    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
-    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
-    # 프레임 시간에 따른 액션 프레임의 조절
-    TIME_PER_ACTION = 0.5
-    ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-    FRAMES_PER_ACTION = 9
     image = None
 
     def __init__(self, x, y):

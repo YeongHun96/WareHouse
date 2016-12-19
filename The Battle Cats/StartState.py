@@ -29,7 +29,6 @@ def update(frame_time):
     if logo_time > 1.0:  # StartState 화면이 1초 지속되면
         logo_time = 0  # 시간을 0으로 만들고
         GameFrameWork.push_state(TitleState)  # 게임 상태를 TitleState로 전환. 이전 게임 상태는 남아있음.
-    delay(0.01)
     logo_time += 0.01
 
 
