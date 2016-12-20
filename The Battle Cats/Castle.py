@@ -17,11 +17,10 @@ class MyCastle:  # 우리 팀의 성
         self.x, self.y = 1200, 300  # 객체의 초기 위치
         self.image = load_image("Resources/CatBase2.png")  # 성의 이미지 불러오기
         self.Health = 1000000  # 성의 체력
-        self.frame = 0
-        self.state = self.NORMAL
+        self.state = self.CHARGE
 
     def draw(self):
-        self.image.clip_draw(self.frame * 120, self.state * 275, 120, 275, self.x, self.y)  # 이미지를 후면 버퍼의 좌표 (x,y)위치에 삽입
+        self.image.clip_draw(0, self.state * 275, 120, 275, self.x, self.y)  # 이미지를 후면 버퍼의 좌표 (x,y)위치에 삽입
         # self.image.clip_draw(self.frame * 46, self.state * 63, 46, 63, self.x, self.y)
 
     def update(self):
@@ -36,6 +35,9 @@ class MyCastle:  # 우리 팀의 성
 
     def draw_bb(self):  # 충돌범위를 나타내는 박스 그리기
         draw_rectangle(*self.get_defense_size())
+
+    def charge(self):
+        self.state = self.CHARGE
 
 
 class EnemyCastle:  # 적 팀의 성

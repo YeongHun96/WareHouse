@@ -22,6 +22,7 @@ class SkeleDog:
     FRAMES_PER_ATTACK = 1
 
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
+    hit_sound = None
 
     STOP, MOVE, ATTACK, HURT, DIE = 4, 3, 2, 1, 0  # 상태 정의
 
@@ -41,6 +42,9 @@ class SkeleDog:
 
         if SkeleDog.image is None:  # 만약 변수의 값이 None 이면
             SkeleDog.image = load_image("Resources/EnemyUnits/Skeledog.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
+        if SkeleDog.hit_sound is None:
+            SkeleDog.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            SkeleDog.hit_sound.set_volume(30)
 
     def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time
@@ -98,7 +102,7 @@ class MummyDog:
     FRAMES_PER_MOVE = 5
     FRAMES_PER_ATTACK = 1
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
-
+    hit_sound = None
     STOP, MOVE, ATTACK, HURT, DIE = 4, 3, 2, 1, 0  # 상태 정의
 
     def __init__(self):  # 객체의 초기값 설정
@@ -117,6 +121,9 @@ class MummyDog:
 
         if MummyDog.image is None:  # 만약 변수의 값이 None 이면
             MummyDog.image = load_image("Resources/EnemyUnits/Mummydog.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
+        if MummyDog.hit_sound is None:
+            MummyDog.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            MummyDog.hit_sound.set_volume(30)
 
     def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time
@@ -174,7 +181,7 @@ class SkeletonSoldier:  # 스켈레톤 병사 클래스
     FRAMES_PER_MOVE = 4
     FRAMES_PER_ATTACK = 4
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
-
+    hit_sound = None
     STOP, MOVE, HURT, ATTACK, DIE = 4, 3, 2, 1, 0  # 상태 정의
 
     def __init__(self):  # 객체의 초기값 설정
@@ -194,6 +201,9 @@ class SkeletonSoldier:  # 스켈레톤 병사 클래스
         if SkeletonSoldier.image is None:  # 만약 변수의 값이 None 이면
             SkeletonSoldier.image = load_image("Resources/EnemyUnits/SkeletonSoldier.png")
             # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
+        if SkeletonSoldier.hit_sound is None:
+            SkeletonSoldier.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            SkeletonSoldier.hit_sound.set_volume(30)
 
     def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time
@@ -252,7 +262,7 @@ class OfficerSkeleton:
     FRAMES_PER_MOVE = 4
     FRAMES_PER_ATTACK = 4
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
-
+    hit_sound = None
     STOP, MOVE, HURT, ATTACK, DIE = 4, 3, 2, 1, 0  # 상태 정의
 
     def __init__(self):  # 객체의 초기값 설정
@@ -271,6 +281,9 @@ class OfficerSkeleton:
 
         if OfficerSkeleton.image is None:  # 만약 변수의 값이 None 이면
             OfficerSkeleton.image = load_image("Resources/EnemyUnits/OfficerSkeleton3.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
+        if OfficerSkeleton.hit_sound is None:
+            OfficerSkeleton.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            OfficerSkeleton.hit_sound.set_volume(30)
 
     def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time
@@ -329,7 +342,7 @@ class CommanderSkeleton:
     FRAMES_PER_MOVE = 4
     FRAMES_PER_ATTACK = 8
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
-
+    hit_sound = None
     STOP, MOVE, HURT, ATTACK, DIE = 4, 3, 2, 1, 0  # 상태 정의
 
     def __init__(self):  # 객체의 초기값 설정
@@ -349,6 +362,9 @@ class CommanderSkeleton:
 
         if CommanderSkeleton.image is None:  # 만약 변수의 값이 None 이면
             CommanderSkeleton.image = load_image("Resources/EnemyUnits/CommanderSkeleton.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
+        if CommanderSkeleton.hit_sound is None:
+            CommanderSkeleton.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            CommanderSkeleton.hit_sound.set_volume(30)
 
     def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time
@@ -407,7 +423,7 @@ class HeadlessKnight:  # 보스 몬스터 - 헤들리스나이트의 클래스
     FRAMES_PER_MOVE = 6
     FRAMES_PER_ATTACK = 10
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
-
+    hit_sound = None
     RUN_ATTACK, RUN_SLOW, RUN_SKILL, STAND_SKILL, DIE, STAND, RUN_FAST, MOVE, STAND_ATTACK = 0, 1, 2, 3, 4, 5, 6, 7, 8
     # 상태 정의
 
@@ -424,8 +440,12 @@ class HeadlessKnight:  # 보스 몬스터 - 헤들리스나이트의 클래스
         self.attack_count = 0
         self.Frames_Move = 0
         self.Frames_Attack = 0
+
         if HeadlessKnight.image is None:
                 HeadlessKnight.image = load_image("Resources/EnemyUnits/HeadlessKnight.png")
+        if HeadlessKnight.hit_sound is None:
+            HeadlessKnight.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            HeadlessKnight.hit_sound.set_volume(30)
 
     def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time

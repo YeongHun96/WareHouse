@@ -24,13 +24,14 @@ Lizard_Cat_Skill, UFO_Cat_SKill = None, None
 BGM = None
 Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9 = None, None, None, None, None, None, None, None, None
 Laser_Beam = None
+Skill_Button = None
+
 # **********************리스트들**********************#
 Cat_Units = []  # 아군 유닛들을 관리할 리스트 생성
 Enemy_Units = []  # 적군 유닛들을 관리할 리스트 생성
 Cat_Skills = []  # 아군 유닛의 스킬들을 관리할 리스트 생성
 Enemy_Skills = []  # 적군 유닛의 스킬들을 관리할 리스트 생성
 Buttons = []
-User_Skills = []
 
 
 def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
@@ -67,6 +68,7 @@ def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
     Lizard_Cat_Skill = CatSkills.LizardCatSkill(None, None)
     UFO_Cat_SKill = CatSkills.UFOCatSkill(None, None)
     global Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9
+    global Skill_Button
     Number_1 = Unit_Buttons.ButtonNumber1()
     Number_2 = Unit_Buttons.ButtonNumber2()
     Number_3 = Unit_Buttons.ButtonNumber3()
@@ -76,6 +78,7 @@ def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
     Number_7 = Unit_Buttons.ButtonNumber7()
     Number_8 = Unit_Buttons.ButtonNumber8()
     Number_9 = Unit_Buttons.ButtonNumber9()
+    Skill_Button = Unit_Buttons.SkillButton()
     Buttons.append(Number_1)
     Buttons.append(Number_2)
     Buttons.append(Number_3)
@@ -85,8 +88,9 @@ def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
     Buttons.append(Number_7)
     Buttons.append(Number_8)
     Buttons.append(Number_9)
+    Buttons.append(Skill_Button)
     global Laser_Beam
-    Laser_Beam = Skills.LaserBeam(My_Castle.x, My_Castle.y)
+    Laser_Beam = Skills.LaserBeam()
 
 
 def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
@@ -170,8 +174,8 @@ def draw():
     global My_Castle
     global Enemy_Castle
     global Back_Ground
-    global Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9
     global Laser_Beam
+    global Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9
     clear_canvas()  # 캔버스 지우기
     Back_Ground.draw()  # 배경화면 그리기
     for Button in Buttons:
@@ -207,6 +211,7 @@ def draw():
         EnemySkill.draw_bb()
 
     Laser_Beam.draw()
+    Laser_Beam.draw_bb()
 
     update_canvas()  # 캔버스 업데이트
 
@@ -214,6 +219,8 @@ def draw():
 def handle_events(frame_time):  # 입력신호를 관리하는 함수
     global Cat_Units  # 전역으로 선언된 리스트를 사용할 것을 명시
     global Enemy_Units  # 전역으로 선언된 리스트를 사용할 것을 명시
+    global Laser_Beam
+    global Skill_Button
     global BGM
     global Back_Ground
 
@@ -255,9 +262,10 @@ def handle_events(frame_time):  # 입력신호를 관리하는 함수
             elif event.key == SDLK_9 and Number_9.state == Number_9.CHARGE_FULL:  # 9번 입력 시
                 Cat_Units.append(Cats.TitanCat())  # 거인 고양이 객체 생성
                 Number_9.start()
-            elif event.key == SDLK_0:
+            elif event.key == SDLK_0 and Skill_Button.state == Skill_Button.CHARGE_FULL:
                 # Enemy_Units.append(Enemies.SkeletonSoldier())
-                Laser_Beam.attack(My_Castle)
+                Laser_Beam.attack(Enemy_Castle)
+                Skill_Button.start()
             elif event.key == SDLK_q:
                 Enemy_Units.append(Enemies.OfficerSkeleton())
             elif event.key == SDLK_w:

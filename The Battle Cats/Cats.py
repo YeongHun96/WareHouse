@@ -6,7 +6,7 @@ import random   # randint 를 사용하기 위해
 from pico2d import*
 import Scene_Stage1
 import CatSkills
-import GameFrameWork
+
 
 # Number 1
 class BasicCat:
@@ -21,35 +21,37 @@ class BasicCat:
     ACTION_PER_TIME = 1 / TIME_PER_ACTION
     FRAMES_PER_MOVE = 3
     FRAMES_PER_ATTACK = 4
-    image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
-    ATTACK, MOVE, HURT = 1, 3, -1
+    image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
+    hit_sound = None
+    die_sound = None
+
+    ATTACK, MOVE, DIE = 1, 3, -1
 
     def __init__(self):
         self.x, self.y = 1200, 190 + random.randint(0, 10)  # 생성 위치
         # 능력치 #
         self.Health = 300  # 체력
-        self.AttackPower = 8  # 공격력
-        self.AttackRange = 140  # 공격사거리
-        self.TimeBetweenAttacks = 1.23  # seconds 공격빈도
-        self.MovementSpeed = 10  # 이동속도
-        self.AttackAnimation = 8   # frame
-        self.RechargingTime = 2.33   # seconds 유닛 쿨타임
+        self.AttackPower = 10  # 공격력
         self.state = self.MOVE  # 캐릭터의 기본 상태
         self.frame = 0
         self.Frames_Move = 3
         self.Frames_Attack = 4
-        self.Frames_Hurt = 0
 
         if BasicCat.image is None:  # 만약 변수의 값이 None 이면
             BasicCat.image = load_image("Resources/CatUnits/Basic_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
+        if BasicCat.hit_sound is None:
+            BasicCat.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            BasicCat.hit_sound.set_volume(30)
+        if BasicCat.die_sound is None:
+            BasicCat.die_sound = load_wav('Resources/Musics/Die2.wav')
+            BasicCat.die_sound.set_volume(30)
 
-        #if BasicCat.hurt_sound is None:
-            #BasicCat.hurt_sound = load_wav('fill here.wav')
-            #BasicCat.hurt_sound.set_volume(30)
-
-    def update(self,frame_time):
+    def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time
+        if self.Health < 0:
+            BasicCat.die_sound.play(1)
+            self.state = self.DIE
         if self.state == self.MOVE:
             self.Frames_Move += self.FRAMES_PER_MOVE * self.ACTION_PER_TIME * frame_time
             self.frame = int(self.Frames_Move + 1) % 3  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
@@ -58,8 +60,9 @@ class BasicCat:
             self.Frames_Attack += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
             self.frame = int(self.Frames_Attack + 1) % 4  # N개의 이미지를 반복 (이동 = 3 공격 = 4)
             if self.frame > 2:
+                BasicCat.hit_sound.play(1)
                 self.state = self.MOVE
-        elif self.state == self.HURT:
+        elif self.state == self.DIE:
             Scene_Stage1.Cat_Units.remove(self)
 
     # 가로: 46, 세로: 63
@@ -81,12 +84,6 @@ class BasicCat:
         e.Health -= self.AttackPower
         print("공격중인 객체의 체력: ", e.Health)
 
-    def move(self):
-        self.state = self.MOVE
-
-    #def hurt(self):
-        #BasicCat.hurt_sound.play()
-
 
 # Number 2
 class TankCat:
@@ -99,31 +96,41 @@ class TankCat:
     # 프레임 시간에 따른 액션 프레임의 조절
     TIME_PER_ACTION = 0.5
     ACTION_PER_TIME = 1 / TIME_PER_ACTION
+    DIE_PER_TIME = 10
     FRAMES_PER_MOVE = 3
     FRAMES_PER_ATTACK = 4
+
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
-    MOVE, ATTACK, HURT = 2, 1, 0
+
+    hit_sound = None
+    die_sound = None
+
+    MOVE, ATTACK, DIE = 2, 1, 0
 
     def __init__(self):
         self.x, self.y = 1200, 210 + random.randint(0, 10)  # 생성 위치
-        self.Health = 400
+        self.Health = 2000
         self.AttackPower = 2
-        self.AttackRange = 110
-        self.TimeBetweenAttacks = 2.23  # per seconds
-        self.MovementSpeed = 8
-        self.AttackAnimation = 8  # frame
-        self.RechargingTime = 8.33
         self.state = self.MOVE
         self.frame = 0
+        self.Frame = 0
         self.Frames_Move = 0
         self.Frames_Attack = 0
-        self.Frames_Hurt = 0
+        self.Frames_Die = 0
 
         if TankCat.image is None:
             TankCat.image = load_image("Resources/CatUnits/Tank_Cat.png")
+        if TankCat.hit_sound is None:
+            TankCat.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            TankCat.hit_sound.set_volume(30)
+        if TankCat.die_sound is None:
+            TankCat.die_sound = load_wav('Resources/Musics/Die2.wav')
+            TankCat.die_sound.set_volume(30)
 
     def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time
+        if self.Health < 0:
+            self.state = self.DIE
         if self.state == self.MOVE:
             self.Frames_Move += self.FRAMES_PER_MOVE * self.ACTION_PER_TIME * frame_time
             self.frame = int(self.Frames_Move + 1) % 3  # N개의 이미지를 반복
@@ -132,11 +139,15 @@ class TankCat:
             self.Frames_Attack += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
             self.frame = int(self.Frames_Attack + 1) % 4  # N개의 이미지를 반복
             if self.frame > 2:
+                TankCat.hit_sound.play(1)
                 self.state = self.MOVE
-        elif self.state == self.HURT:
-            self.frame = (self.frame + 1) % 2
+        elif self.state == self.DIE:
+            self.frame = 0
+            self.Frames_Die += self.DIE_PER_TIME * frame_time
+            self.Frame = int(self.Frames_Die + 1)
             self.x += 3
-            if self.frame > 0:
+            if self.Frame > 1:
+                TankCat.die_sound.play(1)
                 Scene_Stage1.Cat_Units.remove(self)
 
     # 가로: 88, 세로: 121
@@ -181,28 +192,31 @@ class AxeCat:
     ACTION_PER_TIME = 1 / TIME_PER_ACTION
     FRAMES_PER_MOVE = 3
     FRAMES_PER_ATTACK = 4
+
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
+    hit_sound = None
+    die_sound = None
 
     MOVE, ATTACK, HURT = 1, 0, -1
 
     def __init__(self):
         self.x, self.y = 1200, 215 + random.randint(0, 10)  # 생성 위치
-        self.Health = 200
-        self.AttackPower = 25
-        self.AttackRange = 150
-        self.TimeBetweenAttacks = 0.9
-        self.MovementSpeed = 12
-        self.AttackAnimation = 8
-        self.RechargingTime = 7.33
+        self.Health = 300
+        self.AttackPower = 30
         self.frame = 0
-        self.delay = 0
         self.Frames_Move = 0
         self.Frames_Attack = 0
-        self.Frames_Hurt = 0
+        self.Frames_Die = 0
         self.state = self.MOVE
 
         if AxeCat.image is None:  # 만약 변수의 값이 None 이면
             AxeCat.image = load_image("Resources/CatUnits/Axe_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
+        if AxeCat.hit_sound is None:
+            AxeCat.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            AxeCat.hit_sound.set_volume(30)
+        if self.die_sound is None:
+            self.die_sound = load_wav('Resources/Musics/Die2.wav')
+            self.die_sound.set_volume(30)
 
     def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time
@@ -214,6 +228,7 @@ class AxeCat:
             self.Frames_Attack += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
             self.frame = int(self.Frames_Attack + 1) % 4  # N개의 이미지를 반복
             if self.frame > 2:
+                AxeCat.hit_sound.play(1)
                 self.state = self.MOVE
         elif self.state == self.HURT:
             Scene_Stage1.Cat_Units.remove(self)
@@ -259,19 +274,17 @@ class GrossCat:
     ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
     FRAMES_PER_MOVE = 5
     FRAMES_PER_ATTACK = 4
-    image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
-    MOVE, ATTACK, HURT = 2, 1, 0
+    image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
+    hit_sound = None
+    die_sound = None
+
+    MOVE, ATTACK, DIE = 2, 1, 0
 
     def __init__(self):
         self.x, self.y = 1100, 300 + random.randint(0, 15)  # 생성 위치
         self.Health = 400
         self.AttackPower = 100
-        self.AttackRange = 350
-        self.TimeBetweenAttacks = 4.23
-        self.MovementSpeed = 10
-        self.AttackAnimation = 8
-        self.RechargingTime = 2.53
         self.frame = 0
         self.delay = 0
         self.Frames_Move = 0
@@ -281,9 +294,17 @@ class GrossCat:
 
         if GrossCat.image is None:  # 만약 변수의 값이 None 이면
             GrossCat.image = load_image("Resources/CatUnits/Gross_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
+        if GrossCat.hit_sound is None:
+            GrossCat.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            GrossCat.hit_sound.set_volume(30)
+        if self.die_sound is None:
+            self.die_sound = load_wav('Resources/Musics/Die.wav')
+            self.die_sound.set_volume(30)
 
     def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time
+        if self.Health < 0:
+            self.state = self.DIE
         if self.state == self.MOVE:
             self.Frames_Move += self.FRAMES_PER_MOVE * self.ACTION_PER_TIME * frame_time
             self.frame = int(self.Frames_Move + 1) % 5  # N개의 이미지를 반복
@@ -292,8 +313,9 @@ class GrossCat:
             self.Frames_Attack += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
             self.frame = int(self.Frames_Attack + 1) % 4  # N개의 이미지를 반복
             if self.frame > 2:
+                GrossCat.hit_sound.play(1)
                 self.state = self.MOVE
-        elif self.state == self.HURT:
+        elif self.state == self.DIE:
             self.frame = (self.Frames_Hurt + 1) % 2
             if self.frame > 0:
                 Scene_Stage1.Cat_Units.remove(self)
@@ -341,26 +363,28 @@ class CowCat:
     FRAMES_PER_ATTACK = 4
 
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
-
+    hit_sound = None
+    die_sound = None
     MOVE, ATTACK, HURT = 2, 1, 0
 
     def __init__(self):
         self.x, self.y = 1200, 225 + random.randint(0, 10)  # 생성 위치
         self.Health = 500  # 체력
         self.AttackPower = 30  # 공격력
-        self.AttackRange = 140  # 공격사거리
-        self.TimeBetweenAttacks = 0.33  # 공격빈도
-        self.AttackAnimation = 6
-        self.RechargingTime = 2.33  # 재생산 시간
         self.frame = 0
         self.Frames_Move = 0
         self.Frames_Attack = 0
-        self.Frames_Hurt = 0
+        self.Frames_Die = 0
         self.state = self.MOVE  # 기본 상태
 
         if CowCat.image is None:  # 만약 변수의 값이 None 이면
             CowCat.image = load_image("Resources/CatUnits/Cow_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
-
+        if CowCat.hit_sound is None:
+            CowCat.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            CowCat.hit_sound.set_volume(30)
+        if self.die_sound is None:
+            self.die_sound = load_wav('Resources/Musics/Die.wav')
+            self.die_sound.set_volume(30)
     def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time
         if self.x < 0:
@@ -374,6 +398,7 @@ class CowCat:
             self.Frames_Attack += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
             self.frame = int(self.Frames_Attack) % 4  # N개의 이미지를 반복
             if self.frame > 2:
+                CowCat.hit_sound.play(1)
                 self.state = self.MOVE
         elif self.state == self.HURT:
             self.frame = int(self.Frames_Hurt) % 2
@@ -402,9 +427,6 @@ class CowCat:
         e.Health -= self.AttackPower
         print("공격중인 객체의 체력: ", e.Health)
 
-    def move(self):
-        self.state = self.MOVE
-
 
 class GiraffeCat:
     pass
@@ -425,13 +447,14 @@ class BirdCat:
     FRAMES_PER_ATTACK = 4
 
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
+    hit_sound = None
 
     FLY, ATTACK, HURT = 2, 1, 0
 
     def __init__(self):
         self.x, self.y = 1200, 400
         self.Health = 300
-        self.AttackPower = 140
+        self.AttackPower = 400
         self.AttackRange = 170
         self.TimeBetweenAttacks = 1.63
         self.MovementSpeed = 10
@@ -498,13 +521,14 @@ class UFOCat:
     FRAMES_PER_ATTACK = 7
 
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
-
+    hit_sound = None
+    die_sound = None
     FLY, ATTACK, HURT = 1, 0, 1
 
     def __init__(self):
         self.x, self.y = 1200, 350
         self.Health = 300
-        self.AttackPower = 140
+        self.AttackPower = 400
         self.AttackRange = 170
         self.TimeBetweenAttacks = 1.63
         self.MovementSpeed = 10
@@ -518,7 +542,12 @@ class UFOCat:
 
         if UFOCat.image is None:  # 만약 변수의 값이 None 이면
             UFOCat.image = load_image("Resources/CatUnits/UFO_Cat.png")  # 한 번의 이미지 로딩을 통해 모든 객체들이 이미지 리소스를 공유
-
+        if UFOCat.hit_sound is None:
+            UFOCat.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            UFOCat.hit_sound.set_volume(30)
+        if self.die_sound is None:
+            self.die_sound = load_wav('Resources/Musics/Die.wav')
+            self.die_sound.set_volume(30)
     def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time
         if self.state == self.FLY:
@@ -532,6 +561,7 @@ class UFOCat:
             if self.frame > 3:
                 Scene_Stage1.Cat_Skills.append(CatSkills.UFOCatSkill(self.x - 200, self.y - 115))
             if self.frame > 5:
+                UFOCat.hit_sound.play(1)
                 self.state = self.FLY
         elif self.state == self.HURT:
             self.frame = (self.frame + 1) % 2
@@ -575,13 +605,14 @@ class FishCat:
     FRAMES_PER_ATTACK = 4
 
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
-
+    hit_sound = None
+    die_sound = None
     MOVE, ATTACK, HURT = 2, 1, 0
 
     def __init__(self):
-        self.x, self.y = 1200, 205 + random.randint(0, 15)  # 생성 위치
-        self.Health = 700
-        self.AttackPower = 180
+        self.x, self.y = 1200, 225 + random.randint(0, 10)  # 생성 위치
+        self.Health = 1500
+        self.AttackPower = 300
         self.AttackRange = 150
         self.TimeBetweenAttacks = 1.76
         self.MovementSpeed = 10
@@ -592,9 +623,15 @@ class FishCat:
         self.Frames_Attack = 0
         self.delay = 0
         self.state = self.MOVE
+
         if FishCat.image is None:
             FishCat.image = load_image("Resources/CatUnits/Fish_Cat.png")
-
+        if FishCat.hit_sound is None:
+            FishCat.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            FishCat.hit_sound.set_volume(30)
+        if self.die_sound is None:
+            self.die_sound = load_wav('Resources/Musics/Die.wav')
+            self.die_sound.set_volume(30)
     def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time
         if self.state == self.MOVE:
@@ -605,6 +642,7 @@ class FishCat:
             self.Frames_Attack += self.FRAMES_PER_MOVE * self.ACTION_PER_TIME * frame_time
             self.frame = int(self.Frames_Attack + 1) % 4  # N개의 이미지를 반복
             if self.frame > 2:
+                FishCat.hit_sound.play(1)
                 self.state = self.MOVE
         elif self.state == self.HURT:
             self.frame = (self.frame + 1) % 2
@@ -613,7 +651,7 @@ class FishCat:
 
     # 가로: 133, 세로: 149
     def draw(self):
-        self.image.clip_draw(self.frame * 133, self.state * 149, 133, 149, self.x, self.y)
+        self.image.clip_draw(self.frame * 134, self.state * 149, 133, 149, self.x, self.y)
 
     def get_attack_range(self):
         return self.x - 68, self.y - 65, self.x + 64, self.y + 40
@@ -650,13 +688,14 @@ class LizardCat:
     FRAMES_PER_ATTACK = 6
 
     image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
-
+    hit_sound = None
+    die_sound = None
     MOVE, ATTACK, HURT = 2, 1, 0
 
     def __init__(self):
-        self.x, self.y = 1200, 205 + random.randint(0, 15)  # 생성 위치
+        self.x, self.y = 1200, 225 + random.randint(0, 10)  # 생성 위치
         self.Health = 800
-        self.AttackPower = 350
+        self.AttackPower = 700
         self.AttackRange = 400
         self.TimeBetweenAttacks = 4.30
         self.MovementSpeed = 10
@@ -667,9 +706,15 @@ class LizardCat:
         self.Frames_Move = 0
         self.Frames_Attack = 0
         self.state = self.MOVE
+
         if LizardCat.image is None:
             LizardCat.image = load_image("Resources/CatUnits/Lizard_Cat.png")
-
+        if LizardCat.hit_sound is None:
+            LizardCat.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            LizardCat.hit_sound.set_volume(30)
+        if self.die_sound is None:
+            self.die_sound = load_wav('Resources/Musics/Die.wav')
+            self.die_sound.set_volume(30)
     def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time
         if self.state == self.MOVE:
@@ -680,6 +725,7 @@ class LizardCat:
             self.Frames_Attack += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
             self.frame = int(self.Frames_Attack + 1) % 6  # N개의 이미지를 반복
             if self.frame > 4:
+                LizardCat.hit_sound.play(1)
                 Scene_Stage1.Cat_Skills.append(CatSkills.LizardCatSkill(self.x - 60, self.y - 10))
                 self.state = self.MOVE
         elif self.state == self.HURT:
@@ -727,14 +773,16 @@ class TitanCat:
     FRAMES_PER_MOVE = 6
     FRAMES_PER_ATTACK = 7
     FRAMES_PER_HURT = 1
-    image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
 
+    image = None  # 클래스의 객체들이 공유하는 변수를 선언하고 None 값으로 초기화
+    hit_sound = None
+    die_sound = None
     MOVE, ATTACK, HURT, STOP = 3, 2, 1, 0
 
     def __init__(self):
-        self.x, self.y = 1200, 220 + random.randint(0, 15)  # 생성 위치
-        self.Health = 1000
-        self.AttackPower = 280
+        self.x, self.y = 1200, 260 + random.randint(0, 10)  # 생성 위치
+        self.Health = 3000
+        self.AttackPower = 700
         self.AttackRange = 150
         self.TimeBetweenAttacks = 2.23
         self.MovementSpeed = 8
@@ -745,10 +793,17 @@ class TitanCat:
         self.Frames_Move = 0
         self.Frames_Attack = 0
         self.state = self.MOVE
+
         if TitanCat.image is None:
             TitanCat.image = load_image("Resources/CatUnits/Titan_Cat.png")
+        if TitanCat.hit_sound is None:
+            TitanCat.hit_sound = load_wav('Resources/Musics/Hit3.wav')
+            TitanCat.hit_sound.set_volume(30)
+        if self.die_sound is None:
+            self.die_sound = load_wav('Resources/Musics/Die.wav')
+            self.die_sound.set_volume(30)
 
-    def update(self,frame_time):
+    def update(self, frame_time):
         distance = self.RUN_SPEED_PPS * frame_time
         if self.state == self.MOVE:
             self.Frames_Move += self.FRAMES_PER_MOVE * self.ACTION_PER_TIME * frame_time
@@ -758,6 +813,7 @@ class TitanCat:
             self.Frames_Attack += self.FRAMES_PER_ATTACK * self.ACTION_PER_TIME * frame_time
             self.frame = int(self.Frames_Attack + 1) % 7  # N개의 이미지를 반복
             if self.frame > 5:
+                TitanCat.hit_sound.play(1)
                 self.state = self.MOVE
         elif self.state == self.HURT:
             #self.Frames_Hurt += self.FRAMES_PER_HURT * self.ACTION_PER_TIME * frame_time

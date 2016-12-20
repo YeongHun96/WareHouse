@@ -1,27 +1,42 @@
 from pico2d import *
-import Scene_Stage1
+import Castle
+
+My_Castle = None
 
 
 class LaserBeam:
 
-    NORMAL, ATTACK = 0, 1
+    NORMAL, ATTACK = -1, 1
 
-    def __init__(self, x, y):
-        self.x, self.y = x, y
+    def __init__(self):
+        self.x, self.y = 870, 300
         self.AttackPower = 100
-        self.image = load_image("Resources/LaserBeam2.png")
-        self.frame = 0
-        self.state = self.ATTACK
+        self.image = load_image("Resources/Laser5.png")
+        self.frame = -1
+        self.state = self.NORMAL
+        self.BGM = load_wav('Resources/Musics/Charging.wav')  # 생성한 전역변수에 음악 삽입
+        self.BGM.set_volume(50)  # 음량
+        global My_Castle
+        My_Castle = Castle.MyCastle()
 
     def update(self):
         if self.state == self.ATTACK:
-            self.frame = (self.frame + 1) % 7  # N개의 이미지를 반복
+            My_Castle.charge()
+            self.BGM.play(1)  # 반복 재생
+            self.frame = (self.frame + 1) % 13  # N개의 이미지를 반복
+            delay(0.05)
+            if self.frame > 5:
+                self.BGM = load_wav('Resources/Musics/Shot.wav')
+                self.BGM.play(1)  # 반복 재생
+            if self.frame > 11:
+                self.state = self.NORMAL
+                My_Castle.state = My_Castle.NORMAL
 
     def draw(self):
-        self.image.clip_draw(self.frame * 800, 400, 800, 400, 1200, 300)
+        self.image.clip_draw(self.frame * 667, 0, 667, 260, self.x, self.y)
 
     def get_attack_range(self):
-        return self.x - 50, self.y - 20, self.x + 50, self.y + 20
+        return self.x - 340, self.y - 130, self.x + 340, self.y + 130
 
     def draw_bb(self):
         draw_rectangle(*self.get_attack_range())
