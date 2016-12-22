@@ -5,11 +5,17 @@
 
 from pico2d import *
 import GameFrameWork
+import Scene_Stage1
+import Skills
 import VictoryState
 import DefeatState
+import BackGround
 
 
 class MyCastle:  # 우리 팀의 성
+
+    TIME_PER_ACTION = 1.0
+    ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 
     NORMAL, CHARGE = 0, 1
 
@@ -17,27 +23,31 @@ class MyCastle:  # 우리 팀의 성
         self.x, self.y = 1200, 300  # 객체의 초기 위치
         self.image = load_image("Resources/CatBase2.png")  # 성의 이미지 불러오기
         self.Health = 1000000  # 성의 체력
-        self.state = self.CHARGE
+        self.Frame_Attack = 0
+        self.Frames_Attack = 0
+        self.state = self.NORMAL
 
     def draw(self):
         self.image.clip_draw(0, self.state * 275, 120, 275, self.x, self.y)  # 이미지를 후면 버퍼의 좌표 (x,y)위치에 삽입
-        # self.image.clip_draw(self.frame * 46, self.state * 63, 46, 63, self.x, self.y)
 
-    def update(self):
+    def update(self, frame_time):
         if self.Health < 0:  # 성의 체력이 0 이하가 되면
             self.x, self.y = -1000, -1000  # 성의 위치를 옮김 ( 임시 )
-            print("게임 종료")
             GameFrameWork.push_state(DefeatState)
+        if self.state == self.CHARGE:
+            self.Frames_Attack += self.ACTION_PER_TIME * frame_time
+            self.Frame_Attack = int(self.Frames_Attack + 1)
+            if self.Frame_Attack > 1:
+                self.state = self.NORMAL
+                self.Frame_Attack = 0
+                self.Frames_Attack = 0
 
     def get_defense_size(self):  # 충돌체크를 위한 이미지 크기 반환
         return self.x - 60, self.y - 133, self.x + 60,  self.y + 137
-        # 왼쪽: 65, 아래쪽: 123, 오른쪽: 60, 위쪽: 127
+        # 왼쪽: 65, 아래쪽: 133, 오른쪽: 60, 위쪽: 137
 
     def draw_bb(self):  # 충돌범위를 나타내는 박스 그리기
         draw_rectangle(*self.get_defense_size())
-
-    def charge(self):
-        self.state = self.CHARGE
 
 
 class EnemyCastle:  # 적 팀의 성
@@ -45,7 +55,7 @@ class EnemyCastle:  # 적 팀의 성
     def __init__(self):  # 초기화
         self.x, self.y = 60, 270  # 객체의 초기 위치
         self.image = load_image("Resources/EnemyCastle.png")  # 성의 이미지 불러오기
-        self.Health = 100000  # 성의 체력
+        self.Health = 900000  # 성의 체력
 
     def draw(self):
         self.image.draw(self.x, self.y)  # 이미지를 후면버퍼의 x, y 위치에 그림

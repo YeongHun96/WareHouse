@@ -20,45 +20,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="Scene_Stage1.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Scene_Stage1.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Scene_Stage1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="97">
-              <caret line="148" column="34" lean-forward="false" selection-start-line="148" selection-start-column="34" selection-end-line="148" selection-end-column="34" />
+            <state relative-caret-position="5067">
+              <caret line="233" column="0" lean-forward="false" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
               <folding>
                 <element signature="e#19#38#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BackGround.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/BackGround.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Unit_Buttons.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Unit_Buttons.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="280" column="56" lean-forward="true" selection-start-line="280" selection-start-column="56" selection-end-line="280" selection-end-column="56" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Enemies.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Enemies.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4175">
-              <caret line="206" column="0" lean-forward="false" selection-start-line="206" selection-start-column="0" selection-end-line="206" selection-end-column="0" />
-              <folding>
-                <marker date="1482254455169" expanded="true" signature="277:278" ph="..." />
               </folding>
             </state>
           </provider>
@@ -67,22 +35,73 @@
       <file leaf-file-name="CatSkills.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CatSkills.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1100">
-              <caret line="71" column="13" lean-forward="true" selection-start-line="71" selection-start-column="13" selection-end-line="71" selection-end-column="13" />
+            <state relative-caret-position="-8">
+              <caret line="54" column="26" lean-forward="true" selection-start-line="54" selection-start-column="26" selection-end-line="54" selection-end-column="26" />
               <folding>
-                <element signature="e#0#35#0" expanded="true" />
+                <element signature="e#0#19#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Cats.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="4" column="18" lean-forward="false" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Enemies.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Enemies.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-75">
+              <caret line="482" column="0" lean-forward="false" selection-start-line="482" selection-start-column="0" selection-end-line="482" selection-end-column="0" />
+              <folding>
+                <element signature="e#186#199#0" expanded="true" />
+                <marker date="1482367380933" expanded="true" signature="294:295" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Cats.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Cats.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="475">
-              <caret line="652" column="19" lean-forward="true" selection-start-line="652" selection-start-column="19" selection-end-line="652" selection-end-column="19" />
+            <state relative-caret-position="225">
+              <caret line="513" column="17" lean-forward="false" selection-start-line="513" selection-start-column="17" selection-end-line="513" selection-end-column="17" />
               <folding>
                 <element signature="e#186#221#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Unit_Buttons.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Unit_Buttons.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-600">
+              <caret line="99" column="16" lean-forward="false" selection-start-line="99" selection-start-column="16" selection-end-line="99" selection-end-column="16" />
+              <folding>
+                <marker date="1482364365375" expanded="true" signature="43:1457" ph="..." />
+                <marker date="1482364365375" expanded="true" signature="1480:2894" ph="..." />
+                <marker date="1482364365375" expanded="true" signature="2917:4330" ph="..." />
+                <marker date="1482364365375" expanded="true" signature="11542:12958" ph="..." />
+                <marker date="1482364365375" expanded="true" signature="12979:15482" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EnemySkills.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/EnemySkills.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="250">
+              <caret line="31" column="33" lean-forward="true" selection-start-line="31" selection-start-column="33" selection-end-line="31" selection-end-column="33" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -91,31 +110,9 @@
       <file leaf-file-name="GameFrameWork.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GameFrameWork.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="99" column="0" lean-forward="false" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
+            <state relative-caret-position="2475">
+              <caret line="100" column="0" lean-forward="false" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StartState.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/StartState.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="700">
-              <caret line="30" column="86" lean-forward="false" selection-start-line="30" selection-start-column="86" selection-end-line="30" selection-end-column="86" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Castle.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Castle.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-              <folding>
-                <marker date="1482248487519" expanded="true" signature="1747:1785" ph="..." />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -123,10 +120,23 @@
       <file leaf-file-name="Skills.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Skills.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="22" column="37" lean-forward="true" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="37" />
+            <state relative-caret-position="50">
+              <caret line="36" column="20" lean-forward="true" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Castle.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Castle.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="975">
+              <caret line="57" column="23" lean-forward="false" selection-start-line="57" selection-start-column="23" selection-end-line="57" selection-end-column="23" />
+              <folding>
+                <element signature="e#187#207#0" expanded="true" />
+                <marker date="1482367380957" expanded="true" signature="2093:2131" ph="..." />
               </folding>
             </state>
           </provider>
@@ -145,6 +155,7 @@
     <findStrings>
       <find>delay()</find>
       <find>delay</find>
+      <find>print</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -187,20 +198,20 @@
         <option value="C:/2DGP/2016-2DGP/Labs/Lab12 - Scroll Fixed BG/scroll_state.py" />
         <option value="$PROJECT_DIR$/TitleState.py" />
         <option value="$PROJECT_DIR$/GameFrameWork.py" />
-        <option value="$PROJECT_DIR$/VictoryState.py" />
-        <option value="$PROJECT_DIR$/DefeatState.py" />
         <option value="C:/2DGP/2016-2DGP/Labs/Lab14 - packaging/mygame.py" />
         <option value="C:/2DGP/2016-2DGP/2016-2DGP-master/Labs/Lab13 - Packaging/mygame.py" />
-        <option value="$PROJECT_DIR$/EnemySkills.py" />
         <option value="$PROJECT_DIR$/Functions.py" />
-        <option value="$PROJECT_DIR$/CatSkills.py" />
         <option value="$PROJECT_DIR$/StartState.py" />
-        <option value="$PROJECT_DIR$/Scene_Stage1.py" />
-        <option value="$PROJECT_DIR$/Castle.py" />
+        <option value="$PROJECT_DIR$/VictoryState.py" />
+        <option value="$PROJECT_DIR$/DefeatState.py" />
+        <option value="$PROJECT_DIR$/EnemySkills.py" />
+        <option value="$PROJECT_DIR$/CatSkills.py" />
         <option value="$PROJECT_DIR$/Unit_Buttons.py" />
-        <option value="$PROJECT_DIR$/Skills.py" />
+        <option value="$PROJECT_DIR$/Castle.py" />
         <option value="$PROJECT_DIR$/Enemies.py" />
+        <option value="$PROJECT_DIR$/Skills.py" />
         <option value="$PROJECT_DIR$/Cats.py" />
+        <option value="$PROJECT_DIR$/Scene_Stage1.py" />
       </list>
     </option>
   </component>
@@ -226,6 +237,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -250,7 +262,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -260,16 +271,16 @@
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/Users/장영훈/PycharmProjects/The Battle Cats/Scene_Stage1.py" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\장영훈\PycharmProjects\The Battle Cats" />
-      <recent name="C:\Users\장영훈\Desktop" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\2DGP\2016-2DGP\Labs\Lab08 - Time\Images" />
       <recent name="C:\2DGP\2016-2DGP\Labs\Lab07 - Character Controller\Images" />
       <recent name="C:\2DGP\2016-2DGP\Labs\Lab06 - AI\Images" />
       <recent name="C:\2DGP\2016-2DGP\Labs\Lab05\Images" />
       <recent name="C:\2DGP\2016-2DGP\Labs\Lab04\Images" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\장영훈\PycharmProjects\The Battle Cats" />
+      <recent name="C:\Users\장영훈\Desktop" />
     </key>
   </component>
   <component name="RunManager" selected="Python.Main">
@@ -551,13 +562,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Castle.py</url>
-          <line>5</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="25" />
     </breakpoint-manager>
     <watches-manager />
@@ -628,18 +632,60 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/VictoryState.py">
+    <entry file="file://$PROJECT_DIR$/Functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="30" column="34" lean-forward="true" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
-          <folding />
+        <state relative-caret-position="150">
+          <caret line="6" column="19" lean-forward="false" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35/Lib/site-packages/pico2d.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="265" column="0" lean-forward="false" selection-start-line="265" selection-start-column="0" selection-end-line="265" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StartState.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="542">
+          <caret line="30" column="86" lean-forward="false" selection-start-line="30" selection-start-column="86" selection-end-line="30" selection-end-column="86" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TitleState.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-133">
+        <state relative-caret-position="25">
           <caret line="62" column="0" lean-forward="false" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/VictoryState.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="45" column="21" lean-forward="false" selection-start-line="45" selection-start-column="21" selection-end-line="45" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DefeatState.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="51" column="21" lean-forward="false" selection-start-line="51" selection-start-column="21" selection-end-line="51" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BackGround.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameFrameWork.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2475">
+          <caret line="100" column="0" lean-forward="false" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -652,128 +698,88 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Functions.py">
+    <entry file="file://$PROJECT_DIR$/Unit_Buttons.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="6" column="19" lean-forward="false" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
+        <state relative-caret-position="-600">
+          <caret line="99" column="16" lean-forward="false" selection-start-line="99" selection-start-column="16" selection-end-line="99" selection-end-column="16" />
           <folding>
-            <marker date="1481200054655" expanded="true" signature="0:508" ph="..." />
+            <marker date="1482364365375" expanded="true" signature="43:1457" ph="..." />
+            <marker date="1482364365375" expanded="true" signature="1480:2894" ph="..." />
+            <marker date="1482364365375" expanded="true" signature="2917:4330" ph="..." />
+            <marker date="1482364365375" expanded="true" signature="11542:12958" ph="..." />
+            <marker date="1482364365375" expanded="true" signature="12979:15482" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/EnemySkills.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="19" column="21" lean-forward="false" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DefeatState.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="11" column="12" lean-forward="true" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35/Lib/site-packages/pico2d.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="265" column="0" lean-forward="false" selection-start-line="265" selection-start-column="0" selection-end-line="265" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StartState.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="700">
-          <caret line="30" column="86" lean-forward="false" selection-start-line="30" selection-start-column="86" selection-end-line="30" selection-end-column="86" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BackGround.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Castle.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding>
-            <marker date="1482248487519" expanded="true" signature="1747:1785" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CatSkills.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1100">
-          <caret line="71" column="13" lean-forward="true" selection-start-line="71" selection-start-column="13" selection-end-line="71" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GameFrameWork.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="99" column="0" lean-forward="false" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Enemies.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4175">
-          <caret line="206" column="0" lean-forward="false" selection-start-line="206" selection-start-column="0" selection-end-line="206" selection-end-column="0" />
-          <folding>
-            <marker date="1482254455169" expanded="true" signature="277:278" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Scene_Stage1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="97">
-          <caret line="148" column="34" lean-forward="false" selection-start-line="148" selection-start-column="34" selection-end-line="148" selection-end-column="34" />
-          <folding>
-            <element signature="e#19#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skills.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="22" column="37" lean-forward="true" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="37" />
+        <state relative-caret-position="250">
+          <caret line="31" column="33" lean-forward="true" selection-start-line="31" selection-start-column="33" selection-end-line="31" selection-end-column="33" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Unit_Buttons.py">
+    <entry file="file://$PROJECT_DIR$/CatSkills.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="280" column="56" lean-forward="true" selection-start-line="280" selection-start-column="56" selection-end-line="280" selection-end-column="56" />
-          <folding />
+        <state relative-caret-position="-8">
+          <caret line="54" column="26" lean-forward="true" selection-start-line="54" selection-start-column="26" selection-end-line="54" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Castle.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="975">
+          <caret line="57" column="23" lean-forward="false" selection-start-line="57" selection-start-column="23" selection-end-line="57" selection-end-column="23" />
+          <folding>
+            <element signature="e#187#207#0" expanded="true" />
+            <marker date="1482367380957" expanded="true" signature="2093:2131" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Enemies.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-75">
+          <caret line="482" column="0" lean-forward="false" selection-start-line="482" selection-start-column="0" selection-end-line="482" selection-end-column="0" />
+          <folding>
+            <element signature="e#186#199#0" expanded="true" />
+            <marker date="1482367380933" expanded="true" signature="294:295" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skills.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="36" column="20" lean-forward="true" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Cats.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="652" column="19" lean-forward="true" selection-start-line="652" selection-start-column="19" selection-end-line="652" selection-end-column="19" />
+        <state relative-caret-position="225">
+          <caret line="513" column="17" lean-forward="false" selection-start-line="513" selection-start-column="17" selection-end-line="513" selection-end-column="17" />
           <folding>
             <element signature="e#186#221#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scene_Stage1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5067">
+          <caret line="233" column="0" lean-forward="false" selection-start-line="233" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
+          <folding>
+            <element signature="e#19#38#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -1,5 +1,4 @@
 import GameFrameWork
-import TitleState
 from pico2d import*
 
 name = "VictoryState"
@@ -27,12 +26,13 @@ def exit():
 def handle_events(frame_time):
 
     events = get_events()
+
     for event in events:
         if event.type == SDL_QUIT:
             GameFrameWork.quit()
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_SPACE:
-                GameFrameWork.change_state(TitleState)
+                GameFrameWork.quit()
             elif event.key == SDLK_ESCAPE:
                 GameFrameWork.quit()
 

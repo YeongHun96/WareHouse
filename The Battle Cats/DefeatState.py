@@ -4,7 +4,6 @@
 #                Module의 사용 : import 모듈이름
 
 import GameFrameWork
-import Scene_Stage1
 import TitleState
 from pico2d import*
 
@@ -39,7 +38,7 @@ def handle_events(frame_time):
             GameFrameWork.quit()
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_SPACE:
-                GameFrameWork.change_state(TitleState)
+                GameFrameWork.quit()
             elif event.key == SDLK_ESCAPE:
                 GameFrameWork.quit()
 

@@ -25,6 +25,11 @@ BGM = None
 Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9 = None, None, None, None, None, None, None, None, None
 Laser_Beam = None
 Skill_Button = None
+TIME_PER_ACTION = None
+ACTION_PER_TIME = None
+Frames = None
+Frame = None
+Count_Number = None
 
 # **********************리스트들**********************#
 Cat_Units = []  # 아군 유닛들을 관리할 리스트 생성
@@ -91,6 +96,16 @@ def enter():  # 게임 상태 ( 인게임 ) 에 들어올 때 초기화
     Buttons.append(Skill_Button)
     global Laser_Beam
     Laser_Beam = Skills.LaserBeam()
+    global TIME_PER_ACTION
+    global ACTION_PER_TIME
+    TIME_PER_ACTION = 0.5
+    ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+    global Frame
+    global Frames
+    Frame = 0
+    Frames = 0
+    global Count_Number
+    Count_Number = 0
 
 
 def exit():  # 게임 상태 ( 인게임 ) 에서 나갈 때 종료화
@@ -123,14 +138,21 @@ def update(frame_time):  # 업데이트
     global My_Castle
     global Enemy_Castle
     global Laser_Beam
+    global Frame, Frames
+    global Count_Number
 
     for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛
         Cat.update(frame_time)  # 업데이트
     for Enemy in Enemy_Units:  # 리스트에 속하는 적군 유닛
         Enemy.update(frame_time)  # 업데이트
-    My_Castle.update()
+    My_Castle.update(frame_time)
     Enemy_Castle.update()
-
+    for CatSkill in Cat_Skills:
+        CatSkill.update(frame_time)
+    for EnemySkill in Enemy_Skills:
+        EnemySkill.update(frame_time)
+    for Button in Buttons:
+        Button.update(frame_time)
     # **************************Collision Check**************************************#
     for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛들
         for Enemy in Enemy_Units:  # 리스트에 속하는 적군 유닛들에 대해
@@ -151,23 +173,48 @@ def update(frame_time):  # 업데이트
             Enemy.attack(My_Castle)  # 적군 유닛 -> 아군 성 공격
 
     for CatSkill in Cat_Skills:
-        CatSkill.update(frame_time)
-
-    for CatSkill in Cat_Skills:
-        if Functions.collide_cat(CatSkill, Enemy_Castle):
-            CatSkill.attack(Enemy_Castle)
+        for Enemy in Enemy_Units:
+            if Functions.collide_cat(CatSkill, Enemy and Enemy_Castle):  # 적군 유닛과 적군 성 모두 충돌체크 된 상황
+                CatSkill.attack(Enemy_Castle)  # 적군 성을 먼저 공격한다
+            elif Functions.collide_cat(CatSkill, Enemy):  # 아군 유닛과 적군 유닛간 충돌
+                CatSkill.attack(Enemy)  # 아군 유닛 -> 적군 유닛 공격
+        if Functions.collide_cat(CatSkill, Enemy_Castle):  # 아군 유닛과 적군 성 간 충돌
+            CatSkill.attack(Enemy_Castle)  # 아군 유닛 -> 적군 성 공격
 
     for EnemySkill in Enemy_Skills:
-        EnemySkill.update(frame_time)
+        for Cat in Cat_Units:  # 모든 아군들에 대해
+            if Functions.collide_enemy(EnemySkill, Cat and My_Castle):  # 아군 유닛과 아군 성이 동시에 사정거리에 있는 상황
+                EnemySkill.attack(My_Castle)  # 아군 성을 먼저 공격한다
+            elif Functions.collide_enemy(EnemySkill, Cat):  # 적군 유닛과 아군 유닛간 충돌 있으면
+                EnemySkill.attack(Cat)  # 적군 유닛 -> 아군 유닛 공격
+        if Functions.collide_enemy(EnemySkill, My_Castle):  # 적군 유닛과 아군 성간 충돌
+            EnemySkill.attack(My_Castle)  # 적군 유닛 -> 아군 성 공격
+    # *******************************적 유닛 생성**************************************#
 
-    for EnemySkill in Enemy_Skills:
-        if Functions.collide_enemy(EnemySkill, My_Castle):
-            EnemySkill.attack(My_Castle)
-
-    for Button in Buttons:
-        Button.update(frame_time)
-
-    Laser_Beam.update()
+    Frames += ACTION_PER_TIME * frame_time * 100
+    Frame = int(Frames + 1)
+    # 분당 12000 F
+    print(Frame)
+    if Frame % 50 == 0 and Count_Number == 0:
+        Enemy_Units.append(Enemies.MummyDog())
+        pass
+    if Frame % 50 == 0:
+        Enemy_Units.append(Enemies.SkeleDog())
+        pass
+    if Frame % 100 == 0:
+        Enemy_Units.append(Enemies.SkeletonSoldier())
+        pass
+    if Frame % 200 == 0:
+        Enemy_Units.append(Enemies.OfficerSkeleton())
+        pass
+    if Frame % 500 == 0:
+        Enemy_Units.append(Enemies.CommanderSkeleton())
+        pass
+    if Frame > 10000 and Count_Number == 0:
+        Back_Ground.image = load_image('Resources/BackGround_Final.png')
+        Enemies.HeadlessKnight.BGM.repeat_play()  # 반복 재생
+        Enemy_Units.append(Enemies.HeadlessKnight())
+        Count_Number = 1
 
 
 def draw():
@@ -176,42 +223,33 @@ def draw():
     global Back_Ground
     global Laser_Beam
     global Number_1, Number_2, Number_3, Number_4, Number_5, Number_6, Number_7, Number_8, Number_9
+
     clear_canvas()  # 캔버스 지우기
+
     Back_Ground.draw()  # 배경화면 그리기
+    My_Castle.draw()  # 아군 성 그리기
+    # My_Castle.draw_bb()  # 아군 성의 충돌범위 그리기
+    Enemy_Castle.draw()  # 적군 성 그리기
+    # Enemy_Castle.draw_bb()  # 적군 성의 충돌범위 그리기
+
     for Button in Buttons:
         Button.draw()
-    #Number_1.draw()
-    #Number_2.draw()
-    #Number_3.draw()
-    #Number_4.draw()
-    #Number_5.draw()
-    #Number_6.draw()
-    #Number_7.draw()
-    #Number_8.draw()
-    #Number_9.draw()
-    My_Castle.draw()  # 아군 성 그리기
-    My_Castle.draw_bb()  # 아군 성의 충돌범위 그리기
-    Enemy_Castle.draw()  # 적군 성 그리기
-    Enemy_Castle.draw_bb()  # 적군 성의 충돌범위 그리기
 
     for Cat in Cat_Units:  # 리스트에 속하는 아군 유닛 모두를
         Cat.draw()  # 그리기
-        Cat.draw_bb()  # 충돌범위 그리기
+        #Cat.draw_bb()  # 충돌범위 그리기
 
     for Enemy in Enemy_Units:  # 리스트에 속하는 적군 유닛 모두를
         Enemy.draw()  # 그리기
-        Enemy.draw_bb()  # 충돌범위 그리기
+        #Enemy.draw_bb()  # 충돌범위 그리기
 
     for CatSkill in Cat_Skills:
         CatSkill.draw()
-        CatSkill.draw_bb()
+        #CatSkill.draw_bb()
 
     for EnemySkill in Enemy_Skills:
         EnemySkill.draw()
-        EnemySkill.draw_bb()
-
-    Laser_Beam.draw()
-    Laser_Beam.draw_bb()
+        #EnemySkill.draw_bb()
 
     update_canvas()  # 캔버스 업데이트
 
@@ -262,24 +300,10 @@ def handle_events(frame_time):  # 입력신호를 관리하는 함수
             elif event.key == SDLK_9 and Number_9.state == Number_9.CHARGE_FULL:  # 9번 입력 시
                 Cat_Units.append(Cats.TitanCat())  # 거인 고양이 객체 생성
                 Number_9.start()
-            elif event.key == SDLK_0 and Skill_Button.state == Skill_Button.CHARGE_FULL:
-                # Enemy_Units.append(Enemies.SkeletonSoldier())
-                Laser_Beam.attack(Enemy_Castle)
+            elif event.key == SDLK_q and Skill_Button.state == Skill_Button.CHARGE_FULL:
+                Cat_Skills.append(Skills.LaserBeam())
+                My_Castle.state = My_Castle.CHARGE
                 Skill_Button.start()
-            elif event.key == SDLK_q:
-                Enemy_Units.append(Enemies.OfficerSkeleton())
-            elif event.key == SDLK_w:
-                Enemy_Units.append(Enemies.CommanderSkeleton())
-            elif event.key == SDLK_e:
-                Back_Ground.image = load_image('Resources/BackGround_Final.png')
-                Enemy_Units.append(Enemies.HeadlessKnight())
-                BGM = load_music('Resources/Musics/CarminaBurana.ogg')  # 생성한 전역변수에 음악 삽입
-                BGM.set_volume(50)  # 음량
-                BGM.repeat_play()  # 반복 재생
-            elif event.key == SDLK_r:
-                Enemy_Units.append(Enemies.MummyDog())
-            elif event.key == SDLK_t:
-                Enemy_Units.append(Enemies.SkeleDog())
 
 
 def pause():
